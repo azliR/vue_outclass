@@ -1,0 +1,5 @@
+@use 'vuetify/settings' with (
+  $rounded: (
+    'lg': 16px,
+  )
+);
