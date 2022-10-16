@@ -7,67 +7,52 @@ const router = createRouter({
     {
       path: '/in',
       name: 'in',
-      meta: {
-        title: 'Sign In',
-      },
+      meta: { title: 'Sign In' },
       component: () => import('../views/auth/SignInView.vue'),
     },
     {
       path: '/join',
       name: 'join',
-      meta: {
-        title: 'Join',
-      },
+      meta: { title: 'Join' },
       component: () => import('../views/auth/JoinView.vue'),
     },
     {
       path: '/scan',
       name: 'scan',
-      meta: {
-        title: 'Scan',
-      },
+      meta: { title: 'Scan' },
       component: () => import('../views/auth/ScanCodeView.vue'),
     },
     {
       path: '/',
-      name: 'home',
       component: () => import('../views/home/HomeView.vue'),
       children: [
         {
           path: '',
           name: 'overview',
-          meta: {
-            title: 'Home',
-          },
+          meta: { title: 'Home' },
           component: () => import('../views/home/overview/OverviewView.vue'),
         },
         {
           path: 'calendar',
           name: 'calendar',
-          meta: {
-            title: 'Calendar',
-          },
+          meta: { title: 'Calendar' },
           component: () => import('../views/home/calendar/ScheduleView.vue'),
         },
         {
           path: 'folders',
-          component: () => EmptyRouterView,
+          component: EmptyRouterView,
           children: [
             {
               path: '',
               name: 'folders',
-              meta: {
-                title: 'Folders',
-              },
+              meta: { title: 'Folders' },
               component: () =>
                 import('../views/home/links/FoldersWrapperView.vue'),
             },
             {
               path: ':folderId',
               name: 'links',
-              meta: {
-                title: 'Links',
-              },
+              meta: { title: 'Links' },
               component: () => import('../views/home/links/LinksView.vue'),
             },
           ],
@@ -75,9 +60,7 @@ const router = createRouter({
         {
           path: 'account',
           name: 'account',
-          meta: {
-            title: 'Account',
-          },
+          meta: { title: 'Account' },
           component: () => import('../views/home/account/AccountView.vue'),
         },
       ],
