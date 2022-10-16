@@ -1,18 +1,18 @@
 <script setup lang="ts"></script>
 
 <template>
-  <v-main>
+  <v-app-bar density="prominent">
+    <v-app-bar-title>Beranda</v-app-bar-title>
+  </v-app-bar>
+  <v-main scrollable>
     <v-container fluid>
       <v-sheet class="pa-8">
-        <!-- <v-list>
-            <v-list-item
-              v-for="link in links"
-              :key="link.id"
-              :title="link.title"
-              @click=""
-              color="primary"
-            ></v-list-item>
-          </v-list> -->
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </v-card-text>
       </v-sheet>
     </v-container></v-main
   >

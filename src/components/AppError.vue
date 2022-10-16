@@ -1,17 +1,13 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+const emit = defineEmits(['refresh']);
 
-export default defineComponent({
-  name: 'app-error',
-  props: {
-    error: { type: String, required: true },
-  },
-  methods: {
-    onRefreshPressed() {
-      this.$emit('refresh');
-    },
-  },
+defineProps({
+  error: { type: String, required: true },
 });
+
+function onRefreshPressed() {
+  emit('refresh');
+}
 </script>
 
 <template>

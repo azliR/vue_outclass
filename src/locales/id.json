@@ -1,5 +1,26 @@
 {
-  "homeTabs": {
-    "home": "Beranda"
+  "home": {
+    "homeTabs": {
+      "home": "Beranda",
+      "calendar": "Kalender",
+      "files": "Berkas",
+      "account": "Akun"
+    }
+  },
+  "files": {
+    "folderTabs": {
+      "class": {
+        "title": "Kelas",
+        "alert": "Berkas-berkas ini dibagikan dengan semua anggota kelas kamu"
+      },
+      "shared": {
+        "title": "Berbagi",
+        "alert": "Berkas-berkas ini dibagikan dengan temen-temen kamu tertentu saja"
+      },
+      "personal": {
+        "title": "Personal",
+        "alert": "Berkas-berkas ini tidak dibagikan kepada siapapun, cuman milik kamu seorang"
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 import type { Link } from '@/models/link';
-import { API } from '@/plugins/constants';
+import { BASE_API_URL } from '@/plugins/constants';
 import { defineStore } from 'pinia';
 
 export const useLinksStore = defineStore('links', {
@@ -20,7 +20,7 @@ export const useLinksStore = defineStore('links', {
       const folderId = this.router.currentRoute.value.params.folderId;
 
       await this.axios
-        .get(`${API}/links?folderId=${folderId}`)
+        .get(`${BASE_API_URL}/links?folderId=${folderId}`)
         .then(({ data }) => {
           return (this.links = data);
         })
@@ -38,7 +38,7 @@ export const useLinksStore = defineStore('links', {
       newLink.folderId = folderId;
 
       await this.axios
-        .post(`${API}/links`, newLink)
+        .post(`${BASE_API_URL}/links`, newLink)
         .then(({ data }) => {
           return (this.links = data);
         })

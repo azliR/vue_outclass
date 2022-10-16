@@ -11,15 +11,15 @@ export const useHomeStore = defineStore('home', {
 
     return {
       selectedTab: index !== -1 ? index : 0,
-      tabs: homeTabs,
+      homeTabs: homeTabs,
     };
   },
   actions: {
-    onTabChange(newTab: Tab, i: number) {
+    onTabChange(newTab: HomeTab, i: number) {
       const currentPath = this.router.currentRoute.value.path;
       const rootPath = `/${currentPath.split('/')[1]}`;
 
-      this.tabs.map((tab) => {
+      this.homeTabs.map((tab) => {
         if (tab.path === rootPath) {
           if (newTab.path === rootPath) {
             newTab.currentPath = tab.path;
@@ -40,36 +40,41 @@ export const useHomeStore = defineStore('home', {
   },
 });
 
-interface Tab {
+interface HomeTab {
   title: string;
   path: string;
   currentPath: string;
   icon: string;
+  activeIcon: string;
 }
 
-const homeTabs = <Tab[]>[
+const homeTabs = <HomeTab[]>[
   {
-    title: 'home',
+    title: 'home.homeTabs.home',
     path: '/',
     currentPath: '/',
     icon: 'mdi-home-variant-outline',
+    activeIcon: 'mdi-home-variant',
   },
   {
-    title: 'calendar',
+    title: 'home.homeTabs.calendar',
     path: '/calendar',
     currentPath: '/calendar',
-    icon: 'mdi-calendar',
+    icon: 'mdi-calendar-outline',
+    activeIcon: 'mdi-calendar',
   },
   {
-    title: 'link',
+    title: 'home.homeTabs.files',
     path: '/folders',
     currentPath: '/folders',
-    icon: 'mdi-link',
+    icon: 'mdi-folder-outline',
+    activeIcon: 'mdi-folder',
   },
   {
-    title: 'classroom',
-    path: '/classroom',
-    currentPath: '/classroom',
-    icon: 'mdi-google-classroom',
+    title: 'home.homeTabs.account',
+    path: '/account',
+    currentPath: '/account',
+    icon: 'mdi-account-outline',
+    activeIcon: 'mdi-account',
   },
 ];

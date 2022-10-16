@@ -1,31 +1,5 @@
 {
-  "link-folders": [
-    {
-      "id": "ac38a13d-8dae-49bc-a574-65432d67e4be",
-      "name": "Pengembangan Aplikasi Web",
-      "classroomId": "358812"
-    },
-    {
-      "id": "e8564fd2-ea21-4868-aa0c-e7c60c60e53e",
-      "name": "Pengembangan Aplikasi Mobile",
-      "classroomId": "358812"
-    },
-    {
-      "id": "92c07280-e199-4645-8690-b01997a0b1de",
-      "name": "Interiaksi Manusia dan Komputer",
-      "classroomId": "358812"
-    },
-    {
-      "id": "2adf7256-ef47-4016-9c07-3baaf41be64d",
-      "name": "Manajemen Proyek Perangkat Lunak",
-      "classroomId": "358812"
-    },
-    {
-      "id": "3646bb75-7204-42d5-a219-9f4efe5b1d51",
-      "name": "Intelegensia Buatan",
-      "classroomId": "358812"
-    }
-  ],
+  "link-folders": ,
   "links": [
     {
       "id": "f7069e75-4f84-4f8b-b1bd-a9a75776a889",

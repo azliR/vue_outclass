@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppAddLinkDialog from '@/components/AddLinkDialog.vue';
-import AppEmpty from '@/components/Empty.vue';
-import AppError from '@/components/Error.vue';
+import AppAddLinkDialog from '@/components/AppAddLinkDialog.vue';
+import AppEmpty from '@/components/AppEmpty.vue';
+import AppError from '@/components/AppError.vue';
 import type { Link } from '@/models/link';
 
 import { useAddLinkStore } from '@/stores/home/links/add-link';
@@ -68,14 +68,19 @@ onUnmounted(() => {
               <v-expansion-panel-title>
                 {{ link.name }}
                 <template v-slot:actions="{ expanded }">
-                  <v-icon
-                    color="secondary"
-                    :icon="
-                      expanded
-                        ? 'mdi-chevron-up-circle'
-                        : 'mdi-chevron-down-circle'
-                    "
-                  ></v-icon>
+                  <div>
+                    <v-btn
+                      icon="mdi-download"
+                      @click.stop=""
+                      size="x-small"
+                      variant="tonal"
+                    ></v-btn>
+                    <v-icon
+                      class="ml-4"
+                      color="secondary"
+                      :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                    ></v-icon>
+                  </div>
                 </template>
               </v-expansion-panel-title>
 
@@ -120,10 +125,11 @@ onUnmounted(() => {
           </v-expansion-panels>
         </v-container>
         <v-btn
+          v-if="!error"
           class="ma-4"
           rounded="lg"
           icon="mdi-plus"
-          color="secondary"
+          color="primary-container"
           position="fixed"
           style="right: 0; bottom: 56px; z-index: 2"
           v-bind="props"

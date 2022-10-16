@@ -11,9 +11,11 @@ import router from './router';
 loadFonts();
 const app = createApp(App);
 const i18n = createI18n({
+  legacy: false,
   locale: 'en',
   messages,
 });
+
 const pinia = createPinia();
 pinia.use(({ store }) => {
   store.router = markRaw(router);

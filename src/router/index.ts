@@ -59,7 +59,8 @@ const router = createRouter({
               meta: {
                 title: 'Folders',
               },
-              component: () => import('../views/home/links/FoldersView.vue'),
+              component: () =>
+                import('../views/home/links/FoldersWrapperView.vue'),
             },
             {
               path: ':folderId',
@@ -72,12 +73,12 @@ const router = createRouter({
           ],
         },
         {
-          path: 'classroom',
-          name: 'classroom',
+          path: 'account',
+          name: 'account',
           meta: {
-            title: 'Classroom',
+            title: 'Account',
           },
-          component: () => import('../views/home/classroom/ClassroomView.vue'),
+          component: () => import('../views/home/account/AccountView.vue'),
         },
       ],
     },

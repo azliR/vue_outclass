@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useHomeStore } from '@/stores/home/home';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const store = useHomeStore();
 const { onTabChange } = store;
-const { selectedTab, tabs } = storeToRefs(store);
+const { selectedTab, homeTabs } = storeToRefs(store);
 </script>
 
 <template>
@@ -13,41 +16,34 @@ const { selectedTab, tabs } = storeToRefs(store);
       <v-list-item
         rounded="pill"
         active-color="primary"
-        v-for="(tab, i) in tabs"
+        v-for="(tab, i) in homeTabs"
         :active="selectedTab === i"
         :key="tab.title"
-        :title="tab.title"
+        :title="t(tab.title)"
         @click="onTabChange(tab, i)"
       >
         <template v-slot:prepend>
-          <v-icon class="pl-6">{{ tab.icon }}</v-icon>
+          <v-icon class="pl-6">{{
+            selectedTab === i ? tab.activeIcon : tab.icon
+          }}</v-icon>
         </template>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-app-bar
-    v-if="
-      $router.currentRoute.value.path.split('/').filter((e) => e !== '')
-        .length <= 1 && selectedTab !== 1
-    "
-    density="prominent"
-    :title="tabs[selectedTab].title"
-  >
-  </v-app-bar>
   <router-view v-slot="{ Component }">
     <keep-alive>
       <component :is="Component" />
     </keep-alive>
   </router-view>
-  <v-bottom-navigation grow>
+  <v-bottom-navigation grow color="on-secondary-container">
     <v-btn
-      v-for="(tab, i) in tabs"
+      v-for="(tab, i) in homeTabs"
       :active="selectedTab === i"
       :key="tab.title"
-      :prepend-icon="tab.icon"
+      :prepend-icon="selectedTab === i ? tab.activeIcon : tab.icon"
       @click="onTabChange(tab, i)"
     >
-      {{ tab.title }}
+      {{ t(tab.title) }}
     </v-btn>
   </v-bottom-navigation>
 </template>

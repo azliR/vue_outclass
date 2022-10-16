@@ -1,35 +1,27 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { Link } from '@/models/link';
 import { useAddLinkStore } from '@/stores/home/links/add-link';
-import { mapState } from 'pinia';
-import { defineComponent, type Prop } from 'vue';
+import { storeToRefs } from 'pinia';
+import type { Prop } from 'vue';
 
-export default defineComponent({
-  name: 'app-add-link-dialog',
-  props: {
-    link: {
-      type: Object as () => Prop<Link>,
-      required: false,
-    },
-  },
-  computed: {
-    ...mapState(useAddLinkStore, [
-      'valid',
-      'newLink',
-      'nameRules',
-      'urlRules',
-      'descriptionRules',
-    ]),
-  },
-  methods: {
-    onClosePressed() {
-      this.$emit('close');
-    },
-    onSavePressed() {
-      this.$emit('save', this.newLink);
-    },
+const emit = defineEmits(['close', 'save']);
+const store = useAddLinkStore();
+const { nameRules, urlRules, descriptionRules } = store;
+const { valid, newLink } = storeToRefs(store);
+
+defineProps({
+  link: {
+    type: Object as () => Prop<Link>,
+    required: false,
   },
 });
+
+function onClosePressed() {
+  emit('close');
+}
+function onSavePressed() {
+  emit('save', newLink);
+}
 </script>
 
 <script setup lang="ts"></script>

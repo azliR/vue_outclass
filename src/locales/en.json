@@ -1,5 +1,26 @@
 {
-  "homeTabs": {
-    "home": "Home"
+  "home": {
+    "homeTabs": {
+      "home": "Home",
+      "calendar": "Calendar",
+      "files": "Files",
+      "account": "Account"
+    }
+  },
+  "files": {
+    "folderTabs": {
+      "class": {
+        "title": "Class",
+        "alert": "These files are shared with all your class members"
+      },
+      "shared": {
+        "title": "Shared",
+        "alert": "These files are shared with your particular friends"
+      },
+      "personal": {
+        "title": "Personal",
+        "alert": "These files are not distributed to anyone, only you are"
+      }
+    }
   }
 }

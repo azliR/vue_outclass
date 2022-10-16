@@ -1,5 +1,6 @@
-export interface LinkCategory {
+export interface LinkFolder {
   id: string;
-  classroomId: string;
+  classroomId?: string | null;
+  ownerId?: string | null;
   name: string;
 }
