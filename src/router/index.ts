@@ -36,7 +36,7 @@ const router = createRouter({
           path: 'calendar',
           name: 'calendar',
           meta: { title: 'Calendar' },
-          component: () => import('../views/home/calendar/ScheduleView.vue'),
+          component: () => import('../views/home/calendar/CalendarView.vue'),
         },
         {
           path: 'folders',

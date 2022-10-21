@@ -1,5 +1,50 @@
 {
-  "link-folders": ,
+  "link-folders": {
+    "success": true,
+    "statusCode": 200,
+    "data": [
+      {
+        "id": "ac38a13d-8dae-49bc-a574-65432d67e4be",
+        "name": "Pengembangan Aplikasi Web",
+        "classroomId": "358812",
+        "ownerId": null,
+        "sharedWith": null
+      },
+      {
+        "id": "e8564fd2-ea21-4868-aa0c-e7c60c60e53e",
+        "name": "Pengembangan Aplikasi Mobile",
+        "classroomId": "358812",
+        "ownerId": null,
+        "sharedWith": null
+      },
+      {
+        "id": "92c07280-e199-4645-8690-b01997a0b1de",
+        "name": "Interiaksi Manusia dan Komputer",
+        "classroomId": null,
+        "ownerId": "b33d78d5-020a-4870-bf1e-24c5a09d096f",
+        "sharedWith": null
+      },
+      {
+        "id": "2adf7256-ef47-4016-9c07-3baaf41be64d",
+        "name": "Manajemen Proyek Perangkat Lunak",
+        "classroomId": null,
+        "ownerId": "b33d78d5-020a-4870-bf1e-24c5a09d096f",
+        "sharedWith": null
+      },
+      {
+        "id": "3646bb75-7204-42d5-a219-9f4efe5b1d51",
+        "name": "Intelegensia Buatan",
+        "classroomId": null,
+        "ownerId": "b33d78d5-020a-4870-bf1e-24c5a09d096f",
+        "sharedWith": [
+          {
+            "userId": "9f2203a7-c7ac-4eeb-a9ed-615f3b20bcad",
+            "access": "read"
+          }
+        ]
+      }
+    ]
+  },
   "links": [
     {
       "id": "f7069e75-4f84-4f8b-b1bd-a9a75776a889",
@@ -17,17 +62,489 @@
     },
     {
       "id": "3701233b-a97f-4c3c-a963-71db0216b2a6",
-      "folderId": "e8564fd2-ea21-4868-aa0c-e7c60c60e53e",
+      "folderId": "ac38a13d-8dae-49bc-a574-65432d67e4be",
       "name": "Flutter website",
       "url": "https://flutter.dev",
       "description": null
+    }
+  ],
+  "event": [
+    {
+      "id": "f0e7d027-432b-4f9f-95bf-e17ef496a3bb",
+      "classroomId": "358812",
+      "name": "Pengembangan Aplikasi Web",
+      "description": null,
+      "date": "2020-11-24 08:40:00",
+      "endDate": "2020-11-24 10:20:00"
     },
     {
-      "name": "Hua",
-      "url": "asasasasasasasa.com",
-      "description": "asasas",
-      "folderId": "/folders/ac38a13d-8dae-49bc-a574-65432d67e4be",
-      "id": "BQ8YywR"
+      "id": "3d3247af-0613-44a1-9e6c-3220dff57fb6",
+      "classroomId": "358812",
+      "name": "Pengembangan Aplikasi Web",
+      "description": null,
+      "date": "2020-11-25 12:40:00",
+      "endDate": "2022-11-25 15:10:00"
+    },
+    {
+      "id": "b7f1be18-eff7-40a0-9527-7ece0cce29c7",
+      "classroomId": "358812",
+      "name": "Intelegensia Buatan",
+      "description": null,
+      "date": "2020-11-26 09:30:00",
+      "endDate": "2022-11-26 12:00:00"
+    },
+    {
+      "id": "a4a0ae30-a723-4d14-91b4-0ae17a9e7d69",
+      "classroomId": "358812",
+      "name": "Pengembangan Aplikasi Mobile",
+      "description": null,
+      "date": "2020-11-26 14:20:00",
+      "endDate": "2022-11-26 16:00:00"
+    },
+    {
+      "id": "e7bcf160-979d-4954-921e-c9e2b94efde9",
+      "classroomId": "358812",
+      "name": "Intelegensia Buatan",
+      "description": null,
+      "date": "2020-11-26 09:30:00",
+      "endDate": "2022-11-26 12:00:00"
+    },
+    {
+      "id": "8376ea69-66b3-4ae0-b204-c9b4f0787bd8",
+      "classroomId": "358812",
+      "name": "Praktikum Manajemen Basis Data",
+      "description": null,
+      "date": "2020-11-27 07:40:00",
+      "endDate": "2022-11-27 09:20:00"
+    },
+    {
+      "id": "45208a1a-19d2-4d17-a786-6312bc28ce97",
+      "classroomId": "358812",
+      "name": "Interiaksi Manusia dan Komputer",
+      "description": null,
+      "date": "2020-11-27 09:30:00",
+      "endDate": "2022-11-27 12:00:00"
+    }
+  ],
+  "ical": [
+    {
+      "dtstart": [
+        "20220905T084000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220905T102000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "6ph3iohn6lj3eb9h68q38b9k65i3cb9p6kp6cbb26kqj6phk61i66oph6c@google.com",
+      "created": "20220902T070208Z",
+      "description": "",
+      "last-modified": "20220902T070208Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Pengembangan Aplikasi Web",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20221010T130000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20221010T150000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "6orj0d9pc9j6ab9ocgqmcb9k6gq3ab9ocoomcb9i6dim4d1mc5hmacb170@google.com",
+      "created": "20221007T064912Z",
+      "last-modified": "20221007T064912Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "ICT",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220919T160000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220919T173000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "6oqjiopj64o6ab9kccs6cb9kccp64b9p6ksj4b9h6lj68dhp6lj6acr26o@google.com",
+      "created": "20220916T015434Z",
+      "description": "",
+      "last-modified": "20220916T015434Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "LC TOEFA",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220921T160000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220921T173000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "ccp3gcpk64p30b9o75i3gb9k74s3ibb26ss3eb9kccr3gdhjc5hjipj56g@google.com",
+      "created": "20220916T015504Z",
+      "description": "",
+      "last-modified": "20220916T015517Z",
+      "location": "",
+      "sequence": "1",
+      "status": "CONFIRMED",
+      "summary": "LC TOEFA",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220923T160000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220923T173000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "ccomcdj560pjcb9g61hmcb9k64r3cb9p70pj4bb2c8r30d1lcosm4e1h74@google.com",
+      "created": "20220916T015537Z",
+      "description": "",
+      "last-modified": "20220916T015537Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "LC TOEFA",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220906T124000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220906T151000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "65gm4c1j61ij2b9g64rm4b9kckq66bb26gr6abb46kqm4p1h68s30c366g@google.com",
+      "created": "20220902T070324Z",
+      "description": "",
+      "last-modified": "20220902T070324Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Manajemen Proyek Perangkat Lunak",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220907T093000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220907T120000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "c9i68p1i6ti36bb26gq68b9k6osmcbb164o38b9l6kpjaob1cpi62or374@google.com",
+      "created": "20220905T005115Z",
+      "description": "",
+      "last-modified": "20220905T005115Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Intelegensia Buatan",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220907T142000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220907T160000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "68s34e1lc9j6ab9l60smcb9k6go62b9p6ti64bb460rj6p9i6grmcp9p6k@google.com",
+      "created": "20220905T004812Z",
+      "description": "",
+      "last-modified": "20220905T004830Z",
+      "location": "",
+      "sequence": "1",
+      "status": "CONFIRMED",
+      "summary": "Pengembangan Aplikasi Mobile",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220922T074000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220922T092000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "o17l1sslu1n558dkmadc2vcc3r@google.com",
+      "created": "20220905T005345Z",
+      "description": "",
+      "last-modified": "20220916T015128Z",
+      "location": "",
+      "sequence": "1",
+      "status": "CONFIRMED",
+      "summary": "Praktikum Manajemen Basis Data",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220908T093000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220908T120000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "60q3ae9hcli3cbb5clgmcb9kcksjgbb175gjabb6c5h68dpnc5h6ad1j60@google.com",
+      "created": "20220905T005706Z",
+      "description": "",
+      "last-modified": "20220905T005706Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Interaksi Manusia dan Komputer",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220908T124000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220908T142000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "ccomcdj26li68bb1c5gj2b9k6ksmcbb16ko36b9l6lh3iob171j3gdhhco@google.com",
+      "created": "20220905T005603Z",
+      "description": "",
+      "last-modified": "20220905T005615Z",
+      "location": "",
+      "sequence": "1",
+      "status": "CONFIRMED",
+      "summary": "Praktikum Pengembangan Aplikasi Web",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220908T142000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220908T160000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "6pj32phk60p66b9k69h38b9k6hgj0b9pcorm2bb2cks62opn6ko66d9p6k@google.com",
+      "created": "20220905T005521Z",
+      "description": "",
+      "last-modified": "20220905T005521Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Praktikum Pengembangan Aplikasi Mobile",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220909T070000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220909T084000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "74rj4e9mclhj4b9g68q62b9k75hj0b9o6co3ab9j6koj4dhjchj3ie36cg@google.com",
+      "created": "20220905T005923Z",
+      "description": "",
+      "last-modified": "20220905T005923Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "Manajemen Basis Data",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220909T093000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220909T111000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "68pm4p9lcop6ab9n69i68b9k60o3ab9pcpgj8b9l6kq64p9j6lgj6db2ck@google.com",
+      "created": "20220905T005832Z",
+      "description": "",
+      "last-modified": "20220905T005838Z",
+      "location": "",
+      "sequence": "1",
+      "status": "CONFIRMED",
+      "summary": "Praktikum Jaringan Komputer",
+      "transp": "OPAQUE"
+    },
+    {
+      "dtstart": [
+        "20220923T124000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "dtend": [
+        "20220923T142000",
+        {
+          "tzid": "Asia/Jakarta"
+        }
+      ],
+      "rrule": {
+        "freq": "WEEKLY",
+        "wkst": "MO"
+      },
+      "dtstamp": "20221017T063642Z",
+      "uid": "65h38p9h70sj2bb66os64b9k75gj4b9pccojib9j6go3icb5c8om2p1h70_R20220923T054000@google.com",
+      "created": "20220905T005746Z",
+      "description": "",
+      "last-modified": "20220923T063109Z",
+      "location": "",
+      "sequence": "0",
+      "status": "CONFIRMED",
+      "summary": "[ABSEN] Jaringan Komputer",
+      "transp": "OPAQUE"
     }
   ]
 }

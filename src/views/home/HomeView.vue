@@ -15,7 +15,7 @@ const { selectedTab, homeTabs } = storeToRefs(store);
     <v-list nav>
       <v-list-item
         rounded="pill"
-        active-color="primary"
+        active-color="on-secondary-container"
         v-for="(tab, i) in homeTabs"
         :active="selectedTab === i"
         :key="tab.title"
@@ -23,7 +23,7 @@ const { selectedTab, homeTabs } = storeToRefs(store);
         @click="onTabChange(tab, i)"
       >
         <template v-slot:prepend>
-          <v-icon class="pl-6">{{
+          <v-icon class="pl-6" color="on-secondary-container">{{
             selectedTab === i ? tab.activeIcon : tab.icon
           }}</v-icon>
         </template>

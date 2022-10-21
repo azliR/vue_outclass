@@ -3,6 +3,7 @@ import AppError from '@/components/AppError.vue';
 import { useFoldersStore } from '@/stores/home/links/folders';
 import type FolderTab from '@/stores/home/links/folders-wrapper';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -14,11 +15,13 @@ const props = defineProps({
 const { t } = useI18n();
 const store = useFoldersStore(props.tab.path)();
 
-const { getCategories, onFolderPressed: onCategoryClick } = store;
+const { getFolders, onFolderPressed: onCategoryClick } = store;
 const { loading, error, deleteDialog, linkFolders } = storeToRefs(store);
 console.log(props);
 
-getCategories(props.tab.path);
+onMounted(() => {
+  getFolders(props.tab.path);
+});
 </script>
 
 <template>
@@ -31,7 +34,7 @@ getCategories(props.tab.path);
     v-else-if="error"
     class="mt-4"
     :error="error"
-    @refresh="() => getCategories(tab.path)"
+    @refresh="() => getFolders(tab.path)"
   ></app-error>
   <v-container v-else>
     <v-alert
@@ -86,17 +89,18 @@ getCategories(props.tab.path);
                     AWAS! Kalo kamu hapus folder ini, semua link yang ada di
                     folder ini bakal ikutan kehapus juga! Beneran hapus?"
                   >
-                    <v-card-actions class="mx-2"
-                      ><v-spacer></v-spacer>
-                      <v-btn color="primary" @click="deleteDialog = false"
-                        >Batal</v-btn
-                      >
+                    <v-card-actions class="mx-2">
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" @click="deleteDialog = false">
+                        Batal
+                      </v-btn>
                       <v-btn
                         variant="flat"
                         color="error"
                         @click="deleteDialog = false"
-                        >Iya hapus</v-btn
                       >
+                        Hapus
+                      </v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>

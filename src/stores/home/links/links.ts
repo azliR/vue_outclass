@@ -1,5 +1,6 @@
 import type { Link } from '@/models/link';
-import { BASE_API_URL } from '@/plugins/constants';
+import type { LinkFolder } from '@/models/link-folder';
+import { API_URL, BASE_API_URL } from '@/plugins/constants';
 import { defineStore } from 'pinia';
 
 export const useLinksStore = defineStore('links', {
@@ -9,6 +10,7 @@ export const useLinksStore = defineStore('links', {
       loading: false,
       error: <string | null>null,
       errorSave: <string | null>null,
+      folder: <LinkFolder | undefined>undefined,
       links: <Link[]>[],
     };
   },
@@ -20,9 +22,16 @@ export const useLinksStore = defineStore('links', {
       const folderId = this.router.currentRoute.value.params.folderId;
 
       await this.axios
-        .get(`${BASE_API_URL}/links?folderId=${folderId}`)
+        .get(`${API_URL}/files?folderId=${folderId}`)
         .then(({ data }) => {
-          return (this.links = data);
+          this.loading = false;
+          if (data.success) {
+            this.error = null;
+            this.folder = data.data.folder;
+            this.links = data.data.files;
+          } else {
+            return Promise.reject(data.message);
+          }
         })
         .catch((error) => {
           this.error = error;

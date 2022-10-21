@@ -21,7 +21,7 @@ const {
 } = store;
 
 const { newLink } = storeToRefs(addLinkStore);
-const { dialog, loading, error, links } = storeToRefs(store);
+const { dialog, loading, error, folder, links } = storeToRefs(store);
 
 getLinks();
 
@@ -38,10 +38,7 @@ onUnmounted(() => {
 <template>
   <v-dialog persistent fullscreen v-model="dialog" class="ma-4">
     <template v-slot:activator="{ props }">
-      <v-app-bar
-        density="prominent"
-        :title="$router.currentRoute.value.params.folderId.toString()"
-      >
+      <v-app-bar density="prominent" :title="folder?.name ?? '...'">
         <template v-slot:prepend>
           <v-app-bar-nav-icon
             class="mt-2"
@@ -56,14 +53,14 @@ onUnmounted(() => {
           color="primary"
           indeterminate
         ></v-progress-linear>
-        <v-container>
-          <app-error
-            v-if="error"
-            :error="error"
-            @refresh="getLinks"
-          ></app-error>
-          <app-empty v-else-if="links.length === 0"></app-empty>
-          <v-expansion-panels v-else>
+        <app-error
+          v-else-if="error"
+          :error="error"
+          @refresh="getLinks"
+        ></app-error>
+        <app-empty v-else-if="links.length === 0"></app-empty>
+        <v-container v-else>
+          <v-expansion-panels>
             <v-expansion-panel v-for="link in links" :key="link.id">
               <v-expansion-panel-title>
                 {{ link.name }}
@@ -125,7 +122,7 @@ onUnmounted(() => {
           </v-expansion-panels>
         </v-container>
         <v-btn
-          v-if="!error"
+          v-if="!error && !loading"
           class="ma-4"
           rounded="lg"
           icon="mdi-plus"

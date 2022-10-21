@@ -12,7 +12,7 @@ loadFonts();
 const app = createApp(App);
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
+  locale: 'id',
   messages,
 });
 

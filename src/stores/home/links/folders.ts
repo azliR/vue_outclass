@@ -15,12 +15,33 @@ export const useFoldersStore = (id: string) =>
       };
     },
     actions: {
-      async getCategories(path: string) {
+      async getFolders(path: string) {
         this.error = null;
         this.loading = true;
 
         await this.axios
           .get<ResponseData>(API_URL + '/folders' + path)
+          .then(({ data }) => {
+            this.loading = false;
+            if (data.success) {
+              this.error = null;
+              return (this.linkFolders = data.data as LinkFolder[]);
+            } else {
+              return Promise.reject(data.message);
+            }
+          })
+          .catch((error: AxiosError) => {
+            this.error = JSON.stringify(error.toJSON());
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      async deleteFolder(id: string) {
+        this.error = null;
+        this.loading = true;
+
+        await this.axios
+          .get<ResponseData>(API_URL + '/folders' + id)
           .then<LinkFolder[]>(({ data }) => {
             this.loading = false;
             if (data.success) {
