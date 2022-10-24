@@ -43,7 +43,7 @@
       "className": "Nama Kelas",
       "classCode": "Kode Kelas",
       "members": "Anggota kelas",
-      "member": "anggota"
+      "member": "{n} anggota"
     },
     "members": {
       "title": "Anggota kelas",

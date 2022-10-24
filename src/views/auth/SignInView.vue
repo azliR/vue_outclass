@@ -33,7 +33,7 @@ const { valid, loading, name, nim } = storeToRefs(store);
           prepend-icon="mdi-card-account-details"
           required
         ></v-text-field>
-
+        <div class="my-2"></div>
         <div class="d-flex justify-space-around mt-6">
           <v-btn
             :disabled="!valid"

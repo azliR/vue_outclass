@@ -42,15 +42,16 @@ export const useScanStore = defineStore('join', {
         }
         console.error(this.camera);
         console.error(error);
+      } finally {
+        this.initialised = true;
       }
       this.error = false;
-      this.initialised = true;
     },
     async onDecode(content: string) {
       this.camera = 'off';
 
       if (content.length === 6 && !isNaN(Number(content))) {
-        this.router.push({ name: 'home' });
+        this.router.push({ name: 'overview' });
       } else {
         setTimeout(() => {
           this.camera = 'auto';

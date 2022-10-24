@@ -31,8 +31,11 @@ getEvents();
           class="demo-app-calendar"
           :options="{
             // height: '100%',
-            // headerToolbar: false,
-
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            },
             plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
             dayHeaderFormat: {
               weekday: 'short',
@@ -40,7 +43,7 @@ getEvents();
               day: 'numeric',
               omitCommas: true,
             },
-            initialView: 'dayGridWeek',
+            initialView: 'timeGridWeek',
             editable: true,
             selectable: true,
             selectMirror: true,

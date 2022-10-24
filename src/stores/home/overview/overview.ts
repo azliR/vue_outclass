@@ -11,6 +11,13 @@ export const useOverviewStore = defineStore('overview', {
           classroomId: '358812',
           name: 'Presentasi OutClass',
           deadline: new Date('2022-10-24'),
+          description: 'Ini buat penilaian UTS',
+        },
+        {
+          id: '39250009-887b-4e01-a0c6-ad2f7532dc0c',
+          classroomId: '358812',
+          name: 'Membuat mockup OutClass IMK',
+          deadline: new Date('2022-10-27'),
           description: null,
         },
         {
@@ -18,13 +25,6 @@ export const useOverviewStore = defineStore('overview', {
           classroomId: '358812',
           name: 'Module 1-7 Cisco',
           deadline: new Date('2022-10-29'),
-          description: null,
-        },
-        {
-          id: '39250009-887b-4e01-a0c6-ad2f7532dc0c',
-          classroomId: '358812',
-          name: 'Membuat mockup OutClass IMK',
-          deadline: new Date('2022-10-27'),
           description: null,
         },
       ],

@@ -27,7 +27,7 @@ const { showQrDialog } = storeToRefs(store);
     </template>
   </v-app-bar>
   <v-main>
-    <v-container class="d-flex flex-column flex-xl-row">
+    <v-container class="d-flex flex-column flex-lg-row">
       <v-sheet style="flex: 1">
         <div class="px-6 pt-4">
           <p class="text-h6">{{ t('account.profile.title') }}</p>
@@ -49,7 +49,7 @@ const { showQrDialog } = storeToRefs(store);
           </v-list-item>
         </v-list>
       </v-sheet>
-      <div class="ma-4"></div>
+      <div class="ma-2"></div>
       <v-sheet style="flex: 1">
         <div class="px-6 pt-4">
           <p class="text-h6">{{ t('account.class.title') }}</p>
