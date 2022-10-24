@@ -3,7 +3,6 @@ import AppError from '@/components/AppError.vue';
 import { useFoldersStore } from '@/stores/home/links/folders';
 import type FolderTab from '@/stores/home/links/folders-wrapper';
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -19,17 +18,13 @@ const { getFolders, onFolderPressed: onCategoryClick } = store;
 const { loading, error, deleteDialog, linkFolders } = storeToRefs(store);
 console.log(props);
 
-onMounted(() => {
+if (!linkFolders.value) {
   getFolders(props.tab.path);
-});
+}
 </script>
 
 <template>
-  <v-progress-linear
-    v-if="loading"
-    color="primary"
-    indeterminate
-  ></v-progress-linear>
+  <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
   <app-error
     v-else-if="error"
     class="mt-4"
@@ -54,8 +49,8 @@ onMounted(() => {
           color="primary"
         >
           <template v-slot:prepend>
-            <v-avatar color="secondary-container" rounded="lg">
-              <v-icon color="secondary"> mdi-folder </v-icon>
+            <v-avatar>
+              <v-icon color="on-primary-container"> mdi-folder </v-icon>
             </v-avatar>
           </template>
           <template v-slot:append>

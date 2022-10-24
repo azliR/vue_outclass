@@ -23,7 +23,7 @@ export const useSignInStore = defineStore('signin', {
       setTimeout(() => {
         this.loading = false;
         this.router.push({ name: 'join' });
-      }, 3000);
+      }, 1000);
     },
   },
 });

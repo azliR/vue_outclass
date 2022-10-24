@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export function isValidUrl(string: string) {
   let url;
 
@@ -8,4 +10,8 @@ export function isValidUrl(string: string) {
   }
 
   return url.protocol === 'http:' || url.protocol === 'https:';
+}
+
+export function formatDate(date: Date, format: string): string {
+  return dayjs(date).format(format);
 }

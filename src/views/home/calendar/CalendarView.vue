@@ -18,11 +18,7 @@ getEvents();
 <template>
   <v-app-bar title="Calendar"> </v-app-bar>
   <v-main>
-    <v-progress-linear
-      v-if="loading"
-      color="primary"
-      indeterminate
-    ></v-progress-linear>
+    <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
     <app-error
       v-else-if="error"
       class="mt-4"

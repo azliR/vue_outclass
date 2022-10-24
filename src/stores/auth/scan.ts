@@ -3,16 +3,18 @@ import { defineStore } from 'pinia';
 export const useScanStore = defineStore('join', {
   state() {
     return {
-      camera: 'auto',
+      camera: 'rear',
       error: false,
       torchSupported: false,
       noRearCamera: false,
       noFrontCamera: false,
       torchActive: false,
+      initialised: false,
     };
   },
   actions: {
     async onInit(promise: Promise<any>) {
+      this.initialised = false;
       try {
         const { capabilities } = await promise;
         this.torchSupported = capabilities.torch;
@@ -22,6 +24,8 @@ export const useScanStore = defineStore('join', {
         const cameraMissingError = error.name === 'OverconstrainedError';
 
         if (cameraMissingError) {
+          console.log('ass');
+
           if (!this.noRearCamera && triedRearCamera) {
             this.switchCamera();
             this.noRearCamera = true;
@@ -40,6 +44,7 @@ export const useScanStore = defineStore('join', {
         console.error(error);
       }
       this.error = false;
+      this.initialised = true;
     },
     async onDecode(content: string) {
       this.camera = 'off';

@@ -22,5 +22,51 @@
         "alert": "Berkas-berkas ini tidak dibagikan kepada siapapun, cuman milik kamu seorang"
       }
     }
-  }
+  },
+  "account": {
+    "title": "Akun",
+    "dialog": {
+      "scanCode": {
+        "title": "Scan kodenya",
+        "subtitle": "Suruh temen kamu buat scan pake aplikasi OutClass buat join bareng ke kelas kamu",
+        "ok": "Sudah"
+      }
+    },
+    "profile": {
+      "title": "Profil kamu",
+      "subtitle": "Semua orang di kelas kamu bakal bisa liat info ini",
+      "name": "Nama"
+    },
+    "class": {
+      "title": "Kelas",
+      "subtitle": "Data kelas yang kamu masukin sekarang",
+      "className": "Nama Kelas",
+      "classCode": "Kode Kelas",
+      "members": "Anggota kelas",
+      "member": "anggota"
+    },
+    "members": {
+      "title": "Anggota kelas",
+      "menu": {
+        "kick": "Keluarkan"
+      },
+      "dialogs": {
+        "title": "Keluarkan anggota ini?",
+        "subtitle": "Anggota kelas kamu yang dikeluarkan gak bakal bisa akses berkas, link, sama jadwal kelas kamu lagi. Yakin ingin ngeluarin dia?"
+      }
+    }
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "language": "Bahasa",
+    "theme": "Tema",
+    "display": "Tampilan",
+    "selectLanguage": "Pilih bahasa",
+    "selectTheme": "Pilih tema"
+  },
+  "id": "Bahasa Indonesian",
+  "en": "Bahasa Inggris",
+  "lightTheme": "Tema Terang",
+  "darkTheme": "Tema Gelap",
+  "cancel": "Batal"
 }

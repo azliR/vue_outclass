@@ -22,5 +22,51 @@
         "alert": "These files are not distributed to anyone, only you are"
       }
     }
-  }
+  },
+  "account": {
+    "title": "Account",
+    "dialog": {
+      "scanCode": {
+        "title": "Scan the code",
+        "subtitle": "Tell your friends to scan using an outclass application to join together to your class",
+        "ok": "Done"
+      }
+    },
+    "profile": {
+      "title": "Your profile",
+      "subtitle": "Everyone in your class will be able to see this info",
+      "name": "Name"
+    },
+    "class": {
+      "title": "Class",
+      "subtitle": "Class data that you enter now",
+      "className": "Class name",
+      "classCode": "Class code",
+      "members": "Class members",
+      "member": "{n} member | {n} members"
+    },
+    "members": {
+      "title": "Class members",
+      "menu": {
+        "kick": "Kick"
+      },
+      "dialogs": {
+        "title": "Kick this member?",
+        "subtitle": "Your class members who are kicked will not be able to access files, links, and your class schedule again. Are you sure you want to kick her/him?"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "display": "Display",
+    "selectLanguage": "Select language",
+    "selectTheme": "Select theme"
+  },
+  "id": "Indonesian",
+  "en": "English",
+  "lightTheme": "Light Theme",
+  "darkTheme": "Dark Theme",
+  "cancel": "Cancel"
 }

@@ -102,7 +102,7 @@ const lightTheme: ThemeDefinition = {
 };
 
 const darkTheme: ThemeDefinition = {
-  dark: false,
+  dark: true,
   colors: {
     primary: darkColor.primary,
     'primary-container': darkColor.primaryContainer,
@@ -146,22 +146,52 @@ export default createVuetify({
     },
   },
   defaults: {
-    VAlert: { rounded: 'lg', color: 'secondary' },
-    VAppBar: { flat: true },
-    VBtn: { rounded: 'xl' },
-    VCard: { rounded: 'xl', elevation: 0 },
-    VExpansionPanel: { rounded: 'xl', elevation: 0 },
-    VList: { rounded: 'xl' },
+    VAlert: {
+      rounded: 'lg',
+      color: 'secondary',
+    },
+    VAppBar: {
+      flat: true,
+    },
+    VAvatar: {
+      color: 'primary-container',
+      rounded: 'lg',
+    },
+    VBtn: {
+      rounded: 'xl',
+    },
+    VCard: {
+      rounded: 'xl',
+      color: 'surface',
+      elevation: 1,
+    },
+    VExpansionPanel: {
+      rounded: 'xl',
+      bgColor: 'surface-variant',
+      elevation: 0,
+    },
+    VList: {
+      bgColor: 'transparent',
+    },
+    VProgressLinear: {
+      color: 'primary',
+      bgColor: 'surface-variant',
+    },
     VTextarea: {
-      'bg-color': 'surface-variant',
-      color: 'on-surface-variant',
+      bgColor: 'surface-variant',
+      color: 'primary',
     },
     VTextField: {
-      'bg-color': 'surface-variant',
-      color: 'on-surface-variant',
+      bgColor: 'surface-variant',
+      color: 'primary',
     },
-    VToolbar: { color: 'surface' },
-    VSheet: { rounded: 'xl' },
+    VToolbar: {
+      color: 'surface',
+    },
+    VSheet: {
+      rounded: 'xl',
+      color: 'surface-variant',
+    },
   },
 });
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

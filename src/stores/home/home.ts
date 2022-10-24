@@ -19,16 +19,12 @@ export const useHomeStore = defineStore('home', {
       const currentPath = this.router.currentRoute.value.path;
       const rootPath = `/${currentPath.split('/')[1]}`;
 
-      this.homeTabs.map((tab) => {
+      this.homeTabs = this.homeTabs.map((tab) => {
         if (tab.path === rootPath) {
           if (newTab.path === rootPath) {
             newTab.currentPath = tab.path;
           } else {
-            if (tab.currentPath === currentPath) {
-              tab.currentPath = tab.path;
-            } else {
-              tab.currentPath = currentPath;
-            }
+            tab.currentPath = currentPath;
           }
         }
         return tab;
@@ -60,8 +56,8 @@ const homeTabs = <HomeTab[]>[
     title: 'home.homeTabs.calendar',
     path: '/calendar',
     currentPath: '/calendar',
-    icon: 'mdi-calendar-outline',
-    activeIcon: 'mdi-calendar',
+    icon: 'mdi-calendar-text-outline',
+    activeIcon: 'mdi-calendar-text',
   },
   {
     title: 'home.homeTabs.files',

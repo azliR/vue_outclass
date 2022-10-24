@@ -3,6 +3,7 @@ import type { ResponseData } from '@/models/response-data';
 import { API_URL } from '@/plugins/constants';
 import type { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
+import { useLinksStore } from './links';
 
 export const useFoldersStore = (id: string) =>
   defineStore('folders' + id, {
@@ -11,7 +12,7 @@ export const useFoldersStore = (id: string) =>
         loading: false,
         error: <string | null>null,
         deleteDialog: false,
-        linkFolders: <LinkFolder[]>[],
+        linkFolders: <LinkFolder[] | undefined>undefined,
       };
     },
     actions: {
@@ -58,6 +59,9 @@ export const useFoldersStore = (id: string) =>
           });
       },
       onFolderPressed(folder: LinkFolder) {
+        const linksStore = useLinksStore();
+        linksStore.$reset();
+
         this.router.push({ name: 'links', params: { folderId: folder.id } });
       },
     },

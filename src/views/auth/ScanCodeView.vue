@@ -6,6 +6,7 @@ import { QrcodeStream } from 'vue-qrcode-reader';
 const store = useScanStore();
 const { onInit, onDecode, turnTorch, switchCamera } = store;
 const {
+  initialised,
   error,
   torchSupported,
   noRearCamera,
@@ -17,7 +18,8 @@ const {
 <template>
   <v-main style="position: relative; background-color: black">
     <qrcode-stream
-      style="position: absolute"
+      class="camera"
+      :style="camera === 'front' ? 'transform: scaleX(-1)' : ''"
       :camera="camera"
       :torch="torchActive"
       @decode="onDecode"
@@ -28,7 +30,7 @@ const {
     <div class="control-bar d-flex justify-center">
       <v-btn
         class="mx-1"
-        v-if="torchSupported"
+        v-if="initialised && torchSupported"
         :prepend-icon="torchActive ? 'mdi-flash-off' : 'mdi-flash'"
         @click="turnTorch"
       >
@@ -36,7 +38,7 @@ const {
       </v-btn>
       <v-btn
         class="mx-1"
-        v-if="!noRearCamera && !noFrontCamera"
+        v-if="initialised && !noRearCamera && !noFrontCamera"
         prepend-icon="mdi-camera-flip"
         @click="switchCamera"
       >
@@ -50,6 +52,9 @@ const {
 </template>
 
 <style scoped>
+.camera {
+  position: absolute;
+}
 .control-bar {
   width: 100%;
   position: absolute;

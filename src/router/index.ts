@@ -1,3 +1,4 @@
+import { useAppStore } from '@/stores/app';
 import EmptyRouterView from '@/views/EmptyRouterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -59,9 +60,27 @@ const router = createRouter({
         },
         {
           path: 'account',
-          name: 'account',
-          meta: { title: 'Account' },
-          component: () => import('../views/home/account/AccountView.vue'),
+          component: EmptyRouterView,
+          children: [
+            {
+              path: '',
+              name: 'account',
+              meta: { title: 'Account' },
+              component: () => import('../views/home/account/AccountView.vue'),
+            },
+            {
+              path: 'settings',
+              name: 'settings',
+              meta: { title: 'Settings' },
+              component: () => import('../views/home/account/SettingsView.vue'),
+            },
+            {
+              path: 'members',
+              name: 'members',
+              meta: { title: 'Members' },
+              component: () => import('../views/home/account/MembersView.vue'),
+            },
+          ],
         },
       ],
     },
@@ -80,6 +99,18 @@ router.beforeEach((to) => {
   } else {
     document.title = DEFAULT_TITLE;
   }
+
+  const appStore = useAppStore();
+  console.log();
+
+  if (typeof to?.matched[0]?.components?.default === 'function') {
+    appStore.startLoading();
+  }
+});
+
+router.beforeResolve(() => {
+  const appStore = useAppStore();
+  appStore.stopLoading();
 });
 
 export default router;

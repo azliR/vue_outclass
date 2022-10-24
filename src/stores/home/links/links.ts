@@ -11,7 +11,7 @@ export const useLinksStore = defineStore('links', {
       error: <string | null>null,
       errorSave: <string | null>null,
       folder: <LinkFolder | undefined>undefined,
-      links: <Link[]>[],
+      links: <Link[] | undefined>undefined,
     };
   },
   actions: {

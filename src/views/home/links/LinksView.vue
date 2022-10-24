@@ -7,7 +7,7 @@ import type { Link } from '@/models/link';
 import { useAddLinkStore } from '@/stores/home/links/add-link';
 import { useLinksStore } from '@/stores/home/links/links';
 import { storeToRefs } from 'pinia';
-import { onMounted, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 
 const store = useLinksStore();
 const addLinkStore = useAddLinkStore();
@@ -23,15 +23,17 @@ const {
 const { newLink } = storeToRefs(addLinkStore);
 const { dialog, loading, error, folder, links } = storeToRefs(store);
 
-getLinks();
+if (!links.value) {
+  getLinks();
+}
 
-onMounted(() => {
-  window.addEventListener('keyup', onEscapePressed);
-});
+// onMounted(() => {
+//   window.addEventListener('keyup', onEscapePressed);
+// });
 
 onUnmounted(() => {
-  window.removeEventListener('keyup', onEscapePressed);
-  store.$reset();
+  // window.removeEventListener('keyup', onEscapePressed);
+  // store.$reset();
 });
 </script>
 
@@ -48,17 +50,13 @@ onUnmounted(() => {
         </template>
       </v-app-bar>
       <v-main scrollable>
-        <v-progress-linear
-          v-if="loading"
-          color="primary"
-          indeterminate
-        ></v-progress-linear>
+        <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
         <app-error
           v-else-if="error"
           :error="error"
           @refresh="getLinks"
         ></app-error>
-        <app-empty v-else-if="links.length === 0"></app-empty>
+        <app-empty v-else-if="links?.length === 0"></app-empty>
         <v-container v-else>
           <v-expansion-panels>
             <v-expansion-panel v-for="link in links" :key="link.id">
@@ -140,3 +138,9 @@ onUnmounted(() => {
     ></app-add-link-dialog>
   </v-dialog>
 </template>
+
+<style scoped>
+.v-dialog {
+  max-width: 100%;
+}
+</style>

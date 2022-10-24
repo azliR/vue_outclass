@@ -20,8 +20,8 @@ export const useJoinStore = defineStore('join', {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
-        this.router.push({ name: 'join' });
-      }, 3000);
+        this.router.push({ name: 'overview' });
+      }, 1000);
     },
     goToScanCode() {
       this.router.push('scan');

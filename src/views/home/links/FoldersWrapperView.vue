@@ -34,8 +34,4 @@ const { selectedTab } = storeToRefs(store);
   </v-main>
 </template>
 
-<style scoped>
-.v-dialog {
-  max-width: 400px;
-}
-</style>
+<style scoped></style>

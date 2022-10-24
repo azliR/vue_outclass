@@ -7,12 +7,13 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
 import router from './router';
+import { useSettingsStore } from './stores/home/account/settings';
 
 loadFonts();
 const app = createApp(App);
 const i18n = createI18n({
   legacy: false,
-  locale: 'id',
+  locale: 'en',
   messages,
 });
 
@@ -26,4 +27,8 @@ app.use(i18n);
 app.use(pinia);
 app.use(router);
 app.use(vuetify);
+
+const settingsStore = useSettingsStore();
+settingsStore.setup(i18n.global, vuetify.theme);
+
 app.mount('#app');
