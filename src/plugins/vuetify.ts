@@ -148,7 +148,7 @@ export default createVuetify({
   defaults: {
     VAlert: {
       rounded: 'lg',
-      color: 'secondary',
+      color: 'primary',
     },
     VAppBar: {
       flat: true,

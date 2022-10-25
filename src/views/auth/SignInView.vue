@@ -9,11 +9,11 @@ const { valid, loading, name, nim } = storeToRefs(store);
 
 <template>
   <v-main class="px-4">
-    <v-card class="mx-auto mt-6 pa-8" max-width="420">
-      <p class="text-h5 text-center mb-2">Kamu siapa ya?</p>
+    <v-card class="mx-auto mt-6 pa-8" max-width="480">
+      <p class="text-h5 text-center mb-2">Masuk dulu yuk</p>
       <p class="text-body-2 text-center mb-6">
-        Sebelum dibolehin masuk kelas, lengkapin dulu data diri kamu biar
-        temen-temen kamu pada tau kalo kamu itu si ganteng/cantik itu loh
+        Sebelum masuk kelas, masuk dulu pake akun kamu biar datanya bisa dibuka
+        di semua perangkat kamu
       </p>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field

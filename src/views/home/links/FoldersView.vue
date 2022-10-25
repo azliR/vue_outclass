@@ -63,7 +63,7 @@ if (!linkFolders.value) {
                   v-bind="props"
                 ></v-btn>
               </template>
-              <v-list rounded="null">
+              <v-list rounded="null" bg-color="surface">
                 <v-dialog v-model="deleteDialog">
                   <template v-slot:activator="{ props }">
                     <v-list-item title="Ubah" density="compact">
@@ -83,6 +83,7 @@ if (!linkFolders.value) {
                     text="
                     AWAS! Kalo kamu hapus folder ini, semua link yang ada di
                     folder ini bakal ikutan kehapus juga! Beneran hapus?"
+                    elevation="3"
                   >
                     <v-card-actions class="mx-2">
                       <v-spacer></v-spacer>

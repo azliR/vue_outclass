@@ -14,7 +14,7 @@
         "alert": "These files are shared with all your class members"
       },
       "shared": {
-        "title": "Shared",
+        "title": "Group",
         "alert": "These files are shared with your particular friends"
       },
       "personal": {

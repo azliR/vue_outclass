@@ -101,11 +101,10 @@ router.beforeEach((to) => {
   }
 
   const appStore = useAppStore();
-  console.log();
+  appStore.startLoading();
 
-  if (typeof to?.matched[0]?.components?.default === 'function') {
-    appStore.startLoading();
-  }
+  // if (typeof to?.matched[0]?.components?.default === 'function') {
+  // }
 });
 
 router.beforeResolve(() => {
