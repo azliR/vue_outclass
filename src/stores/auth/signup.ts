@@ -1,16 +1,24 @@
 import { defineStore } from 'pinia';
 
-export const useSignInStore = defineStore('signin', {
+export const useSignUpStore = defineStore('signup', {
   state() {
     return {
       valid: false,
       showPassword: false,
       loading: false,
+      name: '',
+      nim: '',
       email: '',
       password: '',
     };
   },
   getters: {
+    nameRules: () => [
+      (v: string) => !!v || 'Ketik nama kamu disini yah',
+      (v: string) =>
+        (v && v.length <= 64) || 'Namanya jangan panjang-panjang, singkat aja',
+    ],
+    nimRules: () => [(v: string) => !!v || 'NIM-nya harus diisi yah'],
     emailRules: () => [
       (v: string) => !!v || 'Emailnya harus diisi yah',
       (v: string) => /.+@.+\..+/.test(v) || 'Emailnya enggak valid',
@@ -24,12 +32,6 @@ export const useSignInStore = defineStore('signin', {
         this.loading = false;
         this.router.push({ name: 'join' });
       }, 1000);
-    },
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    },
-    goToSignUpPage() {
-      this.router.push({ name: 'up' });
     },
   },
 });

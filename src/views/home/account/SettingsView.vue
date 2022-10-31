@@ -12,7 +12,7 @@ const { themeDialog, languageDialog } = storeToRefs(store);
 const currentTheme = useTheme();
 
 const i18n = useI18n();
-const locales = i18n.availableLocales;
+const { availableLocales } = i18n;
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const locales = i18n.availableLocales;
               <v-divider class="mt-2"></v-divider>
               <v-list rounded="0">
                 <v-list-item
-                  v-for="locale in locales"
+                  v-for="locale in availableLocales"
                   class="px-6"
                   :key="locale"
                   :title="t(locale)"

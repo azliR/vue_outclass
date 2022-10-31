@@ -13,5 +13,11 @@ export const useAccountStore = defineStore('account', {
     goToSettings() {
       this.router.push({ name: 'settings' });
     },
+    exitClass() {
+      this.router.push({ name: 'join' });
+    },
+    signOutAccount() {
+      this.router.push({ name: 'in' });
+    },
   },
 });

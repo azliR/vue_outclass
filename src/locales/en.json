@@ -1,4 +1,15 @@
 {
+  "signin": {
+    "title": "Let's sign in first",
+    "subtitle": "Before entering class, sign in first using your account so that the data can be opened on all your devices",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submitButton": "Sign in now",
+    "forgotPasswordButton": "I forgot the password",
+    "createAccountButton": "I don't have an account yet"
+  },
   "home": {
     "homeTabs": {
       "home": "Home",
@@ -35,7 +46,10 @@
     "profile": {
       "title": "Your profile",
       "subtitle": "Everyone in your class will be able to see this info",
-      "name": "Name"
+      "nameLabel": "Name",
+      "nimLabel": "Student ID",
+      "emailLabel": "Email",
+      "passwordLabel": "Password"
     },
     "class": {
       "title": "Class",
@@ -64,7 +78,7 @@
     "selectLanguage": "Select language",
     "selectTheme": "Select theme"
   },
-  "id": "Indonesian",
+  "id": "Bahasa Indonesia",
   "en": "English",
   "lightTheme": "Light Theme",
   "darkTheme": "Dark Theme",

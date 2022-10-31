@@ -13,6 +13,22 @@ const { selectedTab, homeTabs } = storeToRefs(store);
 
 <template>
   <v-navigation-drawer expand-on-hover>
+    <v-list>
+      <v-list-item>
+        <template v-slot:prepend>
+          <img
+            class="mx-3 my-1"
+            color="on-secondary-container"
+            width="28"
+            src="@/assets/logo.svg"
+          />
+        </template>
+        <template v-slot:title>
+          <span> OutClass </span>
+        </template>
+      </v-list-item>
+    </v-list>
+    <v-divider></v-divider>
     <v-list nav>
       <v-list-item
         rounded="pill"

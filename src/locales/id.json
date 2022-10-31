@@ -1,4 +1,15 @@
 {
+  "signin": {
+    "title": "Masuk dulu yuk",
+    "subtitle": "Sebelum masuk kelas, masuk dulu pake akun kamu biar datanya bisa dibuka di semua perangkat kamu",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Masukin email kamu",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Masukin password kamu",
+    "submitButton": "Masuk sekarang",
+    "forgotPasswordButton": "Aku lupa password",
+    "createAccountButton": "Aku belum punya akun"
+  },
   "home": {
     "homeTabs": {
       "home": "Beranda",
@@ -35,7 +46,10 @@
     "profile": {
       "title": "Profil kamu",
       "subtitle": "Semua orang di kelas kamu bakal bisa liat info ini",
-      "name": "Nama"
+      "nameLabel": "Nama",
+      "nimLabel": "NIM (Nomor Induk Mahasiswa)",
+      "emailLabel": "Email",
+      "passwordLabel": "Password"
     },
     "class": {
       "title": "Kelas",
@@ -64,8 +78,8 @@
     "selectLanguage": "Pilih bahasa",
     "selectTheme": "Pilih tema"
   },
-  "id": "Bahasa Indonesian",
-  "en": "Bahasa Inggris",
+  "id": "Bahasa Indonesia",
+  "en": "English",
   "lightTheme": "Tema Terang",
   "darkTheme": "Tema Gelap",
   "cancel": "Batal"
