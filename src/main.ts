@@ -1,9 +1,10 @@
 import messages from '@intlify/unplugin-vue-i18n/messages';
-import axios from 'axios';
 import { createPinia } from 'pinia';
 import { createApp, markRaw } from 'vue';
 import { createI18n } from 'vue-i18n';
 import App from './App.vue';
+import { privateClient } from './core/private_client';
+import { publicClient } from './core/public_client';
 import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
 import router from './router';
@@ -20,7 +21,8 @@ const i18n = createI18n({
 const pinia = createPinia();
 pinia.use(({ store }) => {
   store.router = markRaw(router);
-  store.axios = markRaw(axios);
+  store.publicClient = markRaw(publicClient);
+  store.privateClient = markRaw(privateClient);
 });
 
 app.use(i18n);

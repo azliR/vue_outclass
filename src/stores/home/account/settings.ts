@@ -1,9 +1,7 @@
+import { LANGUAGE_PREF_KEY, THEME_PREF_KEY } from '@/plugins/constants';
 import dayjs from 'dayjs';
 import { defineStore } from 'pinia';
 import type { ThemeInstance } from 'vuetify/lib/framework.mjs';
-
-const languageKey = 'language';
-const themeKey = 'theme';
 
 export const useSettingsStore = defineStore('settings', {
   state() {
@@ -18,8 +16,8 @@ export const useSettingsStore = defineStore('settings', {
   },
   actions: {
     setup(i18n: any, currentTheme: ThemeInstance) {
-      const language = localStorage.getItem(languageKey);
-      const themeName = localStorage.getItem(themeKey);
+      const language = localStorage.getItem(LANGUAGE_PREF_KEY);
+      const themeName = localStorage.getItem(THEME_PREF_KEY);
 
       if (language != null) {
         this.changeLanguage(i18n, language);
@@ -32,11 +30,11 @@ export const useSettingsStore = defineStore('settings', {
     changeLanguage(i18n: any, language: string) {
       i18n.locale.value = language;
       dayjs().locale(i18n.locale);
-      localStorage.setItem(languageKey, language);
+      localStorage.setItem(LANGUAGE_PREF_KEY, language);
     },
     changeTheme(currentTheme: ThemeInstance, themeName: string) {
       currentTheme.global.name.value = themeName;
-      localStorage.setItem(themeKey, themeName);
+      localStorage.setItem(THEME_PREF_KEY, themeName);
     },
     onBackPressed() {
       this.router.push({ name: 'account' });

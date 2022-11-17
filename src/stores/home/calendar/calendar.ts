@@ -23,7 +23,7 @@ export const useCalendarStore = defineStore('calendar', {
       this.error = null;
       this.loading = true;
 
-      await this.axios
+      await this.privateClient
         .get<ResponseData>(API_URL + '/events')
         .then(({ data }) => {
           this.loading = false;

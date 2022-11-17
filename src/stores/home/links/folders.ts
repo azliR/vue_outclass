@@ -20,7 +20,7 @@ export const useFoldersStore = (id: string) =>
         this.error = null;
         this.loading = true;
 
-        await this.axios
+        await this.privateClient
           .get<ResponseData>(API_URL + '/folders' + path)
           .then(({ data }) => {
             this.loading = false;
@@ -41,7 +41,7 @@ export const useFoldersStore = (id: string) =>
         this.error = null;
         this.loading = true;
 
-        await this.axios
+        await this.privateClient
           .get<ResponseData>(API_URL + '/folders' + id)
           .then<LinkFolder[]>(({ data }) => {
             this.loading = false;

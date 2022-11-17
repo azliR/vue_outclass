@@ -21,7 +21,7 @@ export const useLinksStore = defineStore('links', {
 
       const folderId = this.router.currentRoute.value.params.folderId;
 
-      await this.axios
+      await this.privateClient
         .get(`${API_URL}/files?folderId=${folderId}`)
         .then(({ data }) => {
           this.loading = false;
@@ -46,7 +46,7 @@ export const useLinksStore = defineStore('links', {
       const folderId = this.router.currentRoute.value.path as string;
       newLink.folderId = folderId;
 
-      await this.axios
+      await this.privateClient
         .post(`${BASE_API_URL}/links`, newLink)
         .then(({ data }) => {
           return (this.links = data);

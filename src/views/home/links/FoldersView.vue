@@ -39,8 +39,8 @@ if (!linkFolders.value) {
       variant="tonal"
       closable
     ></v-alert>
-    <v-sheet>
-      <v-list bg-color="transparent">
+    <div>
+      <v-list>
         <v-list-item
           v-for="folder in linkFolders"
           :key="folder.id"
@@ -105,6 +105,6 @@ if (!linkFolders.value) {
           </template>
         </v-list-item>
       </v-list>
-    </v-sheet>
+    </div>
   </v-container>
 </template>

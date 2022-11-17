@@ -1,4 +1,7 @@
-export const BASE_API_URL =
-  'https://35a444e9-63a5-478b-b705-24d7c097421b.mock.pstmn.io/';
-export const BASE_API_VERSION = 'api/v1';
+export const BASE_API_URL = 'http://127.0.0.0:5000';
+export const BASE_API_VERSION = '/api/v1';
 export const API_URL = BASE_API_URL + BASE_API_VERSION;
+
+export const LANGUAGE_PREF_KEY = 'language';
+export const THEME_PREF_KEY = 'theme';
+export const JWT_TOKEN_PREF_KEY = 'jwt_token';
