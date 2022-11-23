@@ -3,30 +3,38 @@ import { API_URL, JWT_TOKEN_PREF_KEY } from '@/plugins/constants';
 import axios from 'axios';
 import { memoizedRefreshToken } from './refresh_token';
 
-axios.defaults.baseURL = API_URL;
+const client = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-axios.interceptors.request.use(
+client.interceptors.request.use(
   async (config) => {
     const tokenAccess = localStorage.getItem(JWT_TOKEN_PREF_KEY);
-    if (tokenAccess === null) {
-      throw Error('token access not found');
-    }
-    const session = JSON.parse(tokenAccess) as Token;
 
-    if (session?.accessToken) {
-      config.headers = {
-        ...config.headers,
-        authorization: `Bearer ${session?.accessToken}`,
-      };
+    if (tokenAccess === null) {
+      return config;
     }
+    const token = JSON.parse(tokenAccess) as Token;
+
+    config.headers = {
+      ...config.headers,
+      authorization: `Bearer ${token.access_token}`,
+    };
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('⛔ ~ file: private_client.ts ~ line 34 ~ error', error);
+    Promise.reject(error);
+  }
 );
 
-axios.interceptors.response.use(
+client.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.error('⛔ ~ file: private_client.ts ~ line 37 ~ error', error);
     const config = error?.config;
 
     if (error?.response?.status === 401 && !config?.sent) {
@@ -34,10 +42,10 @@ axios.interceptors.response.use(
 
       const result = await memoizedRefreshToken();
 
-      if (result?.accessToken) {
+      if (result?.access_token) {
         config.headers = {
           ...config.headers,
-          authorization: `Bearer ${result?.accessToken}`,
+          authorization: `Bearer ${result?.access_token}`,
         };
       }
       return axios(config);
@@ -46,4 +54,4 @@ axios.interceptors.response.use(
   }
 );
 
-export const privateClient = axios;
+export const privateClient = client;

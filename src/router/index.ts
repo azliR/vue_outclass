@@ -1,3 +1,4 @@
+import { JWT_TOKEN_PREF_KEY } from '@/plugins/constants';
 import { useAppStore } from '@/stores/app';
 import EmptyRouterView from '@/views/EmptyRouterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -54,13 +55,14 @@ const router = createRouter({
               name: 'folders',
               meta: { title: 'Folders' },
               component: () =>
-                import('../views/home/links/FoldersWrapperView.vue'),
+                import('../views/home/directories/FoldersWrapperView.vue'),
             },
             {
               path: ':folderId',
               name: 'links',
               meta: { title: 'Links' },
-              component: () => import('../views/home/links/LinksView.vue'),
+              component: () =>
+                import('../views/home/directories/LinksView.vue'),
             },
           ],
         },
@@ -109,8 +111,9 @@ router.beforeEach((to) => {
   const appStore = useAppStore();
   appStore.startLoading();
 
-  // if (typeof to?.matched[0]?.components?.default === 'function') {
-  // }
+  if (localStorage.getItem(JWT_TOKEN_PREF_KEY) === null && to.name !== 'in') {
+    return { name: 'in' };
+  }
 });
 
 router.beforeResolve(() => {

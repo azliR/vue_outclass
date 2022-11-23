@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFoldersWrapperStore } from '@/stores/home/links/folders-wrapper';
+import { useFoldersWrapperStore } from '@/stores/home/directories/folders-wrapper';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import FoldersView from './FoldersView.vue';

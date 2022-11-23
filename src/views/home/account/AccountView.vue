@@ -26,7 +26,7 @@ const { showQrDialog } = storeToRefs(store);
       ></v-app-bar-nav-icon>
     </template>
   </v-app-bar>
-  <v-main>
+  <v-main scrollable>
     <v-container>
       <div class="d-flex flex-column flex-lg-row">
         <v-sheet style="flex: 1">

@@ -2,6 +2,7 @@ import messages from '@intlify/unplugin-vue-i18n/messages';
 import { createPinia } from 'pinia';
 import { createApp, markRaw } from 'vue';
 import { createI18n } from 'vue-i18n';
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 import App from './App.vue';
 import { privateClient } from './core/private_client';
 import { publicClient } from './core/public_client';

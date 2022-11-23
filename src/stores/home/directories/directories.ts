@@ -1,40 +1,50 @@
-import type { LinkFolder } from '@/models/link-folder';
+import { privateClient } from '@/core/private_client';
+import type { Folder } from '@/models/directory';
 import type { ResponseData } from '@/models/response-data';
 import { API_URL } from '@/plugins/constants';
 import type { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { useLinksStore } from './links';
 
-export const useFoldersStore = (id: string) =>
-  defineStore('folders' + id, {
+export const useDirectoriesStore = (id: string) =>
+  defineStore('directories' + id, {
     state() {
       return {
         loading: false,
         error: <string | null>null,
         deleteDialog: false,
-        linkFolders: <LinkFolder[] | undefined>undefined,
       };
     },
     actions: {
-      async getFolders(path: string) {
+      async getDirectories(
+        type: string,
+        parentId: string,
+        page: number,
+        pageLimit: number
+      ): Promise<Folder[]> {
         this.error = null;
-        this.loading = true;
 
-        await this.privateClient
-          .get<ResponseData>(API_URL + '/folders' + path)
+        return await privateClient
+          .get<ResponseData>('/directories', {
+            params: {
+              type: type,
+              parent_id: parentId,
+              page: page,
+              page_limit: pageLimit,
+            },
+          })
           .then(({ data }) => {
-            this.loading = false;
             if (data.success) {
               this.error = null;
-              return (this.linkFolders = data.data as LinkFolder[]);
+              return data.data as Folder[];
             } else {
               return Promise.reject(data.message);
             }
           })
           .catch((error: AxiosError) => {
+            console.error('⛔ ~ file: directories.ts ~ line 53 ~ error', error);
             this.error = JSON.stringify(error.toJSON());
-            this.loading = false;
-            console.log(error);
+            return [];
           });
       },
       async deleteFolder(id: string) {
@@ -43,22 +53,25 @@ export const useFoldersStore = (id: string) =>
 
         await this.privateClient
           .get<ResponseData>(API_URL + '/folders' + id)
-          .then<LinkFolder[]>(({ data }) => {
+          .then<Folder[]>(({ data }) => {
             this.loading = false;
             if (data.success) {
               this.error = null;
-              return (this.linkFolders = data.data as LinkFolder[]);
+              return data.data as Folder[];
             } else {
               return Promise.reject(data.message);
             }
           })
           .catch((error: AxiosError) => {
+            console.error(
+              '⛔ ~ file: directories.ts ~ line 69 ~ deleteFolder ~ error',
+              error
+            );
             this.error = JSON.stringify(error.toJSON());
             this.loading = false;
-            console.log(error);
           });
       },
-      onFolderPressed(folder: LinkFolder) {
+      onCategoryPressed(folder: Folder) {
         const linksStore = useLinksStore();
         linksStore.$reset();
 

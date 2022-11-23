@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import type { Link } from '@/models/link';
-import { useAddLinkStore } from '@/stores/home/links/add-link';
+import { useAddLinkStore } from '@/stores/home/directories/add-link';
 import { storeToRefs } from 'pinia';
-import type { Prop } from 'vue';
 
 const emit = defineEmits(['close', 'save']);
 const store = useAddLinkStore();
 const { nameRules, urlRules, descriptionRules } = store;
 const { valid, newLink } = storeToRefs(store);
-
-defineProps({
-  link: {
-    type: Object as () => Prop<Link>,
-    required: false,
-  },
-});
 
 function onClosePressed() {
   emit('close');

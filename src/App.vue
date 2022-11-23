@@ -16,6 +16,9 @@ const { loading } = storeToRefs(store);
 </template>
 
 <style>
+html {
+  overflow-y: auto !important;
+}
 .v-btn {
   text-transform: unset !important;
 }
