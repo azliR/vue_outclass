@@ -17,7 +17,7 @@ const { loading } = storeToRefs(store);
 
 <style>
 html {
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
 }
 .v-btn {
   text-transform: unset !important;

@@ -21,7 +21,7 @@ function onSavePressed() {
   <v-card>
     <v-toolbar>
       <v-btn icon="mdi-close" @click="onClosePressed"> </v-btn>
-      <v-toolbar-title>Tambah link baru</v-toolbar-title>
+      <v-toolbar-title>Buat Folder Baru</v-toolbar-title>
       <v-toolbar-items varian="tonal">
         <v-btn class="ma-2" height="40" variant="tonal" @click="onSavePressed">
           Simpan

@@ -50,6 +50,10 @@ export const useSignInStore = defineStore('signin', {
             this.error = JSON.stringify(error.toJSON());
           }
           this.showErrorSnackbar = true;
+          console.error(
+            '⛔ | file: signin.ts | onSignInPressed | error',
+            error
+          );
         });
       this.loading = false;
     },

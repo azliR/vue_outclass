@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import vuetify from '@/plugins/vuetify';
 import { useHomeStore } from '@/stores/home/home';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const { t } = useI18n();
+const { mdAndDown } = useDisplay();
 
 const store = useHomeStore();
 const { onTabChange } = store;
@@ -52,11 +53,7 @@ const { selectedTab, homeTabs } = storeToRefs(store);
       <component :is="Component" />
     </keep-alive>
   </router-view>
-  <v-bottom-navigation
-    v-if="vuetify.display.mdAndDown.value"
-    grow
-    color="on-secondary-container"
-  >
+  <v-bottom-navigation v-if="mdAndDown" grow color="on-secondary-container">
     <v-btn
       v-for="(tab, i) in homeTabs"
       :active="selectedTab === i"

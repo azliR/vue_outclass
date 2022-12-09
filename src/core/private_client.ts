@@ -6,7 +6,9 @@ import { memoizedRefreshToken } from './refresh_token';
 const client = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    common: {
+      'Content-Type': 'application/json',
+    },
   },
 });
 

@@ -62,7 +62,7 @@ const homeTabs = <HomeTab[]>[
   {
     title: 'home.homeTabs.files',
     path: '/folders',
-    currentPath: '/folders',
+    currentPath: '/folders/class',
     icon: 'mdi-folder-outline',
     activeIcon: 'mdi-folder',
   },

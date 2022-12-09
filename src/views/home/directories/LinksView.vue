@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import AppAddLinkDialog from '@/components/AppAddLinkDialog.vue';
 import AppEmpty from '@/components/AppEmpty.vue';
 import AppError from '@/components/AppError.vue';
@@ -143,4 +143,4 @@ onUnmounted(() => {
 .v-dialog {
   max-width: 100%;
 }
-</style>
+</style> -->

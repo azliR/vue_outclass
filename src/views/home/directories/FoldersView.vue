@@ -1,131 +1,322 @@
 <script setup lang="ts">
 import AppError from '@/components/AppError.vue';
-import { DIRECTORY_TYPE_FOLDER, type Folder } from '@/models/directory';
+import {
+  DIRECTORY_TYPE_FOLDER,
+  DIRECTORY_TYPE_POST,
+  type Folder,
+  type Post,
+} from '@/models/directory';
 import { useDirectoriesStore } from '@/stores/home/directories/directories';
-import type FolderTab from '@/stores/home/directories/folders-wrapper';
+import { useFoldersWrapperStore } from '@/stores/home/directories/folders-wrapper';
 import { useInfiniteScroll } from '@vueuse/core';
+import bytes from 'bytes';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
-const props = defineProps({
-  tab: {
-    type: Object as () => FolderTab,
-    required: true,
-  },
-});
-const { t } = useI18n();
-const store = useDirectoriesStore(props.tab.path)();
-
-const { getDirectories, onCategoryPressed } = store;
-const { loading, error, deleteDialog } = storeToRefs(store);
 const route = useRoute();
+const paths = route.path.split('/');
+const shareType = paths[2] ?? null;
+const parentDirectoryId = paths[3] ?? null;
 
-const folders = ref<Folder[]>([]);
+var store = useDirectoriesStore(shareType, parentDirectoryId)();
+var folderWrapperStore = useFoldersWrapperStore();
 
-const parentDirectory = route.path.split('/')[2] ?? null;
+const {
+  getDirectories,
+  onFilePressed,
+  onDownloadFilePressed,
+  getDownloadedFileKeys,
+  onFolderPressed,
+  getFileIcon,
+  getFileColor,
+} = store;
+const { breadcrumbs } = folderWrapperStore;
 
-getDirectories(DIRECTORY_TYPE_FOLDER, parentDirectory, 1, 10).then((data) => {
-  console.log(
-    '⛔ ~ file: FoldersView.vue ~ line 29 ~ getDirectories ~ data',
-    data
-  );
-  folders.value = data;
-});
+const {
+  folders,
+  posts,
+  downloadedFileKeys,
+  page,
+  directoryType,
+  hasNextPage,
+  pageLimit,
+  loadingFolder,
+  loadingPost,
+  errorFolder,
+  errorPost,
+  errorSnackbar,
+  deleteDialog,
+} = storeToRefs(store);
 
-const el = ref<HTMLElement | null>(null);
-var page = 0;
-useInfiniteScroll(
-  el,
-  () => {
-    getDirectories(DIRECTORY_TYPE_FOLDER, parentDirectory, ++page, 10).then(
-      (newDirectories) => {
-        console.log(
-          '🚀 ~ file: FoldersView.vue ~ line 39 ~ newDirectories',
-          newDirectories
-        );
-        folders.value.push(...newDirectories);
+getDownloadedFileKeys();
+
+watch(
+  () => errorSnackbar,
+  async (errorSnackbar) => {
+    folderWrapperStore.errorSnackbar = errorSnackbar.value;
+  }
+);
+
+const { t } = useI18n();
+const { width } = useDisplay();
+
+const scrollContainer = ref<HTMLElement | null>(null);
+
+async function fetchEvents(wasScrollEvent: boolean) {
+  await getDirectories(
+    directoryType.value,
+    parentDirectoryId,
+    ++page.value,
+    pageLimit.value
+  ).then((newDirectories) => {
+    if (newDirectories !== null) {
+      if (directoryType.value === DIRECTORY_TYPE_FOLDER) {
+        folders.value.push(...(newDirectories as Folder[]));
+      } else {
+        posts.value.push(...(newDirectories as Post[]));
       }
-    );
+      if (newDirectories.length < pageLimit.value) {
+        if (directoryType.value === DIRECTORY_TYPE_FOLDER) {
+          directoryType.value = DIRECTORY_TYPE_POST;
+          page.value = 0;
+        } else {
+          hasNextPage.value = false;
+        }
+      }
+
+      if (wasScrollEvent || !hasNextPage.value) return;
+      setTimeout(() => {
+        if (
+          scrollContainer.value &&
+          scrollContainer.value.scrollHeight <=
+            scrollContainer.value.clientHeight
+        ) {
+          fetchEvents(false);
+        }
+      }, 500);
+    } else {
+      hasNextPage.value = false;
+    }
+  });
+}
+
+if (folders.value.length === 0 && posts.value.length === 0) {
+  fetchEvents(false);
+}
+
+useInfiniteScroll(
+  scrollContainer,
+  async () => {
+    if (hasNextPage.value) {
+      await fetchEvents(true);
+    } else {
+      return;
+    }
   },
   { distance: 10 }
 );
 </script>
 
 <template>
-  <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
-  <app-error v-else-if="error" class="mt-4" :error="error"></app-error>
-  <v-container v-else>
-    <v-alert
-      class="mb-4"
-      :text="t(tab.alert)"
-      type="info"
-      variant="tonal"
-      closable
-    ></v-alert>
-    <v-list-item
-      v-for="directory in folders"
-      :key="directory.id"
-      :title="directory.name"
-      color="primary"
-      @click="onCategoryPressed(directory)"
-    >
-      <template v-slot:prepend>
-        <v-avatar>
-          <v-icon color="on-primary-container"> mdi-folder </v-icon>
-        </v-avatar>
-      </template>
-      <template v-slot:append>
-        <v-menu activator="parent">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              color="secondary"
-              icon="mdi-dots-vertical"
-              variant="text"
-              v-bind="props"
-            ></v-btn>
-          </template>
-          <v-list rounded="null" bg-color="surface">
-            <v-dialog v-model="deleteDialog">
-              <template v-slot:activator="{ props }">
-                <v-list-item title="Ubah" density="compact">
-                  <template v-slot:prepend>
-                    <v-icon class="pl-4"> mdi-pencil </v-icon>
-                  </template>
-                </v-list-item>
-                <v-list-item title="Hapus" density="compact" v-bind="props">
-                  <template v-slot:prepend>
-                    <v-icon class="pl-4"> mdi-delete </v-icon>
-                  </template>
-                </v-list-item>
-              </template>
+  <div class="scroll-container" ref="scrollContainer">
+    <v-container>
+      <v-breadcrumbs
+        v-if="breadcrumbs.length > 1"
+        class="pa-0"
+        :items="breadcrumbs"
+      >
+        <template v-slot:title="{ item }">
+          <v-btn class="ma-0" @click.stop="" variant="flat" size="small">
+            {{ item.folderName }}
+          </v-btn>
+        </template>
+        <template v-slot:divider>
+          <v-icon
+            class="pa-0 ma-0"
+            icon="mdi-chevron-right"
+            style="width: 0px"
+          ></v-icon>
+        </template>
+      </v-breadcrumbs>
+      <!-- <v-alert
+        class="mb-4"
+        :text="t(tab.alert)"
+        type="info"
+        variant="tonal"
+        closable
+      ></v-alert> -->
+      <p v-if="folders.length > 0" class="mx-3 text-overline">Folders</p>
+      <div
+        v-if="folders.length > 0"
+        class="mb-4"
+        :style="{
+          display: 'grid',
+          'grid-template-columns':
+            'repeat(' + Math.round(width / 400) + ', 1fr)',
+        }"
+      >
+        <v-sheet
+          class="ma-1"
+          v-for="directory in folders"
+          :key="directory.id"
+          rounded="lg"
+        >
+          <v-list-item
+            :title="directory.name"
+            color="on-surface"
+            rounded="lg"
+            @click="onFolderPressed(directory)"
+            @contextmenu.prevent=""
+          >
+            <template v-slot:prepend>
+              <v-avatar>
+                <v-icon color="on-primary-container"> mdi-folder </v-icon>
+              </v-avatar>
+            </template>
+            <template v-slot:append>
+              <v-btn color="secondary" icon="" variant="text">
+                <v-icon>mdi-dots-vertical</v-icon>
+                <v-menu activator="parent">
+                  <v-list rounded="null" bg-color="surface">
+                    <v-list-item title="Ubah" density="compact">
+                      <template v-slot:prepend>
+                        <v-icon class="pl-4"> mdi-pencil </v-icon>
+                      </template>
+                    </v-list-item>
+                    <v-list-item
+                      title="Hapus"
+                      density="compact"
+                      @click="deleteDialog = true"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon class="pl-4"> mdi-delete </v-icon>
+                      </template>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-btn>
+            </template>
+          </v-list-item>
+        </v-sheet>
+      </div>
+      <div v-if="loadingFolder" class="d-flex justify-center">
+        <v-progress-circular class="ma-3" indeterminate></v-progress-circular>
+      </div>
+      <app-error
+        v-if="errorFolder"
+        class="mt-4"
+        :error="errorFolder"
+      ></app-error>
 
-              <v-card
-                title=" Hapus folder? "
-                text="
-                          AWAS! Kalo kamu hapus folder ini, semua link yang ada di
-                          folder ini bakal ikutan kehapus juga! Beneran hapus?"
-                elevation="3"
-              >
-                <v-card-actions class="mx-2">
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" @click="deleteDialog = false">
-                    Batal
-                  </v-btn>
-                  <v-btn
-                    variant="flat"
-                    color="error"
-                    @click="deleteDialog = false"
-                  >
-                    Hapus
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-list>
-        </v-menu>
-      </template>
-    </v-list-item>
-  </v-container>
+      <p v-if="posts.length > 0" class="mx-3 text-overline">Posts</p>
+      <div
+        :style="{
+          display: 'grid',
+          'grid-template-columns':
+            'repeat(' + Math.round(width / 600) + ', 1fr)',
+        }"
+      >
+        <v-sheet
+          class="ma-1 px-4 py-3"
+          v-for="directory in posts"
+          :key="directory.id"
+          rounded="lg"
+        >
+          <p class="text-subtitle-1">{{ directory.name }}</p>
+          <p class="text-body-2">{{ directory.description }}</p>
+
+          <div
+            v-if="directory.files"
+            class="mt-2"
+            :style="{
+              display: 'grid',
+              'grid-template-columns':
+                'repeat(' + Math.round(width / 900) + ', 1fr)',
+            }"
+          >
+            <v-list-item
+              v-for="file in directory.files"
+              :key="file.link"
+              class="ma-1 px-0 py-1"
+              density="compact"
+              rounded="lg"
+              border
+              @click="() => onFilePressed(file.link, file.type)"
+            >
+              <template v-slot:prepend>
+                <v-icon class="mx-3" :color="getFileColor(file.type)">
+                  {{ getFileIcon(file.type) }}
+                </v-icon>
+              </template>
+              <template v-slot:title>
+                <span class="text-subtitle-2">
+                  {{ file.name }}
+                </span>
+              </template>
+              <template v-slot:subtitle>
+                <span class="text-caption">
+                  {{ bytes(file.size, { unitSeparator: ' ' }) }}
+                </span>
+              </template>
+              <template v-slot:append>
+                <v-btn
+                  v-if="file.type === 'link'"
+                  class="mr-1"
+                  icon="mdi-open-in-new"
+                  variant="text"
+                  size="small"
+                >
+                </v-btn>
+                <v-btn
+                  v-else-if="!downloadedFileKeys.includes(file.link)"
+                  class="mr-1"
+                  icon="mdi-download"
+                  variant="text"
+                  size="small"
+                  @click.stop="onDownloadFilePressed(file.link, file.type)"
+                >
+                </v-btn>
+              </template>
+            </v-list-item>
+          </div>
+        </v-sheet>
+      </div>
+      <div v-if="loadingPost" class="d-flex justify-center">
+        <v-progress-circular class="ma-3" indeterminate></v-progress-circular>
+      </div>
+      <app-error v-if="errorPost" class="mt-4" :error="errorPost"></app-error>
+    </v-container>
+  </div>
+
+  <v-dialog v-model="deleteDialog">
+    <v-card
+      title=" Hapus folder? "
+      text="AWAS! Kalo kamu hapus folder ini, semua link yang ada di folder ini bakal ikutan kehapus juga! Beneran hapus?"
+      elevation="3"
+    >
+      <v-card-actions class="mx-2">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="deleteDialog = false"> Batal </v-btn>
+        <v-btn variant="flat" color="error" @click="deleteDialog = false">
+          Hapus
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
+
+<style scoped>
+.scroll-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  --v-layout-left: 0px;
+  --v-layout-right: 0px;
+  --v-layout-top: 0px;
+  --v-layout-bottom: 0px;
+  max-width: 100%;
+  position: relative;
+}
+</style>

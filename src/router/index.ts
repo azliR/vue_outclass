@@ -1,4 +1,3 @@
-import { JWT_TOKEN_PREF_KEY } from '@/plugins/constants';
 import { useAppStore } from '@/stores/app';
 import EmptyRouterView from '@/views/EmptyRouterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -10,59 +9,74 @@ const router = createRouter({
       path: '/in',
       name: 'in',
       meta: { title: 'Sign In' },
-      component: () => import('../views/auth/SignInView.vue'),
+      component: () => import('@/views/auth/SignInView.vue'),
+    },
+    {
+      path: '/signin',
+      redirect: '/in',
     },
     {
       path: '/up',
       name: 'up',
       meta: { title: 'Sign Up' },
-      component: () => import('../views/auth/SignUpView.vue'),
+      component: () => import('@/views/auth/SignUpView.vue'),
+    },
+    {
+      path: '/signup',
+      redirect: '/up',
     },
     {
       path: '/join',
       name: 'join',
       meta: { title: 'Join' },
-      component: () => import('../views/auth/JoinView.vue'),
+      component: () => import('@/views/auth/JoinView.vue'),
     },
     {
       path: '/scan',
       name: 'scan',
       meta: { title: 'Scan' },
-      component: () => import('../views/auth/ScanCodeView.vue'),
+      component: () => import('@/views/auth/ScanCodeView.vue'),
     },
     {
       path: '/',
-      component: () => import('../views/home/HomeView.vue'),
+      component: () => import('@/views/home/HomeView.vue'),
       children: [
         {
           path: '',
           name: 'overview',
           meta: { title: 'Home' },
-          component: () => import('../views/home/overview/OverviewView.vue'),
+          component: () => import('@/views/home/overview/OverviewView.vue'),
         },
         {
           path: 'calendar',
           name: 'calendar',
           meta: { title: 'Calendar' },
-          component: () => import('../views/home/calendar/CalendarView.vue'),
+          component: () => import('@/views/home/calendar/CalendarView.vue'),
         },
         {
           path: 'folders',
           component: EmptyRouterView,
           children: [
             {
-              path: '',
-              name: 'folders',
-              meta: { title: 'Folders' },
+              path: ':shareType',
               component: () =>
-                import('../views/home/directories/FoldersWrapperView.vue'),
-            },
-            {
-              path: ':folderId',
-              name: 'links',
-              meta: { title: 'Links' },
-              component: () =>
-                import('../views/home/directories/LinksView.vue'),
+                import('@/views/home/directories/FoldersWrapperView.vue'),
+              children: [
+                {
+                  path: '',
+                  name: 'rootFolders',
+                  meta: { title: 'Files' },
+                  component: () =>
+                    import('@/views/home/directories/FoldersView.vue'),
+                },
+                {
+                  path: ':folderId',
+                  name: 'folders',
+                  meta: { title: 'Files' },
+                  component: () =>
+                    import('@/views/home/directories/FoldersView.vue'),
+                },
+              ],
             },
           ],
         },
@@ -74,19 +88,19 @@ const router = createRouter({
               path: '',
               name: 'account',
               meta: { title: 'Account' },
-              component: () => import('../views/home/account/AccountView.vue'),
+              component: () => import('@/views/home/account/AccountView.vue'),
             },
             {
               path: 'settings',
               name: 'settings',
               meta: { title: 'Settings' },
-              component: () => import('../views/home/account/SettingsView.vue'),
+              component: () => import('@/views/home/account/SettingsView.vue'),
             },
             {
               path: 'members',
               name: 'members',
               meta: { title: 'Members' },
-              component: () => import('../views/home/account/MembersView.vue'),
+              component: () => import('@/views/home/account/MembersView.vue'),
             },
           ],
         },
@@ -95,7 +109,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'notFound',
-      component: () => import('../views/NotFoundView.vue'),
+      component: () => import('@/views/NotFoundView.vue'),
     },
   ],
 });
@@ -111,9 +125,14 @@ router.beforeEach((to) => {
   const appStore = useAppStore();
   appStore.startLoading();
 
-  if (localStorage.getItem(JWT_TOKEN_PREF_KEY) === null && to.name !== 'in') {
-    return { name: 'in' };
-  }
+  // if (
+  //   localStorage.getItem(JWT_TOKEN_PREF_KEY) === null &&
+  //   to.name !== 'in' &&
+  //   to.name !== 'up' &&
+  //   to.name !== 'reset'
+  // ) {
+  //   return { name: 'in' };
+  // }
 });
 
 router.beforeResolve(() => {

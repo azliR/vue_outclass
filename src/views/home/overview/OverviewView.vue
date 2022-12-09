@@ -23,6 +23,7 @@ const { deadlineAssignments, upcomingEvents } = storeToRefs(store);
             :key="assignment.id"
             :title="assignment.name"
             :subtitle="assignment.description ?? 'Tidak ada deskripsi'"
+            lines="two"
           >
             <template v-slot:prepend>
               <v-avatar>
