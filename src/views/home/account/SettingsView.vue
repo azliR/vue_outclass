@@ -64,7 +64,7 @@ const { availableLocales } = i18n;
                       ? 'mdi-radiobox-marked'
                       : 'mdi-radiobox-blank'
                   "
-                  @click="() => changeLanguage(i18n, locale)"
+                  @click="changeLanguage(i18n, locale)"
                 >
                 </v-list-item>
               </v-list>
@@ -111,7 +111,7 @@ const { availableLocales } = i18n;
                       ? 'mdi-radiobox-marked'
                       : 'mdi-radiobox-blank'
                   "
-                  @click="() => changeTheme(currentTheme, theme)"
+                  @click="changeTheme(currentTheme, theme)"
                 >
                 </v-list-item>
               </v-list>

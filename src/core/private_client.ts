@@ -28,7 +28,10 @@ client.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('⛔ ~ file: private_client.ts ~ line 34 ~ error', error);
+    console.error(
+      'private_client.ts -> client.interceptors.request.use',
+      error
+    );
     Promise.reject(error);
   }
 );

@@ -1,6 +1,8 @@
 import { privateClient } from '@/core/private_client';
 import {
+  colors,
   DIRECTORY_TYPE_FOLDER,
+  DIRECTORY_TYPE_POST,
   type Directory,
   type Folder,
   type Post,
@@ -88,6 +90,53 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
             return null;
           });
       },
+      async loadMore(
+        scrollContainer: HTMLElement | null,
+        wasScrollEvent: boolean
+      ) {
+        await this.getDirectories(
+          this.directoryType,
+          parentId,
+          ++this.page,
+          this.pageLimit
+        ).then((newDirectories) => {
+          if (newDirectories !== null) {
+            if (this.directoryType === DIRECTORY_TYPE_FOLDER) {
+              this.folders.push(...(newDirectories as Folder[]));
+            } else {
+              this.posts.push(...(newDirectories as Post[]));
+            }
+            if (newDirectories.length < this.pageLimit) {
+              if (this.directoryType === DIRECTORY_TYPE_FOLDER) {
+                this.directoryType = DIRECTORY_TYPE_POST;
+                this.page = 0;
+              } else {
+                this.hasNextPage = false;
+              }
+            }
+
+            if (wasScrollEvent || !this.hasNextPage) return;
+            setTimeout(() => {
+              if (
+                scrollContainer &&
+                scrollContainer.scrollHeight <= scrollContainer.clientHeight
+              ) {
+                this.loadMore(scrollContainer, false);
+              }
+            }, 500);
+          } else {
+            this.hasNextPage = false;
+          }
+        });
+      },
+      async refresh() {
+        this.page = 0;
+        this.hasNextPage = true;
+        this.folders = [];
+        this.posts = [];
+        this.directoryType = DIRECTORY_TYPE_FOLDER;
+        await this.loadMore(null, false);
+      },
       // async deleteFolder(id: string) {
       //   this.error = null;
       //   this.loading = true;
@@ -113,6 +162,9 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
       //     });
       // },
       async onFilePressed(link: string, type: string) {
+        if (type === 'link') {
+          return;
+        }
         this.fileLoading = false;
         this.errorSnackbar = null;
 
@@ -224,6 +276,9 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
         else if (type === 'jpg' || type === 'png' || type === 'jpeg')
           return 'deep-purple';
         return 'grey';
+      },
+      getFolderColor(name: string): string | undefined {
+        return colors.find((color) => color.key == name)?.color;
       },
     },
   });

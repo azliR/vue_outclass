@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import AppError from '@/components/AppError.vue';
-import {
-  DIRECTORY_TYPE_FOLDER,
-  DIRECTORY_TYPE_POST,
-  type Folder,
-  type Post,
-} from '@/models/directory';
 import { useDirectoriesStore } from '@/stores/home/directories/directories';
-import { useFoldersWrapperStore } from '@/stores/home/directories/folders-wrapper';
+import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper';
 import { useInfiniteScroll } from '@vueuse/core';
 import bytes from 'bytes';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify/lib/framework.mjs';
@@ -22,16 +16,17 @@ const shareType = paths[2] ?? null;
 const parentDirectoryId = paths[3] ?? null;
 
 var store = useDirectoriesStore(shareType, parentDirectoryId)();
-var folderWrapperStore = useFoldersWrapperStore();
+var folderWrapperStore = useDirectoriesWrapperStore();
 
 const {
-  getDirectories,
+  loadMore,
   onFilePressed,
   onDownloadFilePressed,
   getDownloadedFileKeys,
   onFolderPressed,
   getFileIcon,
   getFileColor,
+  getFolderColor,
 } = store;
 const { breadcrumbs } = folderWrapperStore;
 
@@ -39,10 +34,7 @@ const {
   folders,
   posts,
   downloadedFileKeys,
-  page,
-  directoryType,
   hasNextPage,
-  pageLimit,
   loadingFolder,
   loadingPost,
   errorFolder,
@@ -65,53 +57,17 @@ const { width } = useDisplay();
 
 const scrollContainer = ref<HTMLElement | null>(null);
 
-async function fetchEvents(wasScrollEvent: boolean) {
-  await getDirectories(
-    directoryType.value,
-    parentDirectoryId,
-    ++page.value,
-    pageLimit.value
-  ).then((newDirectories) => {
-    if (newDirectories !== null) {
-      if (directoryType.value === DIRECTORY_TYPE_FOLDER) {
-        folders.value.push(...(newDirectories as Folder[]));
-      } else {
-        posts.value.push(...(newDirectories as Post[]));
-      }
-      if (newDirectories.length < pageLimit.value) {
-        if (directoryType.value === DIRECTORY_TYPE_FOLDER) {
-          directoryType.value = DIRECTORY_TYPE_POST;
-          page.value = 0;
-        } else {
-          hasNextPage.value = false;
-        }
-      }
-
-      if (wasScrollEvent || !hasNextPage.value) return;
-      setTimeout(() => {
-        if (
-          scrollContainer.value &&
-          scrollContainer.value.scrollHeight <=
-            scrollContainer.value.clientHeight
-        ) {
-          fetchEvents(false);
-        }
-      }, 500);
-    } else {
-      hasNextPage.value = false;
-    }
-  });
-}
-
-if (folders.value.length === 0 && posts.value.length === 0) {
-  fetchEvents(false);
-}
+onMounted(() => {
+  if (folders.value.length === 0 && posts.value.length === 0) {
+    loadMore(scrollContainer.value, false);
+  }
+});
 
 useInfiniteScroll(
   scrollContainer,
   async () => {
     if (hasNextPage.value) {
-      await fetchEvents(true);
+      await loadMore(scrollContainer.value, true);
     } else {
       return;
     }
@@ -172,7 +128,7 @@ useInfiniteScroll(
             @contextmenu.prevent=""
           >
             <template v-slot:prepend>
-              <v-avatar>
+              <v-avatar :color="getFolderColor(directory.color)">
                 <v-icon color="on-primary-container"> mdi-folder </v-icon>
               </v-avatar>
             </template>
@@ -181,6 +137,11 @@ useInfiniteScroll(
                 <v-icon>mdi-dots-vertical</v-icon>
                 <v-menu activator="parent">
                   <v-list rounded="null" bg-color="surface">
+                    <!-- <v-list-item title="Buat salinan" density="compact">
+                      <template v-slot:prepend>
+                        <v-icon class="pl-4"> mdi-content-copy </v-icon>
+                      </template>
+                    </v-list-item> -->
                     <v-list-item title="Ubah" density="compact">
                       <template v-slot:prepend>
                         <v-icon class="pl-4"> mdi-pencil </v-icon>
@@ -209,6 +170,7 @@ useInfiniteScroll(
         v-if="errorFolder"
         class="mt-4"
         :error="errorFolder"
+        @refresh="loadMore(scrollContainer, true)"
       ></app-error>
 
       <p v-if="posts.length > 0" class="mx-3 text-overline">Posts</p>
@@ -244,7 +206,7 @@ useInfiniteScroll(
               density="compact"
               rounded="lg"
               border
-              @click="() => onFilePressed(file.link, file.type)"
+              @click="onFilePressed(file.link, file.type)"
             >
               <template v-slot:prepend>
                 <v-icon class="mx-3" :color="getFileColor(file.type)">

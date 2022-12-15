@@ -5,9 +5,11 @@ export const useHomeStore = defineStore('home', {
   state() {
     const router = useRouter();
     const currentPath = router.currentRoute.value.path;
-    const rootPath = `/${currentPath.split('/')[1]}`;
+    const currentRootPath = currentPath.split('/')[1];
 
-    const index = homeTabs.findIndex((tab) => tab.path === rootPath);
+    const index = homeTabs.findIndex(
+      (tab) => tab.path.split('/')[1] === currentRootPath
+    );
 
     return {
       selectedTab: index !== -1 ? index : 0,
@@ -17,12 +19,12 @@ export const useHomeStore = defineStore('home', {
   actions: {
     onTabChange(newTab: HomeTab, i: number) {
       const currentPath = this.router.currentRoute.value.path;
-      const rootPath = `/${currentPath.split('/')[1]}`;
+      const rootPath = currentPath.split('/')[1];
 
       this.homeTabs = this.homeTabs.map((tab) => {
-        if (tab.path === rootPath) {
-          if (newTab.path === rootPath) {
-            newTab.currentPath = tab.path;
+        if (tab.path.split('/')[1] === rootPath) {
+          if (newTab.path.split('/')[1] === rootPath) {
+            newTab.currentPath = tab.path.split('/')[1];
           } else {
             tab.currentPath = currentPath;
           }
@@ -61,7 +63,7 @@ const homeTabs = <HomeTab[]>[
   },
   {
     title: 'home.homeTabs.files',
-    path: '/folders',
+    path: '/folders/class',
     currentPath: '/folders/class',
     icon: 'mdi-folder-outline',
     activeIcon: 'mdi-folder',

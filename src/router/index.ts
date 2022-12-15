@@ -1,3 +1,7 @@
+import {
+  DEFAULT_CLASSROOM_PREF_KEY,
+  JWT_TOKEN_PREF_KEY,
+} from '@/plugins/constants';
 import { useAppStore } from '@/stores/app';
 import EmptyRouterView from '@/views/EmptyRouterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -125,14 +129,16 @@ router.beforeEach((to) => {
   const appStore = useAppStore();
   appStore.startLoading();
 
-  // if (
-  //   localStorage.getItem(JWT_TOKEN_PREF_KEY) === null &&
-  //   to.name !== 'in' &&
-  //   to.name !== 'up' &&
-  //   to.name !== 'reset'
-  // ) {
-  //   return { name: 'in' };
-  // }
+  if (
+    localStorage.getItem(JWT_TOKEN_PREF_KEY) === null &&
+    to.name !== 'in' &&
+    to.name !== 'up' &&
+    to.name !== 'reset'
+  ) {
+    return { name: 'in' };
+  } else if (localStorage.getItem(DEFAULT_CLASSROOM_PREF_KEY) !== null) {
+    return { name: 'overview' };
+  }
 });
 
 router.beforeResolve(() => {

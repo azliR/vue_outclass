@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppCreateNewFolderDialog from '@/components/AppCreateNewFolderDialog.vue';
-import { useFoldersWrapperStore } from '@/stores/home/directories/folders-wrapper';
+import type { CreateFolderDto } from '@/dtos/directory';
+import { useDirectoriesStore } from '@/stores/home/directories/directories';
+import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -11,8 +13,8 @@ const { t } = useI18n();
 const route = useRoute();
 const { smAndDown, mdAndDown } = useDisplay();
 
-const store = useFoldersWrapperStore();
-const { getBreadcrumbs, onTabChange, onBackPressed } = store;
+const store = useDirectoriesWrapperStore();
+const { getBreadcrumbs, createNewFolder, onTabChange, onBackPressed } = store;
 const {
   currentFolder,
   selectedTabIndex,
@@ -22,7 +24,7 @@ const {
   errorSnackbar: errorSnackbarMessage,
 } = storeToRefs(store);
 
-if (breadcrumbs.value.length === 0) {
+if (breadcrumbs.value.length === 0 && !route.params.folderId) {
   getBreadcrumbs(undefined);
 }
 
@@ -33,7 +35,24 @@ watch(
   }
 );
 
+const paths = route.path.split('/');
+const shareType = paths[2] ?? null;
+const parentDirectoryId = paths[3] ?? null;
+
+var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)();
 const showSnackbar = ref(false);
+
+async function saveFolderPressed(folder: CreateFolderDto) {
+  const result = await createNewFolder({
+    name: folder.name,
+    color: folder.color,
+    description: folder.description,
+  });
+  if (result) {
+    directoriesStore.refresh();
+  }
+  addDialog.value = false;
+}
 
 store.$subscribe((_, state) => {
   showSnackbar.value = state.errorSnackbar != null;
@@ -58,6 +77,7 @@ store.$subscribe((_, state) => {
         position="fixed"
         size="large"
         style="left: 8px"
+        variant="elevated"
       >
         Buat
       </v-btn>
@@ -99,7 +119,7 @@ store.$subscribe((_, state) => {
           <v-icon class="mr-3" color="primary"> mdi-folder </v-icon>
         </template>
       </v-list-item>
-      <v-list-item title="Post baru" @click="">
+      <v-list-item title="Post baru">
         <template v-slot:prepend>
           <v-icon class="mr-3" color="primary"> mdi-text-box </v-icon>
         </template>
@@ -122,7 +142,7 @@ store.$subscribe((_, state) => {
   <v-dialog class="ma-4" v-model="addDialog" persistent fullscreen>
     <app-create-new-folder-dialog
       @close="addDialog = false"
-      @save="() => {}"
+      @save="saveFolderPressed"
     ></app-create-new-folder-dialog>
   </v-dialog>
 </template>

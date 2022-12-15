@@ -1,18 +1,28 @@
+import type { CreateFolderDto } from '@/dtos/directory';
 import type { Folder } from '@/models/directory';
 import type { ResponseData } from '@/models/response-data';
 import { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
+import { useRouter } from 'vue-router';
 
 export interface Breadcrumb {
   folderId: string | null;
   folderName: string;
 }
 
-export const useFoldersWrapperStore = defineStore('folders-wrapper', {
+export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
   state() {
+    const router = useRouter();
+    const currentPath = router.currentRoute.value.path;
+    const rootPath = `/${currentPath.split('/')[1]}/${
+      currentPath.split('/')[2]
+    }`;
+
+    const index = folderTabs.findIndex((tab) => tab.path === rootPath);
+
     return {
       currentFolder: <Folder | null>null,
-      selectedTabIndex: 0,
+      selectedTabIndex: index,
       breadcrumbs: <Breadcrumb[]>[],
       folderTabs: folderTabs,
       errorSnackbar: <string | null>null,
@@ -66,6 +76,30 @@ export const useFoldersWrapperStore = defineStore('folders-wrapper', {
         this.breadcrumbs.push(breadcrumb);
       }
     },
+    async createNewFolder(createFolderDto: CreateFolderDto): Promise<boolean> {
+      const shareType = folderTabs[this.selectedTabIndex].path.split('/')[2];
+
+      return await this.privateClient
+        .post<ResponseData<Folder>>('/directories/folders', {
+          parent_id: this.currentFolder?.parent_id,
+          classroom_id:
+            shareType === 'class' ? this.currentFolder?.classroom_id : null,
+          name: createFolderDto.name,
+          color: createFolderDto.color,
+          description: createFolderDto.description,
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            return true;
+          } else {
+            return Promise.reject(data.message);
+          }
+        })
+        .catch((error: Error) => {
+          console.error('folders-wrapper.ts -> createNewFolder', error);
+          return false;
+        });
+    },
     onTabChange(i: number) {
       const newTab = folderTabs[i];
       console.log(
@@ -115,7 +149,7 @@ const folderTabs = <FolderTab[]>[
   {
     title: 'files.folderTabs.shared.title',
     alert: 'files.folderTabs.shared.alert',
-    path: '/folders/shared',
+    path: '/folders/group',
     currentPath: '/folders/group',
   },
   {
