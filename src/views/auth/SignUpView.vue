@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSignUpStore } from '@/stores/auth/signup-store';
 import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -10,6 +11,7 @@ const {
   nameRules,
   emailRules,
   passwordRules,
+  confirmPasswordRules,
   onSignUpPressed,
   goToSignInPage,
 } = store;
@@ -17,12 +19,15 @@ const {
   valid,
   loading,
   showPassword,
+  showConfirmPassword,
   name,
   email,
   password,
-  showErrorSnackbar,
   error,
 } = storeToRefs(store);
+
+const showSnackbar = ref(false);
+watch(error, (state) => (showSnackbar.value = state != null));
 </script>
 
 <template>
@@ -39,6 +44,7 @@ const {
           <v-text-field
             v-model="name"
             :rules="nameRules"
+            type="name"
             label="Nama lengkap"
             placeholder="Masukin nama lengkap kamu"
             prepend-icon="mdi-account"
@@ -64,6 +70,19 @@ const {
             :placeholder="t('signin.passwordPlaceholder')"
             prepend-icon="mdi-lock"
             @click:append-inner.stop="showPassword = !showPassword"
+            @keydown.enter="onSignUpPressed"
+            required
+          ></v-text-field>
+          <v-text-field
+            :rules="confirmPasswordRules"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            label="Konfirmasi Password"
+            placeholder="Masukin password kamu lagi buat mastiin"
+            prepend-icon="-"
+            @click:append-inner.stop="
+              showConfirmPassword = !showConfirmPassword
+            "
             @keydown.enter="onSignUpPressed"
             required
           ></v-text-field>
@@ -93,7 +112,7 @@ const {
       </v-card>
     </div>
   </v-main>
-  <v-snackbar v-model="showErrorSnackbar" color="error">
+  <v-snackbar v-model="showSnackbar" color="error">
     {{ error }}
   </v-snackbar>
 </template>

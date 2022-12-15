@@ -15,7 +15,6 @@ export const useSignInStore = defineStore('signin', {
       valid: false,
       showPassword: false,
       loading: false,
-      showErrorSnackbar: false,
       error: <string | null>null,
       email: '',
       password: '',
@@ -31,7 +30,6 @@ export const useSignInStore = defineStore('signin', {
   actions: {
     async onSignInPressed() {
       this.loading = true;
-      this.showErrorSnackbar = false;
       this.error = null;
 
       await this.publicClient
@@ -62,7 +60,6 @@ export const useSignInStore = defineStore('signin', {
           } else {
             this.error = error.message;
           }
-          this.showErrorSnackbar = true;
         });
       this.loading = false;
     },
@@ -90,7 +87,6 @@ export const useSignInStore = defineStore('signin', {
           } else {
             this.error = error.message;
           }
-          this.showErrorSnackbar = true;
         });
     },
     async getClassroom(classroomId: string) {
@@ -116,7 +112,6 @@ export const useSignInStore = defineStore('signin', {
           } else {
             this.error = error.message;
           }
-          this.showErrorSnackbar = true;
         });
     },
     goToSignUpPage() {

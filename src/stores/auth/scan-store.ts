@@ -50,8 +50,14 @@ export const useScanStore = defineStore('join', {
     async onDecode(content: string) {
       this.camera = 'off';
 
-      if (content.length === 6 && !isNaN(Number(content))) {
-        this.router.push({ name: 'overview' });
+      const url = new URL(content);
+
+      if (
+        (url.hostname === 'localhost' ||
+          url.hostname === 'outclass.azlir.my.id') &&
+        !isNaN(Number(content))
+      ) {
+        window.open(content);
       } else {
         setTimeout(() => {
           this.camera = 'auto';

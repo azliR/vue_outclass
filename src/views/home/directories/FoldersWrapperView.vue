@@ -21,7 +21,7 @@ const {
   breadcrumbs,
   folderTabs,
   addDialog,
-  errorSnackbar: errorSnackbarMessage,
+  errorSnackbar,
 } = storeToRefs(store);
 
 if (breadcrumbs.value.length === 0 && !route.params.folderId) {
@@ -40,7 +40,6 @@ const shareType = paths[2] ?? null;
 const parentDirectoryId = paths[3] ?? null;
 
 var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)();
-const showSnackbar = ref(false);
 
 async function saveFolderPressed(folder: CreateFolderDto) {
   const result = await createNewFolder({
@@ -54,9 +53,9 @@ async function saveFolderPressed(folder: CreateFolderDto) {
   addDialog.value = false;
 }
 
-store.$subscribe((_, state) => {
-  showSnackbar.value = state.errorSnackbar != null;
-});
+const showSnackbar = ref(false);
+
+watch(errorSnackbar, (state) => (showSnackbar.value = state != null));
 </script>
 
 <template>
@@ -127,7 +126,7 @@ store.$subscribe((_, state) => {
     </v-sheet>
   </v-menu>
   <v-snackbar v-model="showSnackbar" color="error">
-    {{ errorSnackbarMessage }}
+    {{ errorSnackbar }}
   </v-snackbar>
   <v-btn
     v-if="smAndDown"

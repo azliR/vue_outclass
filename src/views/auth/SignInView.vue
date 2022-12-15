@@ -2,6 +2,7 @@
 import { useSignInStore } from '@/stores/auth/signin-store';
 import { useSettingsStore } from '@/stores/home/account/settings';
 import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from 'vuetify';
 
@@ -15,15 +16,11 @@ const { t, availableLocales, locale } = i18n;
 const { emailRules, passwordRules, onSignInPressed, goToSignUpPage } = store;
 const { changeLanguage, changeTheme } = settingsStore;
 
-const {
-  valid,
-  showPassword,
-  loading,
-  showErrorSnackbar,
-  error,
-  email,
-  password,
-} = storeToRefs(store);
+const { valid, showPassword, loading, error, email, password } =
+  storeToRefs(store);
+
+const showSnackbar = ref(false);
+watch(error, (state) => (showSnackbar.value = state != null));
 </script>
 
 <template>
@@ -131,7 +128,7 @@ const {
       </v-card>
     </div>
   </v-main>
-  <v-snackbar v-model="showErrorSnackbar" color="error">
+  <v-snackbar v-model="showSnackbar" color="error">
     {{ error }}
   </v-snackbar>
 </template>

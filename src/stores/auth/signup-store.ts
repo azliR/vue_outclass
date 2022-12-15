@@ -9,8 +9,8 @@ export const useSignUpStore = defineStore('signup', {
     return {
       valid: false,
       showPassword: false,
+      showConfirmPassword: false,
       loading: false,
-      showErrorSnackbar: false,
       error: <string | null>null,
       name: '',
       email: '',
@@ -27,12 +27,20 @@ export const useSignUpStore = defineStore('signup', {
       (v: string) => !!v || 'Emailnya harus diisi yah',
       (v: string) => /.+@.+\..+/.test(v) || 'Emailnya enggak valid',
     ],
-    passwordRules: () => [(v: string) => !!v || 'Passwordnya harus diisi yah'],
+    passwordRules: () => [
+      (v: string) => !!v || 'Passwordnya harus diisi yah',
+      (v: string) =>
+        (v && v.length >= 8) ||
+        'Password-nya minimal 8 karakter biar gak ke hack',
+    ],
+    confirmPasswordRules: (state) => [
+      (v: string) =>
+        v === state.password || 'Password-nya enggak sama kayak yang di atas',
+    ],
   },
   actions: {
     async onSignUpPressed() {
       this.loading = true;
-      this.showErrorSnackbar = false;
       this.error = null;
 
       await this.publicClient
@@ -50,7 +58,7 @@ export const useSignUpStore = defineStore('signup', {
               JSON.stringify(signUpResponse?.token)
             );
 
-            this.router.push({ name: 'overview' });
+            this.router.push({ name: 'join' });
           } else {
             return Promise.reject(data.message);
           }
@@ -67,7 +75,6 @@ export const useSignUpStore = defineStore('signup', {
           } else {
             this.error = error.message;
           }
-          this.showErrorSnackbar = true;
         });
       this.loading = false;
     },
