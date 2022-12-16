@@ -30,22 +30,28 @@ const router = createRouter({
       redirect: '/up',
     },
     {
-      path: '/join',
+      path: '/classrooms/join',
       name: 'join',
       meta: { title: 'Join' },
-      component: () => import('@/views/auth/JoinView.vue'),
+      component: () => import('@/views/classrooms/JoinView.vue'),
     },
     {
-      path: '/scan',
-      name: 'scan',
-      meta: { title: 'Scan' },
-      component: () => import('@/views/auth/ScanCodeView.vue'),
-    },
-    {
-      path: '/join/:classCode',
+      path: '/classrooms/join/:classCode',
       name: 'joinInsertStudentId',
       meta: { title: 'Join' },
-      component: () => import('@/views/auth/JoinInsertStudentIdView.vue'),
+      component: () => import('@/views/classrooms/JoinInsertStudentIdView.vue'),
+    },
+    {
+      path: '/classrooms/scan',
+      name: 'scan',
+      meta: { title: 'Scan' },
+      component: () => import('@/views/classrooms/ScanCodeView.vue'),
+    },
+    {
+      path: '/classrooms/create',
+      name: 'createClassroom',
+      meta: { title: 'Create Classroom' },
+      component: () => import('@/views/classrooms/CreateClassroomView.vue'),
     },
     {
       path: '/',

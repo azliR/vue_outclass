@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScanStore } from '@/stores/auth/scan-store'
+import { useScanStore } from '@/stores/classrooms/scan-store'
 import { storeToRefs } from 'pinia'
 import { QrcodeStream } from 'vue-qrcode-reader'
 

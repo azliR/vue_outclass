@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify'
+import type { VForm } from 'vuetify/lib/components/VForm/index'
 
 const i18n = useI18n()
 const store = useSignInStore()
@@ -16,8 +17,15 @@ const { t, availableLocales, locale } = i18n
 const { emailRules, passwordRules, onSignInPressed, goToSignUpPage } = store
 const { changeLanguage, changeTheme } = settingsStore
 
-const { valid, showPassword, loading, error, email, password } =
-  storeToRefs(store)
+const { showPassword, loading, error, email, password } = storeToRefs(store)
+
+const form = ref<VForm>()
+
+async function validate() {
+  const { valid } = await form.value!.validate()
+
+  if (valid) await onSignInPressed()
+}
 
 const showSnackbar = ref(false)
 watch(error, (state) => (showSnackbar.value = state != null))
@@ -78,7 +86,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
         <p class="text-body-2 text-center mb-6">
           {{ t('signin.subtitle') }}
         </p>
-        <v-form v-model="valid" lazy-validation>
+        <v-form ref="form" lazy-validation>
           <v-text-field
             v-model="email"
             :rules="emailRules"
@@ -98,10 +106,9 @@ watch(error, (state) => (showSnackbar.value = state != null))
             :placeholder="t('signin.passwordPlaceholder')"
             prepend-icon="mdi-lock"
             @click:append-inner.stop="showPassword = !showPassword"
-            @keydown.enter="onSignInPressed"
+            @keydown.enter="validate"
             required
           ></v-text-field>
-
           <div class="d-block ml-auto">
             <v-btn color="primary" variant="text">
               {{ t('signin.forgotPasswordButton') }}
@@ -110,11 +117,10 @@ watch(error, (state) => (showSnackbar.value = state != null))
           <div class="my-2"></div>
           <div class="d-flex justify-space-around mt-6">
             <v-btn
-              :disabled="!valid"
               :loading="loading"
               color="primary"
               variant="flat"
-              @click="onSignInPressed"
+              @click="validate"
             >
               {{ t('signin.submitButton') }}
             </v-btn>

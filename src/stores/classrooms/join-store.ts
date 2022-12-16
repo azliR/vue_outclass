@@ -7,7 +7,6 @@ import { defineStore } from 'pinia'
 export const useJoinStore = defineStore('join', {
   state() {
     return {
-      valid: false,
       loading: false,
       error: <string | null>null,
       studentId: '',
@@ -20,7 +19,7 @@ export const useJoinStore = defineStore('join', {
       (v: string) =>
         (v && v.length === 16) || 'Kode kelasnya harus ada 16 karakter yah',
     ],
-    studentIdRules: () => [(v: string) => !!v || 'nya harus diisi yah'],
+    studentIdRules: () => [(v: string) => !!v || 'NIM nya harus diisi yah'],
   },
   actions: {
     async onJoinPressed() {
@@ -60,8 +59,11 @@ export const useJoinStore = defineStore('join', {
         })
       this.loading = false
     },
+    goToCreateClassroom() {
+      this.router.push({ name: 'createClassroom' })
+    },
     goToScanCode() {
-      this.router.push('scan')
+      this.router.push({ name: 'scan' })
     },
   },
 })

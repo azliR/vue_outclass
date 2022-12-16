@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useJoinStore } from '@/stores/auth/join-store'
+import { useJoinStore } from '@/stores/classrooms/join-store'
 import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'

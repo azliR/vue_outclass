@@ -8,7 +8,10 @@ import {
   type Post,
 } from '@/models/directory'
 import type { ResponseData } from '@/models/response-data'
-import { DOWNLOADED_DIRECTORIES_STORE } from '@/plugins/constants'
+import {
+  DEFAULT_CLASSROOM_ID_PREF_KEY,
+  DOWNLOADED_DIRECTORIES_STORE,
+} from '@/plugins/constants'
 import { AxiosError } from 'axios'
 import { get, keys, set } from 'idb-keyval'
 import { defineStore } from 'pinia'
@@ -49,11 +52,15 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
           this.loadingPost = true
         }
 
+        const classroomId = localStorage.getItem(
+          DEFAULT_CLASSROOM_ID_PREF_KEY
+        ) as string
+
         return await privateClient
           .get<ResponseData<Directory[]>>('/directories', {
             params: {
               type: type,
-              classroom_id: '6374de6d18022546ac175b70',
+              classroom_id: classroomId,
               share_type: shareType,
               parent_id: parentId,
               page: page,

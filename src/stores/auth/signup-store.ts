@@ -7,7 +7,6 @@ import { defineStore } from 'pinia'
 export const useSignUpStore = defineStore('signup', {
   state() {
     return {
-      valid: false,
       showPassword: false,
       showConfirmPassword: false,
       loading: false,

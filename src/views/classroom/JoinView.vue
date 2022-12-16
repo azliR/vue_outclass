@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { useJoinStore } from '@/stores/auth/join-store'
+import { useJoinStore } from '@/stores/classrooms/join-store'
 import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 
 const store = useJoinStore()
-const { studentIdRules, classCodeRules, onJoinPressed, goToScanCode } = store
+const {
+  studentIdRules,
+  classCodeRules,
+  onJoinPressed,
+  goToCreateClassroom,
+  goToScanCode,
+} = store
 const { valid, loading, error, studentId, classCode } = storeToRefs(store)
 
 const showSnackbar = ref(false)
@@ -16,11 +22,23 @@ watch(error, (state) => (showSnackbar.value = state != null))
     <div class="px-4">
       <v-card class="mx-auto mt-6 pa-8" max-width="400">
         <p class="text-h5 text-center mb-2">Ayo join!</p>
-        <p class="text-body-2 text-center mb-6">
+        <p class="text-body-2 text-center">
           Masukin kode kelas kamu di bawah
           <span class="font-italic">
-            (psst, tanyain kodenya ke temen kamu kalo gak tau)
+            (psst, tanyain kodenya ke temen kamu)
           </span>
+        </p>
+        <p class="text-body-2 text-center mt-4 mb-6">
+          Belum buat kelasnya?
+          <v-btn
+            class="px-1 py-0 ma-0 text-body-2"
+            variant="text"
+            color="blue"
+            size="small"
+            @click="goToCreateClassroom"
+          >
+            Buat kelas
+          </v-btn>
         </p>
         <v-form v-model="valid" lazy-validation>
           <v-text-field
