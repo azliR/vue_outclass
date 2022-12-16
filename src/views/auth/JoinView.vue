@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useJoinStore } from '@/stores/auth/join-store';
-import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { useJoinStore } from '@/stores/auth/join-store'
+import { storeToRefs } from 'pinia'
+import { ref, watch } from 'vue'
 
-const store = useJoinStore();
-const { studentIdRules, classCodeRules, onJoinPressed, goToScanCode } = store;
-const { valid, loading, error, studentId, classCode } = storeToRefs(store);
+const store = useJoinStore()
+const { studentIdRules, classCodeRules, onJoinPressed, goToScanCode } = store
+const { valid, loading, error, studentId, classCode } = storeToRefs(store)
 
-const showSnackbar = ref(false);
-watch(error, (state) => (showSnackbar.value = state != null));
+const showSnackbar = ref(false)
+watch(error, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>

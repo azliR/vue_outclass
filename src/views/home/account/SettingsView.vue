@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useSettingsStore } from '@/stores/home/account/settings';
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
-import { useTheme } from 'vuetify';
+import { useSettingsStore } from '@/stores/home/account/settings'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
+import { useTheme } from 'vuetify'
 
-const { t } = useI18n();
-const store = useSettingsStore();
-const { themes, changeLanguage, changeTheme, onBackPressed } = store;
-const { themeDialog, languageDialog } = storeToRefs(store);
+const { t } = useI18n()
+const store = useSettingsStore()
+const { themes, changeLanguage, changeTheme, onBackPressed } = store
+const { themeDialog, languageDialog } = storeToRefs(store)
 
-const currentTheme = useTheme();
+const currentTheme = useTheme()
 
-const i18n = useI18n();
-const { availableLocales } = i18n;
+const i18n = useI18n()
+const { availableLocales } = i18n
 </script>
 
 <template>

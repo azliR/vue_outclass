@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { useSignInStore } from '@/stores/auth/signin-store';
-import { useSettingsStore } from '@/stores/home/account/settings';
-import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useTheme } from 'vuetify';
+import { useSignInStore } from '@/stores/auth/signin-store'
+import { useSettingsStore } from '@/stores/home/account/settings'
+import { storeToRefs } from 'pinia'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useTheme } from 'vuetify'
 
-const i18n = useI18n();
-const store = useSignInStore();
-const settingsStore = useSettingsStore();
+const i18n = useI18n()
+const store = useSignInStore()
+const settingsStore = useSettingsStore()
 
-const currentTheme = useTheme();
+const currentTheme = useTheme()
 
-const { t, availableLocales, locale } = i18n;
-const { emailRules, passwordRules, onSignInPressed, goToSignUpPage } = store;
-const { changeLanguage, changeTheme } = settingsStore;
+const { t, availableLocales, locale } = i18n
+const { emailRules, passwordRules, onSignInPressed, goToSignUpPage } = store
+const { changeLanguage, changeTheme } = settingsStore
 
 const { valid, showPassword, loading, error, email, password } =
-  storeToRefs(store);
+  storeToRefs(store)
 
-const showSnackbar = ref(false);
-watch(error, (state) => (showSnackbar.value = state != null));
+const showSnackbar = ref(false)
+watch(error, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>

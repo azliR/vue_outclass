@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { useJoinStore } from '@/stores/auth/join-store';
-import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useJoinStore } from '@/stores/auth/join-store'
+import { storeToRefs } from 'pinia'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
-const route = useRoute();
+const route = useRoute()
 
-const store = useJoinStore();
-const { studentIdRules, onJoinPressed } = store;
-const { valid, loading, error, studentId, classCode } = storeToRefs(store);
+const store = useJoinStore()
+const { studentIdRules, onJoinPressed } = store
+const { valid, loading, error, studentId, classCode } = storeToRefs(store)
 
-classCode.value = route.params.classCode as string;
+classCode.value = route.params.classCode as string
 
-const showSnackbar = ref(false);
-watch(error, (state) => (showSnackbar.value = state != null));
+const showSnackbar = ref(false)
+watch(error, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>

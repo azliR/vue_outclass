@@ -1,12 +1,40 @@
 <script setup lang="ts">
-import { useMembersStore } from '@/stores/home/account/members';
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
+import AppError from '@/components/AppError.vue'
+import { toRoleString } from '@/models/classroom-member'
+import { useMembersStore } from '@/stores/home/account/members-store'
+import { useInfiniteScroll } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
-const store = useMembersStore();
-const { onBackPressed } = store;
-const { kickDialog, loading, error, members } = storeToRefs(store);
+const { t } = useI18n()
+const store = useMembersStore()
+const { loadMore, onBackPressed } = store
+const { kickDialog, loading, hasNextPage, errorSnackbar, classroomMembers } =
+  storeToRefs(store)
+
+const scrollContainer = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  if (classroomMembers.value.length === 0) {
+    loadMore(scrollContainer.value, false)
+  }
+})
+
+useInfiniteScroll(
+  scrollContainer,
+  async () => {
+    if (hasNextPage.value) {
+      await loadMore(scrollContainer.value, true)
+    } else {
+      return
+    }
+  },
+  { distance: 10 }
+)
+
+const showSnackbar = ref(false)
+watch(errorSnackbar, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>
@@ -19,73 +47,49 @@ const { kickDialog, loading, error, members } = storeToRefs(store);
       ></v-app-bar-nav-icon>
     </template>
   </v-app-bar>
-  <v-main>
-    <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
-    <app-error
-      v-else-if="error"
-      class="mt-4"
-      :error="error"
-      @refresh="() => {}"
-    ></app-error>
-    <v-container v-else>
-      <v-sheet>
-        <v-list>
-          <v-list-item
-            v-for="member in members"
-            :key="member.id"
-            :title="member.name"
-          >
-            <template v-slot:prepend>
-              <v-avatar>
-                <v-icon color="on-primary-container"> mdi-account </v-icon>
-              </v-avatar>
-            </template>
-            <template v-slot:append>
-              <v-menu activator="parent">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="secondary"
-                    icon="mdi-dots-vertical"
-                    variant="text"
-                    v-bind="props"
-                  ></v-btn>
-                </template>
-                <v-sheet>
-                  <v-list rounded="null">
-                    <v-list-item
-                      :title="t('account.members.menu.kick')"
-                      density="compact"
-                      @click="kickDialog = true"
-                    >
-                      <template v-slot:prepend>
-                        <v-icon class="pl-4" color="error">
-                          mdi-account-cancel
-                        </v-icon>
-                      </template>
-                    </v-list-item>
-                  </v-list>
-                </v-sheet>
-              </v-menu>
-            </template>
-          </v-list-item>
-        </v-list>
-      </v-sheet>
-    </v-container>
-    <v-dialog v-model="kickDialog">
-      <v-card
-        :title="t('account.members.dialogs.title')"
-        :text="t('account.members.dialogs.subtitle')"
-      >
-        <v-card-actions class="mx-2">
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="kickDialog = false">
-            {{ t('cancel') }}
-          </v-btn>
-          <v-btn variant="flat" color="error" @click="kickDialog = false">
-            {{ t('account.members.menu.kick') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <v-main class="scroll-main">
+    <div class="scroll-container" ref="scrollContainer">
+      <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
+      <app-error
+        v-else-if="errorSnackbar"
+        class="mt-4"
+        :error="errorSnackbar"
+        @refresh="() => {}"
+      ></app-error>
+      <v-container v-else>
+        <v-sheet>
+          <v-list>
+            <v-list-item
+              v-for="member in classroomMembers"
+              :key="member.id"
+              :title="member.name"
+              :subtitle="toRoleString(member.role)"
+            >
+              <template v-slot:prepend>
+                <v-avatar>
+                  <v-icon color="on-primary-container"> mdi-account </v-icon>
+                </v-avatar>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-sheet>
+      </v-container>
+    </div>
   </v-main>
+  <v-dialog v-model="kickDialog">
+    <v-card
+      :title="t('account.members.dialogs.title')"
+      :text="t('account.members.dialogs.subtitle')"
+    >
+      <v-card-actions class="mx-2">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="kickDialog = false">
+          {{ t('cancel') }}
+        </v-btn>
+        <v-btn variant="flat" color="error" @click="kickDialog = false">
+          {{ t('account.members.menu.kick') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { CreateFolderDto } from '@/dtos/directory';
-import { useAddFolderStore } from '@/stores/home/directories/add-folder';
-import { storeToRefs } from 'pinia';
+import type { CreateFolderDto } from '@/dtos/directory'
+import { useAddFolderStore } from '@/stores/home/directories/add-folder'
+import { storeToRefs } from 'pinia'
 
 const emit = defineEmits({
   close: () => true,
   save: (folder: CreateFolderDto) => true,
-});
-const store = useAddFolderStore();
-const { colors, nameRules, descriptionRules } = store;
-const { valid, folder } = storeToRefs(store);
+})
+const store = useAddFolderStore()
+const { colors, nameRules, descriptionRules } = store
+const { valid, folder } = storeToRefs(store)
 
 function onClosePressed() {
-  emit('close');
+  emit('close')
 }
 function onSavePressed() {
-  emit('save', folder.value);
+  emit('save', folder.value)
 }
 </script>
 

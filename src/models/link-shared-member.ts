@@ -4,6 +4,6 @@ enum Access {
 }
 
 export interface LinkSharedMember {
-  ownerId: string;
-  access: Access;
+  ownerId: string
+  access: Access
 }

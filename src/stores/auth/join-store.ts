@@ -1,8 +1,8 @@
-import type { Classroom } from '@/models/classroom';
-import type { ResponseData } from '@/models/response-data';
-import { DEFAULT_CLASSROOM_PREF_KEY } from '@/plugins/constants';
-import { AxiosError } from 'axios';
-import { defineStore } from 'pinia';
+import type { ClassroomMember } from '@/models/classroom-member'
+import type { ResponseData } from '@/models/response-data'
+import { DEFAULT_CLASSROOM_ID_PREF_KEY } from '@/plugins/constants'
+import { AxiosError } from 'axios'
+import { defineStore } from 'pinia'
 
 export const useJoinStore = defineStore('join', {
   state() {
@@ -12,7 +12,7 @@ export const useJoinStore = defineStore('join', {
       error: <string | null>null,
       studentId: '',
       classCode: '',
-    };
+    }
   },
   getters: {
     classCodeRules: () => [
@@ -24,44 +24,44 @@ export const useJoinStore = defineStore('join', {
   },
   actions: {
     async onJoinPressed() {
-      this.loading = true;
+      this.loading = true
 
       await this.privateClient
-        .post<ResponseData<Classroom>>('/classrooms/join', {
+        .post<ResponseData<ClassroomMember>>('/classrooms/join', {
           class_code: this.classCode,
           student_id: this.studentId,
         })
         .then(({ data }) => {
-          if (data.success) {
-            const classroom = data.data;
+          if (data.success && data.data) {
+            const classroomMember = data.data
 
             localStorage.setItem(
-              DEFAULT_CLASSROOM_PREF_KEY,
-              JSON.stringify(classroom)
-            );
+              DEFAULT_CLASSROOM_ID_PREF_KEY,
+              classroomMember.classroom_id
+            )
 
-            this.router.push({ name: 'overview' });
+            this.router.push({ name: 'overview' })
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error: Error) => {
-          console.error('signup-store.ts -> onSignUpPressed', error);
+          console.error('signup-store.ts -> onSignUpPressed', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
-              this.error = error.response?.data?.message ?? '';
+              this.error = error.response?.data?.message ?? ''
             } else {
-              this.error = JSON.stringify(error.toJSON());
+              this.error = JSON.stringify(error.toJSON())
             }
           } else {
-            this.error = error.message;
+            this.error = error.message
           }
-        });
-      this.loading = false;
+        })
+      this.loading = false
     },
     goToScanCode() {
-      this.router.push('scan');
+      this.router.push('scan')
     },
   },
-});
+})

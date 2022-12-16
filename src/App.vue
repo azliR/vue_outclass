@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useAppStore } from './stores/app';
+import { storeToRefs } from 'pinia'
+import { useAppStore } from './stores/app'
 
-const store = useAppStore();
-const { loading } = storeToRefs(store);
+const store = useAppStore()
+const { loading } = storeToRefs(store)
 </script>
 
 <template>
@@ -24,5 +24,23 @@ html {
 }
 .v-dialog {
   max-width: 540px;
+}
+.scroll-main {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.scroll-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  --v-layout-left: 0px;
+  --v-layout-right: 0px;
+  --v-layout-top: 0px;
+  --v-layout-bottom: 0px;
+  max-width: 100%;
+  position: relative;
 }
 </style>

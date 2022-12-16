@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import AppError from '@/components/AppError.vue';
-import { useDirectoriesStore } from '@/stores/home/directories/directories';
-import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper';
-import { useInfiniteScroll } from '@vueuse/core';
-import bytes from 'bytes';
-import { storeToRefs } from 'pinia';
-import { onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
+import AppError from '@/components/AppError.vue'
+import { useDirectoriesStore } from '@/stores/home/directories/directories'
+import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper'
+import { useInfiniteScroll } from '@vueuse/core'
+import bytes from 'bytes'
+import { storeToRefs } from 'pinia'
+import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useDisplay } from 'vuetify/lib/framework.mjs'
 
-const route = useRoute();
-const paths = route.path.split('/');
-const shareType = paths[2] ?? null;
-const parentDirectoryId = paths[3] ?? null;
+const route = useRoute()
+const paths = route.path.split('/')
+const shareType = paths[2] ?? null
+const parentDirectoryId = paths[3] ?? null
 
-var store = useDirectoriesStore(shareType, parentDirectoryId)();
-var folderWrapperStore = useDirectoriesWrapperStore();
+var store = useDirectoriesStore(shareType, parentDirectoryId)()
+var folderWrapperStore = useDirectoriesWrapperStore()
 
 const {
   loadMore,
@@ -27,8 +27,8 @@ const {
   getFileIcon,
   getFileColor,
   getFolderColor,
-} = store;
-const { breadcrumbs } = folderWrapperStore;
+} = store
+const { breadcrumbs } = folderWrapperStore
 
 const {
   folders,
@@ -41,39 +41,39 @@ const {
   errorPost,
   errorSnackbar,
   deleteDialog,
-} = storeToRefs(store);
+} = storeToRefs(store)
 
-getDownloadedFileKeys();
+getDownloadedFileKeys()
 
 watch(
   () => errorSnackbar,
   async (errorSnackbar) => {
-    folderWrapperStore.errorSnackbar = errorSnackbar.value;
+    folderWrapperStore.errorSnackbar = errorSnackbar.value
   }
-);
+)
 
-const { t } = useI18n();
-const { width } = useDisplay();
+const { t } = useI18n()
+const { width } = useDisplay()
 
-const scrollContainer = ref<HTMLElement | null>(null);
+const scrollContainer = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   if (folders.value.length === 0 && posts.value.length === 0) {
-    loadMore(scrollContainer.value, false);
+    loadMore(scrollContainer.value, false)
   }
-});
+})
 
 useInfiniteScroll(
   scrollContainer,
   async () => {
     if (hasNextPage.value) {
-      await loadMore(scrollContainer.value, true);
+      await loadMore(scrollContainer.value, true)
     } else {
-      return;
+      return
     }
   },
   { distance: 10 }
-);
+)
 </script>
 
 <template>
@@ -269,16 +269,3 @@ useInfiniteScroll(
     </v-card>
   </v-dialog>
 </template>
-
-<style scoped>
-.scroll-container {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  --v-layout-left: 0px;
-  --v-layout-right: 0px;
-  --v-layout-top: 0px;
-  --v-layout-bottom: 0px;
-  max-width: 100%;
-  position: relative;
-}
-</style>

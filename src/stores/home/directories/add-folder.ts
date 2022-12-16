@@ -1,13 +1,13 @@
-import type { CreateFolderDto } from '@/dtos/directory';
-import { colors } from '@/models/directory';
-import { defineStore } from 'pinia';
+import type { CreateFolderDto } from '@/dtos/directory'
+import { colors } from '@/models/directory'
+import { defineStore } from 'pinia'
 
 export const useAddFolderStore = defineStore('add-folder', {
   state() {
     return {
       valid: false,
       folder: <CreateFolderDto>{},
-    };
+    }
   },
   getters: {
     colors: () => colors,
@@ -21,4 +21,4 @@ export const useAddFolderStore = defineStore('add-folder', {
     ],
   },
   actions: {},
-});
+})

@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { useCalendarStore } from '@/stores/home/calendar/calendar';
-import '@fullcalendar/core/vdom';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import FullCalendar from '@fullcalendar/vue3';
-import { storeToRefs } from 'pinia';
-import AppError from '../../../components/AppError.vue';
+import { useCalendarStore } from '@/stores/home/calendar/calendar'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import FullCalendar from '@fullcalendar/vue3'
+import { storeToRefs } from 'pinia'
+import AppError from '../../../components/AppError.vue'
 
-const store = useCalendarStore();
-const { getEvents, handleDateSelect, handleEventClick, handleEvents } = store;
-const { loading, error, currentEvents } = storeToRefs(store);
+const store = useCalendarStore()
+const { getEvents, handleDateSelect, handleEventClick, handleEvents } = store
+const { loading, error, currentEvents } = storeToRefs(store)
 
-getEvents();
+getEvents()
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useSignUpStore } from '@/stores/auth/signup-store';
-import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useSignUpStore } from '@/stores/auth/signup-store'
+import { storeToRefs } from 'pinia'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const store = useSignUpStore();
+const store = useSignUpStore()
 const {
   nameRules,
   emailRules,
@@ -14,7 +14,7 @@ const {
   confirmPasswordRules,
   onSignUpPressed,
   goToSignInPage,
-} = store;
+} = store
 const {
   valid,
   loading,
@@ -24,10 +24,10 @@ const {
   email,
   password,
   error,
-} = storeToRefs(store);
+} = storeToRefs(store)
 
-const showSnackbar = ref(false);
-watch(error, (state) => (showSnackbar.value = state != null));
+const showSnackbar = ref(false)
+watch(error, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>
@@ -99,12 +99,7 @@ watch(error, (state) => (showSnackbar.value = state != null));
             </v-btn>
           </div>
           <div class="d-flex justify-space-around mt-4">
-            <v-btn
-              :loading="loading"
-              color="primary"
-              variant="text"
-              @click="goToSignInPage"
-            >
+            <v-btn color="primary" variant="text" @click="goToSignInPage">
               Aku udah punya akun
             </v-btn>
           </div>

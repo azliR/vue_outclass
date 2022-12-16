@@ -1,12 +1,12 @@
 <script setup lang="ts">
-const emit = defineEmits(['refresh']);
+const emit = defineEmits(['refresh'])
 
 defineProps({
   error: { type: String, required: true },
-});
+})
 
 function onRefreshPressed() {
-  emit('refresh');
+  emit('refresh')
 }
 </script>
 

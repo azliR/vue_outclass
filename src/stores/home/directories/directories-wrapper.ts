@@ -1,24 +1,24 @@
-import type { CreateFolderDto } from '@/dtos/directory';
-import type { Folder } from '@/models/directory';
-import type { ResponseData } from '@/models/response-data';
-import { AxiosError } from 'axios';
-import { defineStore } from 'pinia';
-import { useRouter } from 'vue-router';
+import type { CreateFolderDto } from '@/dtos/directory'
+import type { Folder } from '@/models/directory'
+import type { ResponseData } from '@/models/response-data'
+import { AxiosError } from 'axios'
+import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
 export interface Breadcrumb {
-  folderId: string | null;
-  folderName: string;
+  folderId: string | null
+  folderName: string
 }
 
 export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
   state() {
-    const router = useRouter();
-    const currentPath = router.currentRoute.value.path;
+    const router = useRouter()
+    const currentPath = router.currentRoute.value.path
     const rootPath = `/${currentPath.split('/')[1]}/${
       currentPath.split('/')[2]
-    }`;
+    }`
 
-    const index = folderTabs.findIndex((tab) => tab.path === rootPath);
+    const index = folderTabs.findIndex((tab) => tab.path === rootPath)
 
     return {
       currentFolder: <Folder | null>null,
@@ -27,7 +27,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
       folderTabs: folderTabs,
       errorSnackbar: <string | null>null,
       addDialog: false,
-    };
+    }
   },
   actions: {
     async getCurrentFolder(folderId: string): Promise<Folder | null> {
@@ -35,49 +35,49 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
         .get<ResponseData<Folder>>(`/directories/${folderId}`)
         .then(({ data }) => {
           if (data.success && data.data) {
-            return (this.currentFolder = data.data);
+            return (this.currentFolder = data.data)
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error) => {
           if (error instanceof AxiosError) {
-            this.errorSnackbar = JSON.stringify(error.toJSON());
+            this.errorSnackbar = JSON.stringify(error.toJSON())
           }
-          return null;
-        });
+          return null
+        })
     },
     async getBreadcrumbs(folderId: string | undefined) {
-      let breadcrumb: Breadcrumb;
+      let breadcrumb: Breadcrumb
       if (folderId) {
-        const folder = await this.getCurrentFolder(folderId);
-        this.currentFolder = folder;
+        const folder = await this.getCurrentFolder(folderId)
+        this.currentFolder = folder
 
-        const parentDirectoryId = (folderId as string) ?? null;
+        const parentDirectoryId = (folderId as string) ?? null
 
         breadcrumb = {
           folderId: parentDirectoryId,
           folderName: folder?.name ?? 'Berkas',
-        };
+        }
       } else {
-        this.currentFolder = null;
+        this.currentFolder = null
         breadcrumb = {
           folderId: null,
           folderName: 'Berkas',
-        };
+        }
       }
       const index = this.breadcrumbs.findIndex(
         (e) => e.folderId === breadcrumb.folderId
-      );
+      )
 
       if (index != -1) {
-        this.breadcrumbs = this.breadcrumbs.slice(0, index + 1);
+        this.breadcrumbs = this.breadcrumbs.slice(0, index + 1)
       } else {
-        this.breadcrumbs.push(breadcrumb);
+        this.breadcrumbs.push(breadcrumb)
       }
     },
     async createNewFolder(createFolderDto: CreateFolderDto): Promise<boolean> {
-      const shareType = folderTabs[this.selectedTabIndex].path.split('/')[2];
+      const shareType = folderTabs[this.selectedTabIndex].path.split('/')[2]
 
       return await this.privateClient
         .post<ResponseData<Folder>>('/directories/folders', {
@@ -90,53 +90,53 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
         })
         .then(({ data }) => {
           if (data.success) {
-            return true;
+            return true
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> createNewFolder', error);
-          return false;
-        });
+          console.error('folders-wrapper.ts -> createNewFolder', error)
+          return false
+        })
     },
     onTabChange(i: number) {
-      const newTab = folderTabs[i];
+      const newTab = folderTabs[i]
       console.log(
         '⛔ | file: folders-wrapper.ts | line 13 | onTabChange | newTab',
         newTab
-      );
-      const currentPath = this.router.currentRoute.value.path;
-      const rootPath = `/${currentPath.split('/')[1]}`;
+      )
+      const currentPath = this.router.currentRoute.value.path
+      const rootPath = `/${currentPath.split('/')[1]}`
 
       this.folderTabs = this.folderTabs.map((tab) => {
         if (tab.path === rootPath) {
           if (newTab.path === rootPath) {
-            newTab.currentPath = tab.path;
+            newTab.currentPath = tab.path
           } else {
-            tab.currentPath = currentPath;
+            tab.currentPath = currentPath
           }
         }
-        return tab;
-      });
+        return tab
+      })
 
-      this.router.push(newTab.currentPath);
-      this.selectedTabIndex = i;
+      this.router.push(newTab.currentPath)
+      this.selectedTabIndex = i
     },
     onBackPressed() {
       this.router.push({
         name: 'folders',
         params: { folderId: this.currentFolder?.parent_id },
-      });
+      })
     },
   },
-});
+})
 
 export default interface FolderTab {
-  title: string;
-  alert: string;
-  path: string;
-  currentPath: string;
+  title: string
+  alert: string
+  path: string
+  currentPath: string
 }
 
 const folderTabs = <FolderTab[]>[
@@ -158,4 +158,4 @@ const folderTabs = <FolderTab[]>[
     path: '/folders/personal',
     currentPath: '/folders/personal',
   },
-];
+]

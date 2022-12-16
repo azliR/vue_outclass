@@ -1,14 +1,14 @@
-import type { Calendar } from '@/models/calendar';
-import type { ResponseData } from '@/models/response-data';
-import { API_URL } from '@/plugins/constants';
+import type { Calendar } from '@/models/calendar'
+import type { ResponseData } from '@/models/response-data'
+import { API_URL } from '@/plugins/constants'
 import type {
   DateSelectArg,
   EventApi,
   EventClickArg,
   EventInput,
-} from '@fullcalendar/core';
-import type { AxiosError } from 'axios';
-import { defineStore } from 'pinia';
+} from '@fullcalendar/core'
+import type { AxiosError } from 'axios'
+import { defineStore } from 'pinia'
 
 export const useCalendarStore = defineStore('calendar', {
   state() {
@@ -16,20 +16,20 @@ export const useCalendarStore = defineStore('calendar', {
       error: <string | null>null,
       loading: false,
       currentEvents: <EventInput[]>[{}],
-    };
+    }
   },
   actions: {
     async getEvents() {
-      this.error = null;
-      this.loading = true;
+      this.error = null
+      this.loading = true
 
       await this.privateClient
         .get<ResponseData>(API_URL + '/events')
         .then(({ data }) => {
-          this.loading = false;
+          this.loading = false
           if (data.success) {
-            this.error = null;
-            console.log(data);
+            this.error = null
+            console.log(data)
 
             this.currentEvents = (data.data as Calendar[]).map(
               (event: Calendar) => {
@@ -38,26 +38,26 @@ export const useCalendarStore = defineStore('calendar', {
                   title: event.summary,
                   start: event.dtstart[0] as string,
                   end: event.dtend[0] as string,
-                };
+                }
               }
-            ) as EventInput[];
+            ) as EventInput[]
 
-            console.log(this.currentEvents);
+            console.log(this.currentEvents)
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error: AxiosError) => {
-          this.error = JSON.stringify(error.toJSON());
-          this.loading = false;
-          console.log(error);
-        });
+          this.error = JSON.stringify(error.toJSON())
+          this.loading = false
+          console.log(error)
+        })
     },
     handleDateSelect(selectInfo: DateSelectArg) {
-      const title = prompt('Please enter a new title for your event');
-      const calendarApi = selectInfo.view.calendar;
+      const title = prompt('Please enter a new title for your event')
+      const calendarApi = selectInfo.view.calendar
 
-      calendarApi.unselect();
+      calendarApi.unselect()
 
       if (title) {
         calendarApi.addEvent({
@@ -66,7 +66,7 @@ export const useCalendarStore = defineStore('calendar', {
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
-        });
+        })
       }
     },
     handleEventClick(clickInfo: EventClickArg) {
@@ -75,11 +75,11 @@ export const useCalendarStore = defineStore('calendar', {
           `Are you sure you want to delete the event '${clickInfo.event.title}'`
         )
       ) {
-        clickInfo.event.remove();
+        clickInfo.event.remove()
       }
     },
     handleEvents(events: EventApi[]) {
       // this.currentEvents = events.map((event: Event) => {});
     },
   },
-});
+})

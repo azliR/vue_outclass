@@ -1,7 +1,7 @@
-import type { Link } from '@/models/link';
-import type { LinkFolder } from '@/models/link-folder';
-import { API_URL, BASE_API_URL } from '@/plugins/constants';
-import { defineStore } from 'pinia';
+import type { Link } from '@/models/link'
+import type { LinkFolder } from '@/models/link-folder'
+import { API_URL, BASE_API_URL } from '@/plugins/constants'
+import { defineStore } from 'pinia'
 
 export const useLinksStore = defineStore('links', {
   state() {
@@ -12,65 +12,65 @@ export const useLinksStore = defineStore('links', {
       errorSave: <string | null>null,
       folder: <LinkFolder | undefined>undefined,
       links: <Link[] | undefined>undefined,
-    };
+    }
   },
   actions: {
     async getLinks() {
-      this.error = null;
-      this.loading = true;
+      this.error = null
+      this.loading = true
 
-      const folderId = this.router.currentRoute.value.params.folderId;
+      const folderId = this.router.currentRoute.value.params.folderId
 
       await this.privateClient
         .get(`${API_URL}/files?folderId=${folderId}`)
         .then(({ data }) => {
-          this.loading = false;
+          this.loading = false
           if (data.success) {
-            this.error = null;
-            this.folder = data.data.folder;
-            this.links = data.data.files;
+            this.error = null
+            this.folder = data.data.folder
+            this.links = data.data.files
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error) => {
-          this.error = error;
-          return console.log(error);
-        });
-      this.loading = false;
+          this.error = error
+          return console.log(error)
+        })
+      this.loading = false
     },
     async saveLink(newLink: Link) {
-      this.errorSave = null;
-      this.loading = true;
+      this.errorSave = null
+      this.loading = true
 
-      const folderId = this.router.currentRoute.value.path as string;
-      newLink.folderId = folderId;
+      const folderId = this.router.currentRoute.value.path as string
+      newLink.folderId = folderId
 
       await this.privateClient
         .post(`${BASE_API_URL}/links`, newLink)
         .then(({ data }) => {
-          return (this.links = data);
+          return (this.links = data)
         })
         .catch((error) => {
-          this.errorSave = error;
-          return console.log(error);
-        });
-      this.loading = false;
+          this.errorSave = error
+          return console.log(error)
+        })
+      this.loading = false
     },
     onCloseDialogPressed() {
-      this.dialog = false;
+      this.dialog = false
     },
     async onSavePressed(newLink: Link) {
-      await this.saveLink(newLink);
-      this.dialog = false;
+      await this.saveLink(newLink)
+      this.dialog = false
     },
     onBackPressed() {
-      this.router.push({ name: 'folders' });
+      this.router.push({ name: 'folders' })
     },
     onEscapePressed(e: KeyboardEvent) {
       if (e.code === 'Escape') {
-        this.onBackPressed();
+        this.onBackPressed()
       }
     },
   },
-});
+})

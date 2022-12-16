@@ -1,8 +1,8 @@
-import type { SignUp as SignUpResponse } from '@/models/auth';
-import type { ResponseData } from '@/models/response-data';
-import { JWT_TOKEN_PREF_KEY } from '@/plugins/constants';
-import { AxiosError } from 'axios';
-import { defineStore } from 'pinia';
+import type { SignUp as SignUpResponse } from '@/models/auth'
+import type { ResponseData } from '@/models/response-data'
+import { JWT_TOKEN_PREF_KEY } from '@/plugins/constants'
+import { AxiosError } from 'axios'
+import { defineStore } from 'pinia'
 
 export const useSignUpStore = defineStore('signup', {
   state() {
@@ -15,7 +15,7 @@ export const useSignUpStore = defineStore('signup', {
       name: '',
       email: '',
       password: '',
-    };
+    }
   },
   getters: {
     nameRules: () => [
@@ -40,8 +40,8 @@ export const useSignUpStore = defineStore('signup', {
   },
   actions: {
     async onSignUpPressed() {
-      this.loading = true;
-      this.error = null;
+      this.loading = true
+      this.error = null
 
       await this.publicClient
         .post<ResponseData<SignUpResponse>>('/user/sign/up', {
@@ -51,35 +51,35 @@ export const useSignUpStore = defineStore('signup', {
         })
         .then(({ data }) => {
           if (data.success) {
-            const signUpResponse = data.data;
+            const signUpResponse = data.data
 
             localStorage.setItem(
               JWT_TOKEN_PREF_KEY,
               JSON.stringify(signUpResponse?.token)
-            );
+            )
 
-            this.router.push({ name: 'join' });
+            this.router.push({ name: 'join' })
           } else {
-            return Promise.reject(data.message);
+            return Promise.reject(data.message)
           }
         })
         .catch((error: Error) => {
-          console.error('signup-store.ts -> onSignUpPressed', error);
+          console.error('signup-store.ts -> onSignUpPressed', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
-              this.error = error.response?.data?.message ?? '';
+              this.error = error.response?.data?.message ?? ''
             } else {
-              this.error = JSON.stringify(error.toJSON());
+              this.error = JSON.stringify(error.toJSON())
             }
           } else {
-            this.error = error.message;
+            this.error = error.message
           }
-        });
-      this.loading = false;
+        })
+      this.loading = false
     },
     goToSignInPage() {
-      this.router.push({ name: 'in' });
+      this.router.push({ name: 'in' })
     },
   },
-});
+})

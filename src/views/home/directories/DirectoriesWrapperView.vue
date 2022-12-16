@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import AppCreateNewFolderDialog from '@/components/AppCreateNewFolderDialog.vue';
-import type { CreateFolderDto } from '@/dtos/directory';
-import { useDirectoriesStore } from '@/stores/home/directories/directories';
-import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper';
-import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
+import AppCreateNewFolderDialog from '@/components/AppCreateNewFolderDialog.vue'
+import type { CreateFolderDto } from '@/dtos/directory'
+import { useDirectoriesStore } from '@/stores/home/directories/directories'
+import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper'
+import { storeToRefs } from 'pinia'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useDisplay } from 'vuetify/lib/framework.mjs'
 
-const { t } = useI18n();
-const route = useRoute();
-const { smAndDown, mdAndDown } = useDisplay();
+const { t } = useI18n()
+const route = useRoute()
+const { smAndDown, mdAndDown } = useDisplay()
 
-const store = useDirectoriesWrapperStore();
-const { getBreadcrumbs, createNewFolder, onTabChange, onBackPressed } = store;
+const store = useDirectoriesWrapperStore()
+const { getBreadcrumbs, createNewFolder, onTabChange, onBackPressed } = store
 const {
   currentFolder,
   selectedTabIndex,
@@ -22,40 +22,40 @@ const {
   folderTabs,
   addDialog,
   errorSnackbar,
-} = storeToRefs(store);
+} = storeToRefs(store)
 
 if (breadcrumbs.value.length === 0 && !route.params.folderId) {
-  getBreadcrumbs(undefined);
+  getBreadcrumbs(undefined)
 }
 
 watch(
   () => route.params,
   async (params) => {
-    getBreadcrumbs(params.folderId as string | undefined);
+    getBreadcrumbs(params.folderId as string | undefined)
   }
-);
+)
 
-const paths = route.path.split('/');
-const shareType = paths[2] ?? null;
-const parentDirectoryId = paths[3] ?? null;
+const paths = route.path.split('/')
+const shareType = paths[2] ?? null
+const parentDirectoryId = paths[3] ?? null
 
-var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)();
+var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)()
 
 async function saveFolderPressed(folder: CreateFolderDto) {
   const result = await createNewFolder({
     name: folder.name,
     color: folder.color,
     description: folder.description,
-  });
+  })
   if (result) {
-    directoriesStore.refresh();
+    directoriesStore.refresh()
   }
-  addDialog.value = false;
+  addDialog.value = false
 }
 
-const showSnackbar = ref(false);
+const showSnackbar = ref(false)
 
-watch(errorSnackbar, (state) => (showSnackbar.value = state != null));
+watch(errorSnackbar, (state) => (showSnackbar.value = state != null))
 </script>
 
 <template>
@@ -147,14 +147,6 @@ watch(errorSnackbar, (state) => (showSnackbar.value = state != null));
 </template>
 
 <style scoped>
-.scroll-main {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 .v-dialog {
   max-width: 100%;
 }

@@ -1,10 +1,10 @@
 import {
-  DEFAULT_CLASSROOM_PREF_KEY,
+  DEFAULT_CLASSROOM_ID_PREF_KEY,
   JWT_TOKEN_PREF_KEY,
-} from '@/plugins/constants';
-import { useAppStore } from '@/stores/app';
-import EmptyRouterView from '@/views/EmptyRouterView.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+} from '@/plugins/constants'
+import { useAppStore } from '@/stores/app'
+import EmptyRouterView from '@/views/EmptyRouterView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,21 +70,21 @@ const router = createRouter({
             {
               path: ':shareType',
               component: () =>
-                import('@/views/home/directories/FoldersWrapperView.vue'),
+                import('@/views/home/directories/DirectoriesWrapperView.vue'),
               children: [
                 {
                   path: '',
                   name: 'rootFolders',
                   meta: { title: 'Files' },
                   component: () =>
-                    import('@/views/home/directories/FoldersView.vue'),
+                    import('@/views/home/directories/DirectoriesView.vue'),
                 },
                 {
                   path: ':folderId',
                   name: 'folders',
                   meta: { title: 'Files' },
                   component: () =>
-                    import('@/views/home/directories/FoldersView.vue'),
+                    import('@/views/home/directories/DirectoriesView.vue'),
                 },
               ],
             },
@@ -122,18 +122,18 @@ const router = createRouter({
       component: () => import('@/views/NotFoundView.vue'),
     },
   ],
-});
+})
 
-const DEFAULT_TITLE = 'OutClass';
+const DEFAULT_TITLE = 'OutClass'
 router.beforeEach((to) => {
   if (to.meta.title) {
-    document.title = DEFAULT_TITLE + ' - ' + to.meta.title;
+    document.title = DEFAULT_TITLE + ' - ' + to.meta.title
   } else {
-    document.title = DEFAULT_TITLE;
+    document.title = DEFAULT_TITLE
   }
 
-  const appStore = useAppStore();
-  appStore.startLoading();
+  const appStore = useAppStore()
+  appStore.startLoading()
 
   if (
     localStorage.getItem(JWT_TOKEN_PREF_KEY) === null &&
@@ -141,22 +141,22 @@ router.beforeEach((to) => {
     to.name !== 'up' &&
     to.name !== 'reset'
   ) {
-    return { name: 'in' };
+    return { name: 'in' }
   } else if (
-    localStorage.getItem(DEFAULT_CLASSROOM_PREF_KEY) === null &&
+    localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY) === null &&
     to.name !== 'join' &&
     to.name !== 'scan' &&
     to.name !== 'in' &&
     to.name !== 'up' &&
     to.name !== 'reset'
   ) {
-    return { name: 'join' };
+    return { name: 'join' }
   }
-});
+})
 
 router.beforeResolve(() => {
-  const appStore = useAppStore();
-  appStore.stopLoading();
-});
+  const appStore = useAppStore()
+  appStore.stopLoading()
+})
 
-export default router;
+export default router

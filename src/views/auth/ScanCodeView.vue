@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useScanStore } from '@/stores/auth/scan-store';
-import { storeToRefs } from 'pinia';
-import { QrcodeStream } from 'vue-qrcode-reader';
+import { useScanStore } from '@/stores/auth/scan-store'
+import { storeToRefs } from 'pinia'
+import { QrcodeStream } from 'vue-qrcode-reader'
 
-const store = useScanStore();
-const { onInit, onDecode, turnTorch, switchCamera } = store;
+const store = useScanStore()
+const { onInit, onDecode, turnTorch, switchCamera } = store
 const {
   initialised,
   error,
@@ -13,7 +13,7 @@ const {
   noFrontCamera,
   torchActive,
   camera,
-} = storeToRefs(store);
+} = storeToRefs(store)
 </script>
 <template>
   <v-main style="position: relative; background-color: black">

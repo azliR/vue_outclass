@@ -1,9 +1,9 @@
 // Styles
-import '@mdi/font/css/materialdesignicons.css';
-import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
 
 // Vuetify
-import { createVuetify, type ThemeDefinition } from 'vuetify';
+import { createVuetify, type ThemeDefinition } from 'vuetify'
 
 const lightColor = {
   primary: '#0058cc',
@@ -33,7 +33,7 @@ const lightColor = {
   inverseSurface: '#303033',
   inversePrimary: '#afc6ff',
   shadow: '#000000',
-};
+}
 
 const darkColor = {
   primary: '#afc6ff',
@@ -63,7 +63,7 @@ const darkColor = {
   inverseSurface: '#e4e2e6',
   inversePrimary: '#0058cc',
   shadow: '#000000',
-};
+}
 
 const lightTheme: ThemeDefinition = {
   dark: false,
@@ -99,7 +99,7 @@ const lightTheme: ThemeDefinition = {
     'inverse-primary': lightColor.inversePrimary,
     // scrim: lightColor.scrim,
   },
-};
+}
 
 const darkTheme: ThemeDefinition = {
   dark: true,
@@ -135,7 +135,7 @@ const darkTheme: ThemeDefinition = {
     'inverse-primary': darkColor.inversePrimary,
     // scrim: darkColor.scrim,
   },
-};
+}
 
 export default createVuetify({
   theme: {
@@ -193,5 +193,5 @@ export default createVuetify({
       color: 'surface-variant',
     },
   },
-});
+})
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

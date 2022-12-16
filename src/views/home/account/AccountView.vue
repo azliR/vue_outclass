@@ -1,13 +1,40 @@
 <script setup lang="ts">
-import { useAccountStore } from '@/stores/home/account/account';
-import { storeToRefs } from 'pinia';
-import QRCodeVue3 from 'qrcode-vue3';
-import { useI18n } from 'vue-i18n';
+import AppError from '@/components/AppError.vue'
+import { useAccountStore } from '@/stores/home/account/account-store'
+import { storeToRefs } from 'pinia'
+import QRCodeVue3 from 'qrcode-vue3'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
-const store = useAccountStore();
-const { goToMembers, goToSettings, exitClass, signOutAccount } = store;
-const { showQrDialog } = storeToRefs(store);
+const { t } = useI18n()
+
+const store = useAccountStore()
+const {
+  getProfile,
+  getClassroomMember,
+  goToMembers,
+  goToSettings,
+  exitClass,
+  signOutAccount,
+} = store
+const { loading, error, showQrDialog, user, classroomMember } =
+  storeToRefs(store)
+
+if (!user.value) {
+  fetchAccount()
+}
+
+async function fetchAccount() {
+  await getProfile()
+  await getClassroomMember()
+}
+
+const origin = location.origin
+const joinPath = '/join'
+const joinUrl = origin + joinPath + '/' + classroomMember.value?.classroom_id
+
+const showSnackbar = ref(false)
+watch(error, (state) => (showSnackbar.value = state != null))
 
 // const theme = useTheme();
 // const themeColor = theme.global.current.value.colors;
@@ -27,7 +54,14 @@ const { showQrDialog } = storeToRefs(store);
     </template>
   </v-app-bar>
   <v-main scrollable>
-    <v-container>
+    <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
+    <app-error
+      v-if="error"
+      class="mt-4"
+      :error="error"
+      @refresh="fetchAccount()"
+    ></app-error>
+    <v-container v-if="user && classroomMember">
       <div class="d-flex flex-column flex-lg-row">
         <v-sheet style="flex: 1">
           <div class="px-6 pt-4">
@@ -39,7 +73,7 @@ const { showQrDialog } = storeToRefs(store);
           <v-list class="px-2" lines="two">
             <v-list-item
               :title="t('account.profile.nameLabel')"
-              subtitle="Rizal Hadiyansah"
+              :subtitle="user?.name"
               @click.stop=""
             >
               <template v-slot:append>
@@ -51,7 +85,7 @@ const { showQrDialog } = storeToRefs(store);
             <v-divider></v-divider>
             <v-list-item
               :title="t('account.profile.nimLabel')"
-              subtitle="1207050109"
+              :subtitle="classroomMember.student_id"
               @click.stop=""
             >
               <template v-slot:append>
@@ -63,7 +97,7 @@ const { showQrDialog } = storeToRefs(store);
             <v-divider></v-divider>
             <v-list-item
               :title="t('account.profile.emailLabel')"
-              subtitle="rizalhadiyansah@gmail.com"
+              :subtitle="user?.email"
               @click.stop=""
             >
               <template v-slot:append>
@@ -95,7 +129,7 @@ const { showQrDialog } = storeToRefs(store);
           <v-list class="px-2" lines="two">
             <v-list-item
               :title="t('account.class.className')"
-              subtitle="IF E"
+              :subtitle="classroomMember.classroom_name"
               @click.stop=""
             >
               <template v-slot:append>
@@ -107,7 +141,7 @@ const { showQrDialog } = storeToRefs(store);
             <v-divider></v-divider>
             <v-list-item
               :title="t('account.class.classCode')"
-              subtitle="358812"
+              :subtitle="classroomMember.class_code"
             >
               <template v-slot:append>
                 <v-btn variant="outlined" color="primary"> Reset </v-btn>
@@ -130,15 +164,12 @@ const { showQrDialog } = storeToRefs(store);
                       class="mx-auto mt-3"
                       :width="200"
                       :height="200"
-                      value="358812"
-                      :qrOptions="{
-                        mode: 'Numeric',
-                        errorCorrectionLevel: 'H',
-                      }"
+                      :value="joinUrl"
                       :dotsOptions="{
                         type: 'dots',
                         color: '#000000',
                       }"
+                      image="./src/assets/logo.svg"
                       :backgroundOptions="{ color: '#ffffff' }"
                       :cornersSquareOptions="{
                         type: 'extra-rounded',
@@ -159,7 +190,9 @@ const { showQrDialog } = storeToRefs(store);
             <v-divider></v-divider>
             <v-list-item
               :title="t('account.class.members')"
-              :subtitle="t('account.class.member', 3)"
+              :subtitle="
+                t('account.class.member', classroomMember.class_members_count)
+              "
               @click="goToMembers"
             >
               <template v-slot:append>
@@ -182,5 +215,7 @@ const { showQrDialog } = storeToRefs(store);
       <div class="my-4"></div>
     </v-container>
   </v-main>
+  <v-snackbar v-model="showSnackbar" color="error">
+    {{ error }}
+  </v-snackbar>
 </template>
-<style></style>
