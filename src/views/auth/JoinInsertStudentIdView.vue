@@ -24,7 +24,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
         <p class="text-body-2 text-center mb-6">
           Tinggal masukin NIM kamu di bawah, buat pengenal aja di kelas kamu~
         </p>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form v-model="valid" lazy-validation>
           <v-text-field
             v-model="studentId"
             :rules="studentIdRules"

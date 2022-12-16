@@ -78,7 +78,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
         <p class="text-body-2 text-center mb-6">
           {{ t('signin.subtitle') }}
         </p>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form v-model="valid" lazy-validation>
           <v-text-field
             v-model="email"
             :rules="emailRules"

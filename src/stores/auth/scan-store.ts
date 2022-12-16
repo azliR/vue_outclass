@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useScanStore = defineStore('join', {
+export const useScanStore = defineStore('scan', {
   state() {
     return {
       camera: 'rear',
@@ -24,8 +24,6 @@ export const useScanStore = defineStore('join', {
         const cameraMissingError = error.name === 'OverconstrainedError'
 
         if (cameraMissingError) {
-          console.log('ass')
-
           if (!this.noRearCamera && triedRearCamera) {
             this.switchCamera()
             this.noRearCamera = true
@@ -40,24 +38,29 @@ export const useScanStore = defineStore('join', {
             this.camera = 'auto'
           }
         }
-        console.error(this.camera)
-        console.error(error)
       } finally {
         this.initialised = true
       }
       this.error = false
     },
-    async onDecode(content: string) {
+    onDecode(content: string) {
       this.camera = 'off'
 
       const url = new URL(content)
+      const pathNames = url.pathname.split('/')
 
       if (
-        (url.hostname === 'localhost' ||
-          url.hostname === 'outclass.azlir.my.id') &&
-        !isNaN(Number(content))
+        (url.host === 'localhost:5173' ||
+          url.host === 'outclass.azlir.my.id') &&
+        pathNames.length === 3 &&
+        pathNames[1] === 'join'
       ) {
-        window.open(content)
+        this.router.push({
+          name: 'joinInsertStudentId',
+          params: {
+            classCode: pathNames[2],
+          },
+        })
       } else {
         setTimeout(() => {
           this.camera = 'auto'

@@ -40,7 +40,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
           Buat akunnya gampang banget, kamu cuman perlu masukin data di bawah,
           langsung cuss bisa nikmatin semua fitur di OutClass!
         </p>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form v-model="valid" lazy-validation>
           <v-text-field
             v-model="name"
             :rules="nameRules"

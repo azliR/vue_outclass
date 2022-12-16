@@ -22,7 +22,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
             (psst, tanyain kodenya ke temen kamu kalo gak tau)
           </span>
         </p>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form v-model="valid" lazy-validation>
           <v-text-field
             v-model="studentId"
             :rules="studentIdRules"
@@ -38,6 +38,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
             placeholder="Masukin kode kelas kamu"
             prepend-icon="mdi-numeric"
             required
+            @keydown.enter="onJoinPressed"
           ></v-text-field>
           <div class="d-flex justify-space-around mt-6">
             <v-btn

@@ -36,16 +36,16 @@ const router = createRouter({
       component: () => import('@/views/auth/JoinView.vue'),
     },
     {
-      path: '/join/:classCode',
-      name: 'joinInsertStudentId',
-      meta: { title: 'Join' },
-      component: () => import('@/views/auth/JoinInsertStudentIdView.vue'),
-    },
-    {
       path: '/scan',
       name: 'scan',
       meta: { title: 'Scan' },
       component: () => import('@/views/auth/ScanCodeView.vue'),
+    },
+    {
+      path: '/join/:classCode',
+      name: 'joinInsertStudentId',
+      meta: { title: 'Join' },
+      component: () => import('@/views/auth/JoinInsertStudentIdView.vue'),
     },
     {
       path: '/',
@@ -145,6 +145,7 @@ router.beforeEach((to) => {
   } else if (
     localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY) === null &&
     to.name !== 'join' &&
+    to.name !== 'joinInsertStudentId' &&
     to.name !== 'scan' &&
     to.name !== 'in' &&
     to.name !== 'up' &&

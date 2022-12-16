@@ -24,14 +24,14 @@ if (!user.value) {
   fetchAccount()
 }
 
+var joinUrl = ''
 async function fetchAccount() {
   await getProfile()
   await getClassroomMember()
+  const origin = location.origin
+  const joinPath = '/join'
+  joinUrl = origin + joinPath + '/' + classroomMember.value?.class_code
 }
-
-const origin = location.origin
-const joinPath = '/join'
-const joinUrl = origin + joinPath + '/' + classroomMember.value?.classroom_id
 
 const showSnackbar = ref(false)
 watch(error, (state) => (showSnackbar.value = state != null))
