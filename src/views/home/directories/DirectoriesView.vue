@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import AppEmpty from '@/components/AppEmpty.vue'
 import AppError from '@/components/AppError.vue'
-import { useDirectoriesStore } from '@/stores/home/directories/directories'
-import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper'
+import { useDirectoriesStore } from '@/stores/home/directories/directories-store'
+import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper-store'
+import { isDark } from '@/utils/colors'
 import { useInfiniteScroll } from '@vueuse/core'
 import bytes from 'bytes'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useDisplay } from 'vuetify/lib/framework.mjs'
@@ -28,9 +30,11 @@ const {
   getFileColor,
   getFolderColor,
 } = store
-const { breadcrumbs } = folderWrapperStore
+const { breadcrumbs, onUpdateFolderPressed, onDeleteFolderPressed } =
+  folderWrapperStore
 
 const {
+  scrollContainer,
   folders,
   posts,
   downloadedFileKeys,
@@ -40,7 +44,6 @@ const {
   errorFolder,
   errorPost,
   errorSnackbar,
-  deleteDialog,
 } = storeToRefs(store)
 
 getDownloadedFileKeys()
@@ -55,10 +58,8 @@ watch(
 const { t } = useI18n()
 const { width } = useDisplay()
 
-const scrollContainer = ref<HTMLElement | null>(null)
-
 onMounted(() => {
-  if (folders.value.length === 0 && posts.value.length === 0) {
+  if (!folders.value && !posts.value) {
     loadMore(scrollContainer.value, false)
   }
 })
@@ -104,9 +105,11 @@ useInfiniteScroll(
         variant="tonal"
         closable
       ></v-alert> -->
-      <p v-if="folders.length > 0" class="mx-3 text-overline">Folders</p>
+      <p v-if="folders && folders.length > 0" class="mx-3 text-overline">
+        Folders
+      </p>
       <div
-        v-if="folders.length > 0"
+        v-if="folders && folders.length > 0"
         class="mb-4"
         :style="{
           display: 'grid',
@@ -116,20 +119,26 @@ useInfiniteScroll(
       >
         <v-sheet
           class="ma-1"
-          v-for="directory in folders"
-          :key="directory.id"
+          v-for="folder in folders"
+          :key="folder.id"
           rounded="lg"
         >
           <v-list-item
-            :title="directory.name"
+            :title="folder.name"
             color="on-surface"
             rounded="lg"
-            @click="onFolderPressed(directory)"
+            @click="onFolderPressed(folder)"
             @contextmenu.prevent=""
           >
             <template v-slot:prepend>
-              <v-avatar :color="getFolderColor(directory.color)">
-                <v-icon color="on-primary-container"> mdi-folder </v-icon>
+              <v-avatar :color="getFolderColor(folder.color)">
+                <v-icon
+                  :color="
+                    isDark(getFolderColor(folder.color)) ? 'white' : 'black'
+                  "
+                >
+                  mdi-folder
+                </v-icon>
               </v-avatar>
             </template>
             <template v-slot:append>
@@ -142,7 +151,11 @@ useInfiniteScroll(
                         <v-icon class="pl-4"> mdi-content-copy </v-icon>
                       </template>
                     </v-list-item> -->
-                    <v-list-item title="Ubah" density="compact">
+                    <v-list-item
+                      title="Ubah"
+                      density="compact"
+                      @click="onUpdateFolderPressed(folder)"
+                    >
                       <template v-slot:prepend>
                         <v-icon class="pl-4"> mdi-pencil </v-icon>
                       </template>
@@ -150,7 +163,7 @@ useInfiniteScroll(
                     <v-list-item
                       title="Hapus"
                       density="compact"
-                      @click="deleteDialog = true"
+                      @click="onDeleteFolderPressed(folder)"
                     >
                       <template v-slot:prepend>
                         <v-icon class="pl-4"> mdi-delete </v-icon>
@@ -172,9 +185,9 @@ useInfiniteScroll(
         :error="errorFolder"
         @refresh="loadMore(scrollContainer, true)"
       ></app-error>
-
-      <p v-if="posts.length > 0" class="mx-3 text-overline">Posts</p>
+      <p v-if="posts && posts.length > 0" class="mx-3 text-overline">Posts</p>
       <div
+        v-if="posts && posts.length > 0"
         :style="{
           display: 'grid',
           'grid-template-columns':
@@ -183,15 +196,15 @@ useInfiniteScroll(
       >
         <v-sheet
           class="ma-1 px-4 py-3"
-          v-for="directory in posts"
-          :key="directory.id"
+          v-for="post in posts"
+          :key="post.id"
           rounded="lg"
         >
-          <p class="text-subtitle-1">{{ directory.name }}</p>
-          <p class="text-body-2">{{ directory.description }}</p>
+          <p class="text-subtitle-1">{{ post.name }}</p>
+          <p class="text-body-2">{{ post.description }}</p>
 
           <div
-            v-if="directory.files"
+            v-if="post.files"
             class="mt-2"
             :style="{
               display: 'grid',
@@ -200,7 +213,7 @@ useInfiniteScroll(
             }"
           >
             <v-list-item
-              v-for="file in directory.files"
+              v-for="file in post.files"
               :key="file.link"
               class="ma-1 px-0 py-1"
               density="compact"
@@ -246,26 +259,13 @@ useInfiniteScroll(
           </div>
         </v-sheet>
       </div>
+      <app-empty
+        v-if="folders && posts && folders.length === 0 && posts.length === 0"
+      ></app-empty>
       <div v-if="loadingPost" class="d-flex justify-center">
         <v-progress-circular class="ma-3" indeterminate></v-progress-circular>
       </div>
       <app-error v-if="errorPost" class="mt-4" :error="errorPost"></app-error>
     </v-container>
   </div>
-
-  <v-dialog v-model="deleteDialog">
-    <v-card
-      title=" Hapus folder? "
-      text="AWAS! Kalo kamu hapus folder ini, semua link yang ada di folder ini bakal ikutan kehapus juga! Beneran hapus?"
-      elevation="3"
-    >
-      <v-card-actions class="mx-2">
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="deleteDialog = false"> Batal </v-btn>
-        <v-btn variant="flat" color="error" @click="deleteDialog = false">
-          Hapus
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>

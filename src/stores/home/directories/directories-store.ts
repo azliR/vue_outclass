@@ -21,8 +21,9 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
   defineStore('directories-' + shareType + parentId, {
     state() {
       return {
-        folders: <Folder[]>[],
-        posts: <Post[]>[],
+        scrollContainer: <HTMLElement | null>null,
+        folders: <Folder[] | undefined>undefined,
+        posts: <Post[] | undefined>undefined,
         downloadedFileKeys: <string[]>[],
         page: 0,
         pageLimit: 10,
@@ -34,7 +35,6 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
         errorFolder: <string | null>null,
         errorPost: <string | null>null,
         errorSnackbar: <string | null>null,
-        deleteDialog: false,
       }
     },
     actions: {
@@ -112,11 +112,21 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
           this.pageLimit
         )
           .then((newDirectories) => {
+            if (this.directoryType === DIRECTORY_TYPE_FOLDER) {
+              if (this.folders === undefined) {
+                this.folders = []
+              }
+            } else {
+              if (this.posts === undefined) {
+                this.posts = []
+              }
+            }
+
             if (newDirectories !== null) {
               if (this.directoryType === DIRECTORY_TYPE_FOLDER) {
-                this.folders.push(...(newDirectories as Folder[]))
+                this.folders!.push(...(newDirectories as Folder[]))
               } else {
-                this.posts.push(...(newDirectories as Post[]))
+                this.posts!.push(...(newDirectories as Post[]))
               }
               if (newDirectories.length < this.pageLimit) {
                 if (this.directoryType === DIRECTORY_TYPE_FOLDER) {
@@ -155,35 +165,11 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
       async refresh() {
         this.page = 0
         this.hasNextPage = true
-        this.folders = []
-        this.posts = []
+        this.folders = undefined
+        this.posts = undefined
         this.directoryType = DIRECTORY_TYPE_FOLDER
-        await this.loadMore(null, false)
+        await this.loadMore(this.scrollContainer, false)
       },
-      // async deleteFolder(id: string) {
-      //   this.error = null;
-      //   this.loading = true;
-
-      //   await this.privateClient
-      //     .get<ResponseData<Folder[]>>(API_URL + '/folders' + id)
-      //     .then<Folder[]>(({ data }) => {
-      //       this.loading = false;
-      //       if (data.success && data.data) {
-      //         this.error = null;
-      //         return data.data;
-      //       } else {
-      //         return Promise.reject(data.message);
-      //       }
-      //     })
-      //     .catch((error: AxiosError) => {
-      //       console.error(
-      //         '⛔ ~ file: directories.ts ~ line 69 ~ deleteFolder ~ error',
-      //         error
-      //       );
-      //       this.error = JSON.stringify(error.toJSON());
-      //       this.loading = false;
-      //     });
-      // },
       async onFilePressed(link: string, type: string) {
         if (type === 'link') {
           return
@@ -300,8 +286,10 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
           return 'deep-purple'
         return 'grey'
       },
-      getFolderColor(name: string): string | undefined {
-        return colors.find((color) => color.key == name)?.color
+      getFolderColor(name: string): string {
+        return (
+          colors.find((color) => color.key == name)?.color ?? colors[0].color
+        )
       },
     },
   })

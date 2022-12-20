@@ -1,33 +1,47 @@
 <script setup lang="ts">
 import type { CreateFolderDto } from '@/dtos/directory'
-import { useAddFolderStore } from '@/stores/home/directories/add-folder'
+import type { Folder } from '@/models/directory'
+import { useCreateFolderStore } from '@/stores/home/directories/create-folder-store'
+import { isDark } from '@/utils/colors'
 import { storeToRefs } from 'pinia'
+import { ref, type PropType } from 'vue'
+
+const props = defineProps({
+  folder: Object as PropType<Folder | null>,
+})
 
 const emit = defineEmits({
   close: () => true,
   save: (folder: CreateFolderDto) => true,
 })
-const store = useAddFolderStore()
+
+const store = useCreateFolderStore()
 const { colors, nameRules, descriptionRules } = store
 const { valid, folder } = storeToRefs(store)
 
+if (props.folder) {
+  folder.value = ref(props.folder).value
+}
+
 function onClosePressed() {
   emit('close')
+  store.$reset()
 }
 function onSavePressed() {
   emit('save', folder.value)
+  store.$reset()
 }
 </script>
-
-<script setup lang="ts"></script>
 
 <template>
   <v-card>
     <v-toolbar>
       <v-btn icon="mdi-close" @click="onClosePressed" variant="flat"> </v-btn>
-      <v-toolbar-title>Buat Folder Baru</v-toolbar-title>
-      <v-toolbar-items varian="tonal">
-        <v-btn class="ma-2" height="40" variant="tonal" @click="onSavePressed">
+      <v-toolbar-title>{{
+        props.folder ? 'Edit Folder' : 'Buat Folder Baru'
+      }}</v-toolbar-title>
+      <v-toolbar-items variant="elevated" color="primary">
+        <v-btn class="ma-2" height="40" elevation="0" @click="onSavePressed">
           Simpan
         </v-btn>
       </v-toolbar-items>
@@ -55,7 +69,7 @@ function onSavePressed() {
           <v-tooltip
             v-for="color in colors"
             :key="color.key"
-            :text="color.key"
+            :text="color.name"
             location="top"
           >
             <template v-slot:activator="{ props }">
@@ -64,10 +78,16 @@ function onSavePressed() {
                 class="ma-1"
                 :color="color.color"
                 rounded="lg"
-                :icon="folder.color === color.key ? 'mdi-check-bold' : ''"
                 size="small"
                 @click="folder.color = color.key"
+                icon
               >
+                <v-icon
+                  v-if="folder.color === color.key"
+                  :color="isDark(color.color) ? 'white' : 'black'"
+                >
+                  mdi-check-bold
+                </v-icon>
               </v-btn>
             </template>
           </v-tooltip>
