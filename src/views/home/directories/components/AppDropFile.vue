@@ -21,7 +21,7 @@ function onChange() {
             `${file.name}-${file.size}-${file.lastModified}-${file.type}`
         )
     )
-    files.value = files.value.concat(newFiles)
+    files.value.push(...newFiles)
     emit('files-dropped', files.value)
   }
 }

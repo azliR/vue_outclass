@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppEmpty from '@/components/AppEmpty.vue'
 import AppError from '@/components/AppError.vue'
+import { getFileColor, getFileIcon, getFolderColor } from '@/models/directory'
 import { useDirectoriesStore } from '@/stores/home/directories/directories-store'
 import { useDirectoriesWrapperStore } from '@/stores/home/directories/directories-wrapper-store'
 import { isDark } from '@/utils/colors'
@@ -26,9 +27,6 @@ const {
   onDownloadFilePressed,
   getDownloadedFileKeys,
   onFolderPressed,
-  getFileIcon,
-  getFileColor,
-  getFolderColor,
 } = store
 const { breadcrumbs, onUpdateFolderPressed, onDeleteFolderPressed } =
   folderWrapperStore
@@ -219,7 +217,7 @@ useInfiniteScroll(
               density="compact"
               rounded="lg"
               border
-              @click="onFilePressed(file.link, file.type)"
+              @click="onFilePressed(file.link, file.name, file.type)"
             >
               <template v-slot:prepend>
                 <v-icon class="mx-3" :color="getFileColor(file.type)">
@@ -251,7 +249,9 @@ useInfiniteScroll(
                   icon="mdi-download"
                   variant="text"
                   size="small"
-                  @click.stop="onDownloadFilePressed(file.link, file.type)"
+                  @click.stop="
+                    onDownloadFilePressed(file.link, file.name, file.type)
+                  "
                 >
                 </v-btn>
               </template>

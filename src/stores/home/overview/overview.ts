@@ -1,6 +1,6 @@
-import type Assignment from '@/models/assignment';
-import type { Event } from '@/models/event';
-import { defineStore } from 'pinia';
+import type Assignment from '@/models/assignment'
+import type { Event } from '@/models/event'
+import { defineStore } from 'pinia'
 
 export const useOverviewStore = defineStore('overview', {
   state() {
@@ -32,13 +32,13 @@ export const useOverviewStore = defineStore('overview', {
         {
           id: 'c2fa9ba7-86ae-4f0c-87a6-2577a2b91438',
           classroomId: '358812',
-          name: 'Manajemen Proyek Perangkat Lunak',
+          title: 'Manajemen Proyek Perangkat Lunak',
           date: new Date('2022-10-25T12:40:00'),
           endDate: new Date('2022-10-25T15:10:00'),
           description: null,
         },
       ],
-    };
+    }
   },
   actions: {},
-});
+})

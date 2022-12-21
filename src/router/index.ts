@@ -152,6 +152,7 @@ router.beforeEach((to) => {
     localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY) === null &&
     to.name !== 'join' &&
     to.name !== 'joinInsertStudentId' &&
+    to.name !== 'createClassroom' &&
     to.name !== 'scan' &&
     to.name !== 'in' &&
     to.name !== 'up' &&

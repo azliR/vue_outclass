@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { formatDate } from '@/plugins/utils';
-import { useOverviewStore } from '@/stores/home/overview/overview';
-import { storeToRefs } from 'pinia';
+import { formatDate } from '@/plugins/utils'
+import { useOverviewStore } from '@/stores/home/overview/overview'
+import { storeToRefs } from 'pinia'
 
-const store = useOverviewStore();
+const store = useOverviewStore()
 // const { formatDate } = store;
-const { deadlineAssignments, upcomingEvents } = storeToRefs(store);
+const { deadlineAssignments, upcomingEvents } = storeToRefs(store)
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const { deadlineAssignments, upcomingEvents } = storeToRefs(store);
             class="px-6"
             v-for="event in upcomingEvents"
             :key="event.id"
-            :title="event.name"
+            :title="event.title"
             :subtitle="event.description ?? 'Tidak ada deskripsi'"
           >
             <template v-slot:prepend>

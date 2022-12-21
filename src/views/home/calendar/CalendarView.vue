@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { useCalendarStore } from '@/stores/home/calendar/calendar'
+import { useCalendarStore } from '@/stores/home/calendar/calendar-store'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import rrulePlugin from '@fullcalendar/rrule'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/vue3'
 import { storeToRefs } from 'pinia'
 import AppError from '../../../components/AppError.vue'
 
 const store = useCalendarStore()
-const { getEvents, handleDateSelect, handleEventClick, handleEvents } = store
+const {
+  createEvent,
+  getEvents,
+  handleDateSelect,
+  handleEventClick,
+  handleEvents,
+} = store
 const { loading, error, currentEvents } = storeToRefs(store)
 
 getEvents()
 </script>
 
 <template>
-  <v-app-bar title="Calendar"> </v-app-bar>
   <v-main>
     <v-progress-linear v-if="loading" indeterminate></v-progress-linear>
     <app-error
@@ -29,13 +35,18 @@ getEvents()
         <full-calendar
           class="demo-app-calendar"
           :options="{
-            // height: '100%',
+            height: '100%',
             headerToolbar: {
               left: 'prev,next today',
               center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay',
+              right: 'timeGridDay,timeGridWeek,dayGridMonth',
             },
-            plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+            plugins: [
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              rrulePlugin,
+            ],
             dayHeaderFormat: {
               weekday: 'short',
               month: 'numeric',
@@ -52,8 +63,8 @@ getEvents()
             eventClick: handleEventClick,
             eventsSet: handleEvents,
             events: currentEvents,
+            eventAdd: createEvent,
             /* you can update a remote database when these fire:
-        eventAdd:
         eventChange:
         eventRemove:
         */

@@ -85,9 +85,11 @@ export const useAccountStore = defineStore('account', {
       this.router.push({ name: 'settings' })
     },
     exitClass() {
+      localStorage.removeItem(DEFAULT_CLASSROOM_ID_PREF_KEY)
       this.router.push({ name: 'join' })
     },
     signOutAccount() {
+      localStorage.clear()
       this.router.push({ name: 'in' })
     },
   },

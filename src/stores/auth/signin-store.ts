@@ -36,11 +36,12 @@ export const useSignInStore = defineStore('signin', {
           email: this.email,
           password: this.password,
         })
-        .then((response) => {
+        .then(async (response) => {
           if (response.status >= 200 && response.status < 300) {
             const token = response.data.data
 
             localStorage.setItem(JWT_TOKEN_PREF_KEY, JSON.stringify(token))
+            await this.getClassrooms()
 
             this.router.push({ name: 'overview' })
           } else {
@@ -63,13 +64,18 @@ export const useSignInStore = defineStore('signin', {
       this.loading = false
     },
     async getClassrooms() {
-      this.privateClient
-        .get<ResponseData<ClassroomMember[]>>('/user/classrooms')
-        .then(({ data }) => {
+      await this.privateClient
+        .get<ResponseData<ClassroomMember[]>>('/user/classrooms', {
+          params: {
+            page: 1,
+            page_limit: 100,
+          },
+        })
+        .then(async ({ data }) => {
           if (data.success && data.data) {
             // TODO: Hardcode for now, multiple classrooms not supported yet
-            const classroom = data.data[0]
-            this.getClassroom(classroom.id)
+            const classroomMember = data.data[0]
+            await this.getClassroom(classroomMember.classroom_id)
           } else {
             return Promise.reject(data.message)
           }
@@ -89,7 +95,7 @@ export const useSignInStore = defineStore('signin', {
         })
     },
     async getClassroom(classroomId: string) {
-      this.privateClient
+      await this.privateClient
         .get<ResponseData<Classroom>>(`/classrooms/${classroomId}`)
         .then(({ data }) => {
           if (data.success && data.data) {

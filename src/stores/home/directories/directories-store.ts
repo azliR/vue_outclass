@@ -1,6 +1,5 @@
 import { privateClient } from '@/core/private_client'
 import {
-  colors,
   DIRECTORY_TYPE_FOLDER,
   DIRECTORY_TYPE_POST,
   type Directory,
@@ -15,7 +14,6 @@ import {
 import { AxiosError } from 'axios'
 import { get, keys, set } from 'idb-keyval'
 import { defineStore } from 'pinia'
-import { useLinksStore } from './links'
 
 export const useDirectoriesStore = (shareType: string, parentId: string) =>
   defineStore('directories-' + shareType + parentId, {
@@ -170,17 +168,14 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
         this.directoryType = DIRECTORY_TYPE_FOLDER
         await this.loadMore(this.scrollContainer, false)
       },
-      async onFilePressed(link: string, type: string) {
-        if (type === 'link') {
-          return
-        }
+      async onFilePressed(link: string, name: string, type: string) {
         this.fileLoading = false
         this.errorSnackbar = null
 
         get<Blob>(link, DOWNLOADED_DIRECTORIES_STORE)
           .then(async (file) => {
             if (!file) {
-              const newFile = await this.onDownloadFilePressed(link, type)
+              const newFile = await this.onDownloadFilePressed(link, name, type)
               if (newFile instanceof Blob) {
                 file = newFile
               } else {
@@ -198,6 +193,7 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
       },
       async onDownloadFilePressed(
         link: string,
+        name: string,
         type: string
       ): Promise<Blob | Error> {
         this.fileLoading = false
@@ -212,7 +208,7 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
               this.fileLoading = false
               this.errorSnackbar = null
 
-              const blob = new File([data], 'asasas', {
+              const blob = new File([data], name, {
                 type: 'application/' + type,
               })
               await set(link, blob, DOWNLOADED_DIRECTORIES_STORE).then(() => {
@@ -250,46 +246,7 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
           })
       },
       onFolderPressed(folder: Folder) {
-        const linksStore = useLinksStore()
-        linksStore.$reset()
-
         this.router.push({ name: 'folders', params: { folderId: folder.id } })
-      },
-      getFileIcon(type: string): string {
-        if (type === 'pdf') return 'mdi-file-pdf-box'
-        else if (type === 'doc' || type === 'docx') return 'mdi-file-document'
-        else if (type === 'xls' || type === 'xlsx')
-          return 'mdi-google-spreadsheet'
-        else if (type === 'ppt' || type === 'pptx') return 'mdi-play-box'
-        else if (type === 'zip' || type === 'rar') return 'mdi-zip-box'
-        else if (type === 'txt') return 'mdi-text-box'
-        else if (type === 'link') return 'mdi-link'
-        else if (type === 'mp4' || type === 'avi' || type === 'mkv')
-          return 'mdi-movie'
-        else if (type === 'mp3' || type === 'wav') return 'mdi-music-box'
-        else if (type === 'jpg' || type === 'png' || type === 'jpeg')
-          return 'mdi-image'
-        return 'mdi-file'
-      },
-      getFileColor(type: string): string {
-        if (type === 'pdf') return 'red'
-        else if (type === 'doc' || type === 'docx') return 'blue-darken-2'
-        else if (type === 'xls' || type === 'xlsx') return 'green-darken-1'
-        else if (type === 'ppt' || type === 'pptx') return 'orange'
-        else if (type === 'zip' || type === 'rar') return 'green'
-        else if (type === 'txt') return 'grey-darken-1'
-        else if (type === 'link') return 'blue-darken-4'
-        else if (type === 'mp4' || type === 'avi' || type === 'mkv')
-          return 'red-darken-2'
-        else if (type === 'mp3' || type === 'wav') return 'blue-grey'
-        else if (type === 'jpg' || type === 'png' || type === 'jpeg')
-          return 'deep-purple'
-        return 'grey'
-      },
-      getFolderColor(name: string): string {
-        return (
-          colors.find((color) => color.key == name)?.color ?? colors[0].color
-        )
       },
     },
   })

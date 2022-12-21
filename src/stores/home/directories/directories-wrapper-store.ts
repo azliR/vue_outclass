@@ -108,7 +108,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> createNewFolder', error)
+          console.error('folders-wrapper-store.ts -> createNewFolder', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
@@ -140,7 +140,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> updateFolder', error)
+          console.error('folders-wrapper-store.ts -> updateFolder', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
@@ -165,7 +165,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> deleteFolder', error)
+          console.error('folders-wrapper-store.ts -> deleteFolder', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
@@ -180,10 +180,6 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
         })
     },
     async createPost(createPostDto: CreatePostDto): Promise<boolean> {
-      console.log(
-        '⛔ | file: directories-wrapper-store.ts:183 | createPost | createPostDto',
-        createPostDto
-      )
       const shareType = folderTabs[this.selectedTabIndex].path.split('/')[2]
 
       const classroomId = localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY)
@@ -214,7 +210,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> createNewPost', error)
+          console.error('folders-wrapper-store.ts -> createNewPost', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
@@ -242,7 +238,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> updatePost', error)
+          console.error('folders-wrapper-store.ts -> updatePost', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {
@@ -267,7 +263,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
           }
         })
         .catch((error: Error) => {
-          console.error('folders-wrapper.ts -> deletePost', error)
+          console.error('folders-wrapper-store.ts -> deletePost', error)
 
           if (error instanceof AxiosError) {
             if (error.response) {

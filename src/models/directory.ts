@@ -43,6 +43,7 @@ export interface Post {
 }
 
 export interface File {
+  id: string
   name: string
   link: string
   type: string
@@ -58,6 +59,42 @@ interface Color {
   key: string
   name: string
   color: string
+}
+
+export function getFileIcon(type: string): string {
+  if (type === 'pdf') return 'mdi-file-pdf-box'
+  else if (type === 'doc' || type === 'docx') return 'mdi-file-document'
+  else if (type === 'xls' || type === 'xlsx') return 'mdi-google-spreadsheet'
+  else if (type === 'ppt' || type === 'pptx') return 'mdi-play-box'
+  else if (type === 'zip' || type === 'rar') return 'mdi-zip-box'
+  else if (type === 'txt') return 'mdi-text-box'
+  else if (type === 'link') return 'mdi-link'
+  else if (type === 'mp4' || type === 'avi' || type === 'mkv')
+    return 'mdi-movie'
+  else if (type === 'mp3' || type === 'wav') return 'mdi-music-box'
+  else if (type === 'jpg' || type === 'png' || type === 'jpeg')
+    return 'mdi-image'
+  return 'mdi-file'
+}
+
+export function getFileColor(type: string): string {
+  if (type === 'pdf') return 'red'
+  else if (type === 'doc' || type === 'docx') return 'blue-darken-2'
+  else if (type === 'xls' || type === 'xlsx') return 'green-darken-1'
+  else if (type === 'ppt' || type === 'pptx') return 'orange'
+  else if (type === 'zip' || type === 'rar') return 'green'
+  else if (type === 'txt') return 'grey-darken-1'
+  else if (type === 'link') return 'blue-darken-4'
+  else if (type === 'mp4' || type === 'avi' || type === 'mkv')
+    return 'red-darken-2'
+  else if (type === 'mp3' || type === 'wav') return 'blue-grey'
+  else if (type === 'jpg' || type === 'png' || type === 'jpeg')
+    return 'deep-purple'
+  return 'grey'
+}
+
+export function getFolderColor(name: string): string {
+  return colors.find((color) => color.key == name)?.color ?? colors[0].color
 }
 
 export const colors = <Color[]>[

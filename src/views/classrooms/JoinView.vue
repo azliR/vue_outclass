@@ -11,6 +11,7 @@ const {
   onJoinPressed,
   goToCreateClassroom,
   goToScanCode,
+  signOutAccount,
 } = store
 const { loading, error, studentId, classCode } = storeToRefs(store)
 
@@ -89,6 +90,18 @@ watch(error, (state) => (showSnackbar.value = state != null))
             Scan QR
           </v-btn>
         </div>
+        <p class="text-body-2 text-center mt-6">
+          Salah akun?
+          <v-btn
+            class="px-1 py-0 ma-0 text-body-2"
+            variant="text"
+            color="blue"
+            size="small"
+            @click="signOutAccount"
+          >
+            Keluar akun
+          </v-btn>
+        </p>
       </v-card>
     </div>
     <v-snackbar v-model="showSnackbar" color="error">

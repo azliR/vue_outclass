@@ -65,5 +65,9 @@ export const useJoinStore = defineStore('join', {
     goToScanCode() {
       this.router.push({ name: 'scan' })
     },
+    signOutAccount() {
+      localStorage.clear()
+      this.router.push({ name: 'in' })
+    },
   },
 })
