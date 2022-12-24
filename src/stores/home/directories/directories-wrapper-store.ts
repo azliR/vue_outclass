@@ -10,6 +10,7 @@ import { DEFAULT_CLASSROOM_ID_PREF_KEY } from '@/plugins/constants'
 import { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
+import { useDirectoriesStore } from './directories-store'
 
 export interface Breadcrumb {
   folderId: string | null
@@ -64,11 +65,9 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
         const folder = await this.getCurrentFolder(folderId)
         this.currentFolder = folder
 
-        const parentDirectoryId = (folderId as string) ?? null
-
         breadcrumb = {
-          folderId: parentDirectoryId,
-          folderName: folder?.name ?? 'Berkas',
+          folderId: folderId,
+          folderName: folder?.name ?? '',
         }
       } else {
         this.currentFolder = null
@@ -94,7 +93,7 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
 
       return await this.privateClient
         .post<ResponseData<Folder>>('/directories/folders', {
-          parent_id: this.currentFolder?.parent_id,
+          parent_id: this.currentFolder?.id,
           classroom_id: shareType === 'class' ? classroomId : null,
           name: createFolderDto.name,
           color: createFolderDto.color,
@@ -186,9 +185,10 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
       if (classroomId === null) {
         return false
       }
+      console.log(this.currentFolder?.parent_id)
 
       const formData = new FormData()
-      formData.append('parent_id', this.currentFolder?.parent_id ?? '')
+      formData.append('parent_id', this.currentFolder?.id ?? '')
       formData.append('classroom_id', shareType === 'class' ? classroomId : '')
       formData.append('name', createPostDto.name)
       formData.append('description', createPostDto.description ?? '')
@@ -315,7 +315,12 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
       this.deleteFolderDialog = false
       this.tempFolder = null
     },
-    async onSaveFolderPressed(directoriesStore: any, folder: CreateFolderDto) {
+    async onSaveFolderPressed(folder: CreateFolderDto) {
+      const directoriesStore = useDirectoriesStore(
+        folderTabs[this.selectedTabIndex].path.split('/')[2],
+        (this.currentFolder?.id ?? null) as string
+      )()
+
       this.folderDialog = false
       const result = this.tempFolder
         ? await this.updateFolder({
@@ -353,7 +358,12 @@ export const useDirectoriesWrapperStore = defineStore('directories-wrapper', {
       this.deletePostDialog = false
       this.tempPost = null
     },
-    async onSavePostPressed(directoriesStore: any, post: CreatePostDto) {
+    async onSavePostPressed(post: CreatePostDto) {
+      const directoriesStore = useDirectoriesStore(
+        folderTabs[this.selectedTabIndex].path.split('/')[2],
+        (this.currentFolder?.id ?? null) as string
+      )()
+
       this.postDialog = false
       const result = this.tempPost
         ? await this.updatePost({

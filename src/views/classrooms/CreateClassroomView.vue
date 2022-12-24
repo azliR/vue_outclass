@@ -40,6 +40,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
             v-model="name"
             :rules="nameRules"
             label="Nama kelas"
+            type="name"
             placeholder="Masukin nama kelas kamu"
             prepend-icon="mdi-google-classroom"
             required
@@ -47,6 +48,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
           <v-text-field
             v-model="description"
             :rules="descriptionRules"
+            type="text"
             label="Deskripsi (opsional)"
             placeholder="Masukin deskripsi kelas kamu"
             prepend-icon="mdi-text"
@@ -58,6 +60,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
             v-model="studentId"
             :rules="studentIdRules"
             label="NIM"
+            type="text"
             placeholder="Masukin NIM kamu"
             prepend-icon="mdi-card-account-details-outline"
             @keydown.enter="validate"

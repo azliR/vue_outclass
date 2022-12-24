@@ -43,4 +43,7 @@ html {
   max-width: 100%;
   position: relative;
 }
+.full-dialog {
+  max-width: 100%;
+}
 </style>

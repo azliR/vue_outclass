@@ -19,6 +19,7 @@ const shareType = paths[2] ?? null
 const parentDirectoryId = paths[3] ?? null
 
 var store = useDirectoriesStore(shareType, parentDirectoryId)()
+console.log('⛔ | file: DirectoriesView.vue:22 | store', store)
 var folderWrapperStore = useDirectoriesWrapperStore()
 
 const {
@@ -28,8 +29,7 @@ const {
   getDownloadedFileKeys,
   onFolderPressed,
 } = store
-const { breadcrumbs, onUpdateFolderPressed, onDeleteFolderPressed } =
-  folderWrapperStore
+const { onUpdateFolderPressed, onDeleteFolderPressed } = folderWrapperStore
 
 const {
   scrollContainer,
@@ -43,6 +43,7 @@ const {
   errorPost,
   errorSnackbar,
 } = storeToRefs(store)
+const { breadcrumbs } = storeToRefs(folderWrapperStore)
 
 getDownloadedFileKeys()
 
@@ -80,7 +81,7 @@ useInfiniteScroll(
     <v-container>
       <v-breadcrumbs
         v-if="breadcrumbs.length > 1"
-        class="pa-0"
+        class="pa-0 mb-4"
         :items="breadcrumbs"
       >
         <template v-slot:title="{ item }">

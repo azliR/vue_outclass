@@ -149,6 +149,7 @@ export const useDirectoriesStore = (shareType: string, parentId: string) =>
             }
           })
           .catch((error) => {
+            console.log('directories-store.ts -> loadMore', error)
             if (error instanceof AxiosError) {
               if (error.response) {
                 this.errorSnackbar = error.response?.data?.message ?? ''

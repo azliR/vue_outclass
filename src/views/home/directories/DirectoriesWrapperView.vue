@@ -40,8 +40,12 @@ const {
   deleteFolderDialog: deleteDialog,
 } = storeToRefs(store)
 
-if (breadcrumbs.value.length === 0 && !route.params.folderId) {
+if (breadcrumbs.value.length === 0) {
   getBreadcrumbs(undefined)
+
+  if (route.params.folderId) {
+    getBreadcrumbs(route.params.folderId as string)
+  }
 }
 
 watch(
@@ -55,9 +59,9 @@ const paths = route.path.split('/')
 const shareType = paths[2] ?? null
 const parentDirectoryId = paths[3] ?? null
 
-var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)()
-
 async function deleteFolderPressed() {
+  var directoriesStore = useDirectoriesStore(shareType, parentDirectoryId)()
+
   deleteDialog.value = false
   const result = await deleteFolder()
 
@@ -167,14 +171,14 @@ watch(errorSnackbar, (state) => (showSnackbar.value = state != null))
     <app-create-folder-dialog
       :folder="tempFolder"
       @close="onCloseFolderPressed"
-      @save="(folder) => onSaveFolderPressed(directoriesStore, folder)"
+      @save="(folder) => onSaveFolderPressed(folder)"
     ></app-create-folder-dialog>
   </v-dialog>
   <v-dialog class="ma-4 full-dialog" v-model="postDialog" persistent fullscreen>
     <app-create-post-dialog
       :post="tempPost"
       @close="onClosePostPressed"
-      @save="(post) => onSavePostPressed(directoriesStore, post)"
+      @save="(post) => onSavePostPressed(post)"
     ></app-create-post-dialog>
   </v-dialog>
   <v-dialog v-model="deleteDialog">
@@ -195,9 +199,3 @@ watch(errorSnackbar, (state) => (showSnackbar.value = state != null))
     </v-card>
   </v-dialog>
 </template>
-
-<style scoped>
-.full-dialog {
-  max-width: 100%;
-}
-</style>

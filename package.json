@@ -20,6 +20,7 @@
     "@fullcalendar/vue3": "^6.0.1",
     "@mdi/font": "^7.1.96",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "@vuepic/vue-datepicker": "^3.6.3",
     "@vueuse/core": "^9.8.2",
     "axios": "^1.2.1",
     "bytes": "^3.1.2",

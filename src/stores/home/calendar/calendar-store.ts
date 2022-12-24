@@ -1,11 +1,12 @@
+import type { CreateEventDto } from '@/dtos/event'
 import { getFolderColor } from '@/models/directory'
-import type { Event } from '@/models/event'
+import { toEventInputCalendar, type Event } from '@/models/event'
 import type { ResponseData } from '@/models/response-data'
 import type { Task } from '@/models/task'
 import { DEFAULT_CLASSROOM_ID_PREF_KEY } from '@/plugins/constants'
 import type {
+  Calendar,
   DateSelectArg,
-  EventAddArg,
   EventApi,
   EventClickArg,
   EventInput,
@@ -16,28 +17,27 @@ import { defineStore } from 'pinia'
 export const useCalendarStore = defineStore('calendar', {
   state() {
     return {
+      calendar: <Calendar | undefined>undefined,
       error: <string | null>null,
       errorSnackbar: <string | null>null,
       loading: false,
       currentEvents: <EventInput[]>[{}],
+      tempEvent: <Event | null>null,
+      eventDialog: false,
     }
   },
   actions: {
-    async createEvent(eventAdd: EventAddArg) {
+    async createEvent(event: CreateEventDto): Promise<Event | null> {
       this.errorSnackbar = null
 
-      const event = eventAdd.event
       const classroomId = localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY)
+      event.classroom_id = classroomId
 
-      await this.privateClient
-        .post<ResponseData<Event>>('/directories/folders', {
-          classroom_id: classroomId,
-          name: event.title,
-          start_date: event.start,
-          end_date: event.end,
-        })
+      return await this.privateClient
+        .post<ResponseData<Event>>('/events', event)
         .then(({ data }) => {
-          if (data.success) {
+          if (data.success && data.data) {
+            return data.data
           } else {
             return Promise.reject(data.message)
           }
@@ -54,6 +54,7 @@ export const useCalendarStore = defineStore('calendar', {
           } else {
             this.errorSnackbar = error.message
           }
+          return null
         })
     },
     async getEvents() {
@@ -74,21 +75,9 @@ export const useCalendarStore = defineStore('calendar', {
             this.error = null
             console.log(data)
 
-            const newEvents = data.data.map((event) => {
-              return {
-                id: event.id,
-                title: event.title,
-                start: event.start_date,
-                end: event.end_date,
-                allDay: event.end_date === null,
-                groupId: event.id,
-                color: getFolderColor(event.color),
-                rrule: {
-                  freq: event.repeat,
-                  dtstart: event.start_date,
-                },
-              }
-            }) as EventInput[]
+            const newEvents = data.data.map((event) =>
+              toEventInputCalendar(event)
+            ) as EventInput[]
 
             this.currentEvents.push(...newEvents)
             this.getTasks()
@@ -135,7 +124,6 @@ export const useCalendarStore = defineStore('calendar', {
                 title: task.title,
                 start: task.date,
                 groupId: task.id,
-                extendedProps: {},
                 color: getFolderColor(task.color),
                 rrule: {
                   freq: task.repeat,
@@ -164,6 +152,21 @@ export const useCalendarStore = defineStore('calendar', {
           }
         })
     },
+    onCloseEventPressed() {
+      this.eventDialog = false
+      this.tempEvent = null
+    },
+    async onSaveEventPressed(event: CreateEventDto) {
+      this.eventDialog = false
+
+      const result = await this.createEvent(event)
+
+      if (result) {
+        this.currentEvents = []
+        await this.getEvents()
+      }
+      this.tempEvent = null
+    },
     handleDateSelect(selectInfo: DateSelectArg) {
       const title = prompt('Please enter a new title for your event')
       const calendarApi = selectInfo.view.calendar
@@ -171,13 +174,7 @@ export const useCalendarStore = defineStore('calendar', {
       calendarApi.unselect()
 
       if (title) {
-        calendarApi.addEvent({
-          id: '1',
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-        })
+        // calendarApi.addEvent(toEventInputCalendar(event))
       }
     },
     handleEventClick(clickInfo: EventClickArg) {

@@ -1,6 +1,6 @@
 import { createStore } from 'idb-keyval'
 
-export const BASE_API_URL = 'http://localhost:20109'
+export const BASE_API_URL = 'http://54.254.139.132:20109'
 export const BASE_API_VERSION = '/api/v1'
 export const API_URL = BASE_API_URL + BASE_API_VERSION
 
