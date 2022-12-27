@@ -1,8 +1,7 @@
 import type { CreateEventDto } from '@/dtos/event'
-import { getFolderColor } from '@/models/directory'
 import { toEventInputCalendar, type Event } from '@/models/event'
 import type { ResponseData } from '@/models/response-data'
-import type { Task } from '@/models/task'
+import { toTaskInputCalendar, type Task } from '@/models/task'
 import { DEFAULT_CLASSROOM_ID_PREF_KEY } from '@/plugins/constants'
 import type {
   Calendar,
@@ -21,7 +20,7 @@ export const useCalendarStore = defineStore('calendar', {
       error: <string | null>null,
       errorSnackbar: <string | null>null,
       loading: false,
-      currentEvents: <EventInput[]>[{}],
+      currentEvents: <EventInput[] | undefined>undefined,
       tempEvent: <Event | null>null,
       eventDialog: false,
     }
@@ -61,6 +60,10 @@ export const useCalendarStore = defineStore('calendar', {
       this.error = null
       this.loading = true
 
+      if (this.currentEvents === undefined) {
+        this.currentEvents = []
+      }
+
       const classroomId = localStorage.getItem(DEFAULT_CLASSROOM_ID_PREF_KEY)
       if (!classroomId) {
         this.router.push({ name: 'in' })
@@ -79,9 +82,8 @@ export const useCalendarStore = defineStore('calendar', {
               toEventInputCalendar(event)
             ) as EventInput[]
 
-            this.currentEvents.push(...newEvents)
+            this.currentEvents!.push(...newEvents)
             this.getTasks()
-            console.log(this.currentEvents)
           } else {
             return Promise.reject(data.message)
           }
@@ -118,22 +120,11 @@ export const useCalendarStore = defineStore('calendar', {
             this.error = null
             console.log(data)
 
-            const newTasks = data.data.map((task) => {
-              return {
-                id: task.id,
-                title: task.title,
-                start: task.date,
-                groupId: task.id,
-                color: getFolderColor(task.color),
-                rrule: {
-                  freq: task.repeat,
-                  dtstart: task.date,
-                },
-              }
-            }) as EventInput[]
+            const newTasks = data.data.map((task) =>
+              toTaskInputCalendar(task)
+            ) as EventInput[]
 
-            this.currentEvents.push(...newTasks)
-            console.log(this.currentEvents)
+            this.currentEvents!.push(...newTasks)
           } else {
             return Promise.reject(data.message)
           }

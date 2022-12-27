@@ -29,9 +29,11 @@ const {
 const { calendar, loading, error, currentEvents, tempEvent, eventDialog } =
   storeToRefs(store)
 
-onMounted(() => (calendar.value = calendarRef.value))
+if (currentEvents.value === undefined) {
+  getEvents()
+}
 
-getEvents()
+onMounted(() => (calendar.value = calendarRef.value))
 </script>
 
 <template>
@@ -78,14 +80,28 @@ getEvents()
             events: currentEvents,
             /* you can update a remote database when these fire:
             eventAdd: (eventAdd)=>on,
-        eventChange:
-        eventRemove:
-        */
+            eventChange:
+            eventRemove:
+            */
           }"
         >
           <template v-slot:eventContent="arg">
-            <b>{{ arg.timeText }}</b>
-            <i>{{ arg.event.title }}</i>
+            <v-col>
+              <v-row>
+                <v-icon
+                  v-if="arg.event.extendedProps.type === 'task'"
+                  class="pt-1"
+                  size="16"
+                  >mdi-checkbox-marked-circle-outline</v-icon
+                >
+                <div>
+                  <p>
+                    <b>{{ arg.event.title }}</b>
+                  </p>
+                  <p>{{ arg.timeText }}</p>
+                </div>
+              </v-row>
+            </v-col>
           </template>
         </full-calendar>
       </div>

@@ -23,11 +23,17 @@ export function toEventInputCalendar(event: Event) {
     end: event.end_date,
     allDay: event.end_date === null,
     groupId: event.id,
-    color: getFolderColor(event.color),
-    rrule: {
-      freq: event.repeat,
-      dtstart: event.start_date,
+    extendedProps: {
+      type: 'event',
     },
+    color: getFolderColor(event.color),
+    rrule:
+      event.repeat && event.repeat != 'none'
+        ? {
+            freq: event.repeat,
+            dtstart: event.start_date,
+          }
+        : null,
   } as EventInput
 }
 

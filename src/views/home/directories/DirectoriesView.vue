@@ -179,7 +179,7 @@ useInfiniteScroll(
         <v-progress-circular class="ma-3" indeterminate></v-progress-circular>
       </div>
       <app-error
-        v-if="errorFolder"
+        v-else-if="errorFolder"
         class="mt-4"
         :error="errorFolder"
         @refresh="loadMore(scrollContainer, true)"
@@ -266,7 +266,11 @@ useInfiniteScroll(
       <div v-if="loadingPost" class="d-flex justify-center">
         <v-progress-circular class="ma-3" indeterminate></v-progress-circular>
       </div>
-      <app-error v-if="errorPost" class="mt-4" :error="errorPost"></app-error>
+      <app-error
+        v-else-if="errorPost"
+        class="mt-4"
+        :error="errorPost"
+      ></app-error>
     </v-container>
   </div>
 </template>
