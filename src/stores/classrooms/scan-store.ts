@@ -50,8 +50,7 @@ export const useScanStore = defineStore('scan', {
       const pathNames = url.pathname.split('/')
 
       if (
-        (url.host === 'localhost:5173' ||
-          url.host === 'outclass.azlir.my.id') &&
+        (url.host === 'localhost:5173' || url.host === 'outclass.azlir.me') &&
         pathNames.length === 3 &&
         pathNames[1] === 'join'
       ) {
