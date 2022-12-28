@@ -169,7 +169,6 @@ watch(error, (state) => (showSnackbar.value = state != null))
                         type: 'dots',
                         color: '#000000',
                       }"
-                      image="./src/assets/logo.svg"
                       :backgroundOptions="{ color: '#ffffff' }"
                       :cornersSquareOptions="{
                         type: 'extra-rounded',
