@@ -211,7 +211,7 @@ watch(error, (state) => (showSnackbar.value = state != null))
           Keluar akun
         </v-btn>
       </div>
-      <div class="my-4"></div>
+      <div class="my-10"></div>
     </v-container>
   </v-main>
   <v-snackbar v-model="showSnackbar" color="error">
