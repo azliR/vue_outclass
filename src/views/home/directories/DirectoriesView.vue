@@ -271,6 +271,7 @@ useInfiniteScroll(
         class="mt-4"
         :error="errorPost"
       ></app-error>
+      <div class="my-10"></div>
     </v-container>
   </div>
 </template>
