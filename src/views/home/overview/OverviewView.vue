@@ -19,11 +19,7 @@ const {
 
 if (upcomingTasks.value === undefined || upcomingEvents.value === undefined) {
   if (currentEvents.value === undefined) {
-    calendarStore
-      .getEvents()
-      .then(() =>
-        calendarStore.getTasks().then(() => init(currentEvents.value!))
-      )
+    calendarStore.getEvents().then(() => init(currentEvents.value!))
   } else {
     init(currentEvents.value)
   }
@@ -52,7 +48,7 @@ if (upcomingTasks.value === undefined || upcomingEvents.value === undefined) {
             class="px-6"
             v-for="assignment in upcomingTasks"
             :key="assignment.id"
-            :title="assignment.name"
+            :title="assignment.title"
             :subtitle="assignment.description ?? 'Tidak ada deskripsi'"
             lines="two"
           >

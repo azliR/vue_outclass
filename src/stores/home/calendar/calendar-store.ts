@@ -72,18 +72,17 @@ export const useCalendarStore = defineStore('calendar', {
 
       await this.privateClient
         .get<ResponseData<Event[]>>('/events/class/' + classroomId)
-        .then(({ data }) => {
+        .then(async ({ data }) => {
           this.loading = false
           if (data.data && data.success) {
             this.error = null
-            console.log(data)
 
             const newEvents = data.data.map((event) =>
               toEventInputCalendar(event)
             ) as EventInput[]
 
             this.currentEvents!.push(...newEvents)
-            this.getTasks()
+            await this.getTasks()
           } else {
             return Promise.reject(data.message)
           }
