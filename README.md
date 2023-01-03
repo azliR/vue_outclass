@@ -1,6 +1,14 @@
 # outclass
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9084a286-c1c8-4726-824d-0bf14ea7512d/deploy-status)](https://app.netlify.com/sites/outclass-dev/deploys)
 
+## Link Youtube
+https://youtu.be/FzwdQJd_pBs
+
+
+-----
+
+
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
