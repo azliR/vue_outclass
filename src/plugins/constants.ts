@@ -1,6 +1,6 @@
 import { createStore } from 'idb-keyval'
 
-export const BASE_API_URL = 'https://outclass.api.azlir.my.id'
+export const BASE_API_URL = 'https://api.outclass.azlir.my.id'
 export const BASE_API_VERSION = '/api/v1'
 export const API_URL = BASE_API_URL + BASE_API_VERSION
 
